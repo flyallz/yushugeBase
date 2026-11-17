@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game 01 · Mắt Thần Hán Tự</title>
+  <link rel="stylesheet" href="assets/game.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <main class="main">
+      <header class="game-toolbar">
+        <div class="game-identity">
+          <span class="game-code">GAME 01</span>
+          <div><strong>Mắt Thần Hán Tự</strong><small>相似汉字辨认 · 6 Level</small></div>
+        </div>
+        <nav class="section-tabs" aria-label="Nội dung Mắt Thần Hán Tự">
+          <button class="nav-btn active" data-screen="levels">Cấp độ</button>
+          <button class="nav-btn" data-screen="mistakes">Chữ hay nhầm</button>
+          <button class="nav-btn" data-screen="records">Kỷ lục</button>
+        </nav>
+      </header>
+
+      <!-- Các ID này chỉ giữ trạng thái nội bộ; không hiển thị thành ô trang trí. -->
+      <div hidden aria-hidden="true">
+        <span id="homeBestCombo">0</span><span id="homeBestScore">0</span><span id="homeAccuracy">0%</span><span id="homeMistakes">0</span>
+        <button id="resetTestData" type="button"></button>
+      </div>
+
+      <section id="screen-levels" class="screen active">
+        <div class="section-heading compact-heading">
+          <div><span class="eyebrow">LỘ TRÌNH LUYỆN TẬP</span><h2>Chọn cấp độ</h2></div>
+          <p>Level 1–3 Sơ cấp · Level 4–6 Trung cấp. Mỗi Level có 50 câu, chia 5 bậc × 10 câu.</p>
+        </div>
+        <div id="levelMap" class="level-map"></div>
+      </section>
+
+      <section id="screen-mistakes" class="screen">
+        <div class="section-heading compact-heading">
+          <div><span class="eyebrow">ÔN CÓ MỤC TIÊU</span><h2>Chữ hay nhầm</h2></div>
+          <p>Chỉ hiển thị các nhóm bạn đã trả lời sai để tiện xem lại.</p>
+        </div>
+        <div id="mistakeList" class="mistake-list"></div>
+      </section>
+
+      <section id="screen-records" class="screen">
+        <div class="section-heading compact-heading">
+          <div><span class="eyebrow">TIẾN ĐỘ</span><h2>Kỷ lục</h2></div>
+          <p>Điểm, độ chính xác và Combo được lưu riêng theo Level và chế độ chơi.</p>
+        </div>
+        <div id="recordsTable" class="records-wrap"></div>
+      </section>
+
+      <section id="screen-mode" class="screen">
+        <button class="back-link" data-go="levels">← Quay lại cấp độ</button>
+        <div class="mode-header">
+          <div><span id="modeLevelTag" class="hero-badge"></span><h2 id="modeTitle">Level</h2><p id="modeDesc"></p></div>
+          <div class="level-emblem" id="levelEmblem">01</div>
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card meaning selected" data-mode="meaning">
+            <span class="card-kicker">CHẾ ĐỘ 01</span><b>Nhìn nghĩa tìm chữ</b>
+            <small>Đọc nghĩa tiếng Việt và chọn đúng chữ Hán.</small>
+            <span class="mode-progress">Đã mở tới Bậc 1/5</span>
+          </button>
+          <button class="mode-card flash" data-mode="flash">
+            <span class="card-kicker">CHẾ ĐỘ 02</span><b>Flash nhận diện</b>
+            <small>Ghi nhớ chữ trong thời gian ngắn rồi nhận diện lại.</small>
+            <span class="mode-progress">Đã mở tới Bậc 1/5</span>
+          </button>
+        </div>
+
+        <div class="stage-panel">
+          <div class="stage-panel-head">
+            <div><span class="eyebrow">CHẾ ĐỘ ĐANG CHỌN</span><h3 id="stageModeName">Nhìn nghĩa tìm chữ</h3></div>
+            <p id="stageHelp"></p>
+          </div>
+          <div id="stageGrid" class="stage-grid"></div>
+        </div>
+      </section>
+
+      <section id="screen-game" class="screen game-screen">
+        <div class="game-top">
+          <button id="quitGame" class="back-link">← Thoát</button>
+          <div class="game-progress-wrap">
+            <span id="gameStageLabel" class="game-stage-label">Level 1 · Bậc 1</span>
+            <div class="game-progress"><span id="progressBar"></span></div>
+            <div id="questionCounter">1/10</div>
+          </div>
+          <div id="scoreDisplay" class="score-chip">0 điểm</div>
+        </div>
+        <div id="comboBanner" class="combo-banner">COMBO × 3</div>
+        <div id="questionCard" class="question-card">
+          <div id="questionType" class="question-type"></div>
+          <div id="promptArea" class="prompt-area"></div>
+          <div id="answersGrid" class="answers-grid"></div>
+          <div id="feedbackBox" class="feedback-box" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="screen-result" class="screen">
+        <div class="result-card">
+          <div class="result-kicker">KẾT QUẢ LUYỆN TẬP</div>
+          <span id="resultLevel" class="hero-badge"></span>
+          <h2 id="resultTitle">Hoàn thành</h2>
+          <div class="stars" id="resultStars"></div>
+          <div class="result-score" id="resultScore">0</div>
+          <div class="result-metrics">
+            <div><b id="resultCorrect">0/10</b><span>Chính xác</span></div>
+            <div><b id="resultCombo">×0</b><span>Combo cao nhất</span></div>
+            <div><b id="resultAccuracy">0%</b><span>Độ chính xác</span></div>
+          </div>
+          <div id="unlockNotice" class="unlock-notice"></div>
+          <div class="result-actions">
+            <button id="nextStep" class="primary-btn" hidden>Tiếp tục</button>
+            <button id="playAgain" class="secondary-btn">Chơi lại bậc này</button>
+            <button class="secondary-btn" data-go="levels">Chọn Level khác</button>
+          </div>
+          <p class="replay-note">Chơi lại chỉ xáo trộn thứ tự 10 câu và vị trí đáp án; nội dung câu hỏi của bậc không thay đổi.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <div id="modal" class="modal-backdrop" hidden>
+    <div class="modal-card">
+      <h3 id="modalTitle">Thông báo</h3><p id="modalText"></p>
+      <div class="modal-actions"><button id="modalCancel" class="secondary-btn">Hủy</button><button id="modalConfirm" class="primary-btn">Xóa dữ liệu</button></div>
+    </div>
+  </div>
+
+  <script src="../../assets/tts.js"></script>
+  <script src="assets/data.js"></script>
+  <script src="assets/game.js"></script>
+  <script src="assets/ui-adapter.js"></script>
+</body>
+</html>
