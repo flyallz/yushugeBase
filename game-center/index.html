@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Trò chơi · NGỌC THƯ CÁC</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff8f7}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="gameFrame" title="Trò chơi" allow="autoplay; camera; fullscreen" allowfullscreen></iframe>
+<script src="assets/tts.js"></script>
+<script>
+(()=>{
+  'use strict';
+  const games={
+    'mat-than':{src:'games/mat-than/index.html',title:'Mắt Thần Hán Tự'},
+    'giai-ma':{src:'games/giai-ma/index.html',title:'Giải Mã Hán Tự'},
+    'dua-xe':{src:'games/hsk-vocabulary/index.html?mode=race&v=20261027-1',title:'Đua xe từ vựng'},
+    'nghieng-dau':{src:'games/hsk-vocabulary/index.html?mode=head&v=20261027-1',title:'Nghiêng đầu chọn từ'}
+  };
+  const requested=new URLSearchParams(location.search).get('game');
+  const game=Object.prototype.hasOwnProperty.call(games,requested)?games[requested]:games['mat-than'];
+  const frame=document.getElementById('gameFrame');
+  let user=null;
+  frame.addEventListener('load',()=>{if(user)frame.contentWindow.postMessage(user,location.origin)});
+  window.addEventListener('message',event=>{
+    if(event.origin!==location.origin)return;
+    const data=event.data||{};
+    if(event.source===window.parent&&['vocabulary-record-saved','vocabulary-record-error','vocabulary-progress-response'].includes(data.type)){frame.contentWindow.postMessage(data,location.origin);return;}
+    if(event.source===window.parent&&data.type==='userInfo'){
+      user=data;frame.contentWindow.postMessage(user,location.origin);return;
+    }
+    if(event.source!==frame.contentWindow)return;
+    if(data.type==='game-focus')window.parent.postMessage({type:'game-center-focus',active:!!data.active},location.origin);
+    if(data.type==='game-user-request'){
+      if(user)frame.contentWindow.postMessage(user,location.origin);
+      else window.parent.postMessage({type:'game-user-request'},location.origin);
+    }
+    if(data.type==='vocabulary-progress-request')window.parent.postMessage(data,location.origin);
+    if(data.type==='game-progress-complete'&&data.payload)window.parent.postMessage(data,location.origin);
+    if(data.type==='vocabulary-leaderboard-open'&&data.record)window.parent.postMessage(data,location.origin);
+  });
+  frame.title=game.title;
+  frame.src=game.src;
+  window.addEventListener('beforeunload',()=>window.parent.postMessage({type:'game-center-focus',active:false},location.origin));
+})();
+</script>
+</body>
+</html>
+
