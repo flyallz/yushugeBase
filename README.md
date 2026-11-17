@@ -10,6 +10,6 @@
 
 注意：
 
-- `supabase-config.js` 里配的是明玉 live 项目（NGOCTHUCAC-LMS）的 Supabase 地址和公开 key，照原样备份。部署副本时要改成开发项目再跑。
-- `assets-trang-chu/co-ngoc.jpeg`（首页明玉照片）因推送工具只支持文本文件，未随这批一起推，需另外上传。
+- 本分支（`dev`）是复刻站分支：`supabase-config.js` 已改成开发项目 NGOCTHUCAC-LMS-v2-dev（ggknfrlclouuvsmxyfrt）的地址和公开 key，部署出来连的是开发项目，不是 live。`main` 分支仍保留明玉 live 项目的原配置不动。
+- `assets-trang-chu/co-ngoc.jpeg`（首页明玉照片）已在 main 分支（提交 0cac838），本分支同样包含。
 - 本仓库是源码备份，不是多教师升级版。升级开发在开发项目 NGOCTHUCAC-LMS-v2-dev 里做，改动以可重放的 SQL 文件记录，开发完再迁回 live。
