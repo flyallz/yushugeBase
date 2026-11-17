@@ -1,0 +1,16 @@
+/* Lesson selection only; questions, audio and submission controls are unchanged. */
+#homePicker .ntc-course-accordion{display:flex;flex-direction:column;gap:16px;width:100%;max-width:1100px;margin:0 auto}
+#homePicker .ntc-course-group{border:1px solid #f0c6d8;border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 5px 20px #c52b6810}
+#homePicker .ntc-course-group>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;cursor:pointer;list-style:none;font-size:24px;font-weight:750;color:#d51e70;background:#fff1f7}
+#homePicker .ntc-course-group>summary::-webkit-details-marker,#homePicker .ntc-course-volume>summary::-webkit-details-marker{display:none}
+#homePicker .ntc-course-group>summary::after,#homePicker .ntc-course-volume>summary::after{content:'⌄';font-size:24px;line-height:1;transition:transform .15s}
+#homePicker .ntc-course-group[open]>summary::after,#homePicker .ntc-course-volume[open]>summary::after{transform:rotate(180deg)}
+#homePicker .ntc-course-volume{margin:14px 20px;border:1px solid #eee0ea;border-radius:12px;overflow:hidden}
+#homePicker .ntc-course-volume>summary{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;list-style:none;cursor:pointer;background:#fff8fc;color:#842850;font-size:22px;font-weight:700}
+#homePicker .ntc-course-rows{display:flex;flex-direction:column;padding:4px 20px 12px;gap:0}
+#homePicker .ntc-course-row{display:block;box-sizing:border-box;width:100%;min-height:60px;border:0;border-bottom:1px solid #f1e4ec;border-radius:0;background:#fff;color:#29334b;text-align:left;padding:16px 12px;font:600 20px/1.5 system-ui;overflow-wrap:anywhere;cursor:pointer;box-shadow:none}
+#homePicker .ntc-course-row:last-child{border-bottom:0}
+#homePicker .ntc-course-row:hover{background:#fff1f7;color:#cb196a}
+#homePicker .ntc-course-row:focus-visible,#homePicker summary:focus-visible{outline:3px solid #f0378a;outline-offset:-3px;background:#fff1f7}
+@media(max-width:600px){#homePicker .ntc-course-accordion{gap:12px}#homePicker .ntc-course-group>summary{padding:18px;font-size:21px}#homePicker .ntc-course-volume{margin:12px}#homePicker .ntc-course-volume>summary{padding:14px;font-size:20px}#homePicker .ntc-course-rows{padding:0 10px 8px}#homePicker .ntc-course-row{font-size:18px;min-height:56px;padding:15px 8px}}
+@media(prefers-reduced-motion:reduce){#homePicker summary::after{transition:none}}

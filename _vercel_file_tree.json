@@ -1,0 +1,304 @@
+[
+  {
+    "name": "src",
+    "type": "directory",
+    "mode": 16749,
+    "children": [
+      {
+        "name": ".vercel",
+        "type": "directory",
+        "mode": 16749,
+        "children": [
+          {
+            "name": "output",
+            "type": "directory",
+            "mode": 16749,
+            "children": [
+              {
+                "name": "config.json",
+                "type": "file",
+                "mode": 33206,
+                "uid": "e3e9d9e991136d12ed1bf0c4be345af204d260cb"
+              },
+              {
+                "name": "static",
+                "type": "directory",
+                "mode": 16749,
+                "children": [
+                  {
+                    "name": "assets-trang-chu",
+                    "type": "directory",
+                    "mode": 16749,
+                    "children": [
+                      {
+                        "name": "co-ngoc.jpeg",
+                        "type": "file",
+                        "mode": 33206,
+                        "uid": "6385a695b35f2ec2172c23ff0e7431f28627358d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "assignments-refresh.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "b5f4dee3a96e7615313faddc05c5dab39be807a6"
+                  },
+                  {
+                    "name": "assignments-refresh.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "f119ee82ec22810a75ca565e5cce996fdea9a802"
+                  },
+                  {
+                    "name": "course-list.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "2c7538e7c34415db2f02df1b375c034145e3954b"
+                  },
+                  {
+                    "name": "game-center",
+                    "type": "directory",
+                    "mode": 16749,
+                    "children": [
+                      {
+                        "name": "games",
+                        "type": "directory",
+                        "mode": 16749,
+                        "children": [
+                          {
+                            "name": "hsk-vocabulary",
+                            "type": "directory",
+                            "mode": 16749,
+                            "children": [
+                              {
+                                "name": "data-hsk4.js",
+                                "type": "file",
+                                "mode": 33206,
+                                "uid": "ebb97e092f98945b80bd8e7c75f43ee751c61448"
+                              },
+                              {
+                                "name": "data-hsk5.js",
+                                "type": "file",
+                                "mode": 33206,
+                                "uid": "c6b0c6725db7c4d1b96677ed09432b888fcfe9fd"
+                              },
+                              {
+                                "name": "data-hsk6.js",
+                                "type": "file",
+                                "mode": 33206,
+                                "uid": "92669e331aab7615589d4e2beb0908b46055b321"
+                              },
+                              {
+                                "name": "data.js",
+                                "type": "file",
+                                "mode": 33206,
+                                "uid": "a913d4526585e2903ff274ad78435b44bc0d3319"
+                              },
+                              {
+                                "name": "reviews.js",
+                                "type": "file",
+                                "mode": 33206,
+                                "uid": "8d3cc0000cbda129fc3a93c4a97f539b9f11c6f1"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "game-homework.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "71edc1a0e8342c784427a57494ca08e9977e0f9b"
+                  },
+                  {
+                    "name": "game-homework.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "27e784e86a433f9bffb528037f75338c53cd9a81"
+                  },
+                  {
+                    "name": "game-progress.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "cdd7fc29dd351321bcd265f2931f986d9ec74901"
+                  },
+                  {
+                    "name": "hoc-tap.html",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "88329e39ec73bc427c9040bb8e5743f2d184cbd3"
+                  },
+                  {
+                    "name": "homework-attention.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "39e14bc826385e596e8c118d3a2a08ac87088f76"
+                  },
+                  {
+                    "name": "homework-model.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "b7ee5b891c033240801c367a002b9ece03d9251e"
+                  },
+                  {
+                    "name": "homework-ui.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "423f330f0a09c579add6375c890ba8d040a32e21"
+                  },
+                  {
+                    "name": "homework-ui.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "dcddb77d4288cdbdcb86f8f44912552d4f699460"
+                  },
+                  {
+                    "name": "hsk346-lms.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "4a863be91265fe219178ad916af2e9036e029ea6"
+                  },
+                  {
+                    "name": "hsk4-review-tracker.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "7ae0e994029dbd2104f7d47b56cbdeea66fb4273"
+                  },
+                  {
+                    "name": "hsk5-lms.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "adc5989d0f2e5032736ffe10fed5ced2e84921ba"
+                  },
+                  {
+                    "name": "index.html",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "86ee40afbc6272b30803eecddf845317d9b129ba"
+                  },
+                  {
+                    "name": "login-refresh.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "fea960dec090c067a4451c9af1505b9ad854e1ba"
+                  },
+                  {
+                    "name": "module-links.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "ec7b35c222d8e51e5e3f5d037db388a438510288"
+                  },
+                  {
+                    "name": "module-routing.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "2164d0c676d026e763ae63f9271b3f8f139102d3"
+                  },
+                  {
+                    "name": "outer-language.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "c19fbf8989c1a7c5a72a567d394aeecd2c2a8d74"
+                  },
+                  {
+                    "name": "sidebar-refresh.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "7f43fe354b71428d5597944683fa661e4c9fb09e"
+                  },
+                  {
+                    "name": "sidebar-refresh.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "900c122d1a1396c702d4d2315e875d87182f08bc"
+                  },
+                  {
+                    "name": "student-home.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "57fec812edb84ccea8cfd55d1d5e30144945ebd5"
+                  },
+                  {
+                    "name": "student-home.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "ba238b9314016bd9e4a86e0b084129a50dfcf847"
+                  },
+                  {
+                    "name": "submission-review.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "fb6c52682af83e9cb4efb6fd3beebdf07d7f214e"
+                  },
+                  {
+                    "name": "supabase-config.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "8caae2ea88c8b91a47dce1ec7b6c94c2b9b15941"
+                  },
+                  {
+                    "name": "teacher-home-model.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "95bb1a573cf7e0eff55b307239f88ee3ece52c7b"
+                  },
+                  {
+                    "name": "teacher-home.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "d721f49863a60273ece6e07771857a42b211e234"
+                  },
+                  {
+                    "name": "teacher-home.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "5ce88322758be5ff850a7f77bc35de99c9546275"
+                  },
+                  {
+                    "name": "theme-hong-dat.css",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "c0d697eb39eea50f7a3d69640974a17bb35fe21c"
+                  },
+                  {
+                    "name": "topic-review-catalog.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "41f8f50bd17ae317b7a6803a34471bd188a76091"
+                  },
+                  {
+                    "name": "topic-review-main.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "e0290ff01a5cad7f3de064bf9924b47c0a9b8240"
+                  },
+                  {
+                    "name": "vocabulary-leaderboard.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "0128c00451ec6e1931170857e075340fe8750faa"
+                  },
+                  {
+                    "name": "workbook-focus.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "a40d0cc0fc41f4456ef0f922aa21dae3cbdf2ffb"
+                  },
+                  {
+                    "name": "writing-markup.js",
+                    "type": "file",
+                    "mode": 33206,
+                    "uid": "1786fb685d79d2123f1073f0d921ffca3d2e892e"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

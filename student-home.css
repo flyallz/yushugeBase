@@ -1,0 +1,57 @@
+/* Presentation scoped to the student home; teacher and lesson views retain their original styles. */
+#ntcStudentHome[hidden]{display:none!important}
+#homeView.sh-root>.home-hero,#homeView.sh-root>.home-picker-nav,#homeView.sh-root>#homePicker,#homeView.sh-root>.home-tip{display:none!important}
+body.ntc-student-home{background:#fffafd}
+body.ntc-student-home #homeView{background:transparent;max-width:1500px;width:100%;padding:30px 34px 40px;margin:0 auto}
+body.ntc-student-home #topbar{background:#fff;color:#282d43;border-bottom:1px solid #f1e6ee;box-shadow:none}
+body.ntc-student-home #topbar .logo,body.ntc-student-home #topbar h1,body.ntc-student-home #topbar h2{color:#ee337f}
+body.ntc-student-home .sidebar{background:white;border-right:1px solid #f1e7ee}
+body.ntc-student-home .sidebar .nav-item{background:transparent;border:0;color:#4f586d;border-radius:12px;box-shadow:none}
+body.ntc-student-home .sidebar .nav-item.active{background:#ffedf5;color:#c72265}
+#ntcStudentHome{--sh-pink:#f23883;--sh-ink:#20263b;--sh-muted:#687187;--sh-line:#eee6ed;font-family:'Segoe UI',system-ui,sans-serif;color:var(--sh-ink);text-align:left}
+#ntcStudentHome *{box-sizing:border-box}
+#ntcStudentHome .sh-heading{margin-bottom:30px}
+#ntcStudentHome h1{font-size:32px;font-weight:780;line-height:1.3;letter-spacing:-.7px;color:var(--sh-ink);margin:0}
+#ntcStudentHome h2{font-size:23px;font-weight:750;color:var(--sh-ink);line-height:1.4;margin:0}
+#ntcStudentHome h3{color:var(--sh-ink);font-size:19px;font-weight:700;line-height:1.5;margin:16px 0 6px}
+#ntcStudentHome section{margin-bottom:31px}
+#ntcStudentHome .sh-section-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:15px}
+#ntcStudentHome button{font:inherit;cursor:pointer;min-height:44px}
+#ntcStudentHome button:focus-visible{outline:3px solid #247ab5;outline-offset:4px}
+#ntcStudentHome .sh-btn{background:white;color:#d5256d;border:1px solid var(--sh-pink);border-radius:10px;padding:10px 18px;font-weight:650;font-size:14px}
+#ntcStudentHome .sh-btn.sh-primary{background:var(--sh-pink);color:white}
+#ntcStudentHome .sh-btn:hover{filter:brightness(.96)}
+#ntcStudentHome .sh-link{background:none;border:0;color:#d5256d;font-size:14px;padding:6px 0;white-space:nowrap}
+#ntcStudentHome .sh-task-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#ntcStudentHome .sh-task{background:white;border:1px solid var(--sh-line);border-radius:17px;box-shadow:0 5px 18px #98567406;padding:20px;display:flex;flex-direction:column;min-width:0}
+#ntcStudentHome .sh-status{display:inline-block;align-self:flex-start;background:#ffedf5;color:#bc1b5d;border-radius:20px;padding:5px 10px;font-size:12px;font-weight:650}
+#ntcStudentHome .sh-status.sh-amber{background:#fff2d6;color:#996311}
+#ntcStudentHome .sh-status.sh-blue{background:#eaf5ff;color:#216aa5}
+#ntcStudentHome .sh-due{font-size:13px;color:var(--sh-muted);margin:0 0 15px;line-height:1.6}
+#ntcStudentHome .sh-task-foot{display:flex;justify-content:flex-end;margin-top:auto}
+#ntcStudentHome .sh-empty{color:var(--sh-muted);font-size:14px;padding:17px 0;line-height:1.7;margin:0}
+#ntcStudentHome .sh-resume{display:flex;align-items:center;gap:22px;padding:24px;background:linear-gradient(100deg,#ffedf5,#fff);border:1px solid #ffa6cb;border-radius:17px}
+#ntcStudentHome .sh-resume h3{font-size:20px;margin:0 0 6px}
+#ntcStudentHome .sh-resume p{font-size:14px;color:var(--sh-muted);margin:0}
+#ntcStudentHome .sh-resume>.sh-btn{margin-left:auto;flex-shrink:0}
+#ntcStudentHome .sh-book{width:48px;height:53px;border-radius:13px;background:var(--sh-wash,#ffe4f0);color:var(--sh-color,#e82c7a);display:grid;place-items:center;flex-shrink:0}
+#ntcStudentHome .sh-book svg{width:27px;height:27px}
+#ntcStudentHome .sh-course-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+#ntcStudentHome .sh-course{position:relative;overflow:hidden;display:flex;align-items:center;gap:17px;padding:24px 20px 20px;background:#fff;border:1px solid var(--sh-line);border-radius:15px}
+#ntcStudentHome .sh-course:before{content:'';position:absolute;inset:0 0 auto;height:5px;background:var(--sh-tint)}
+#ntcStudentHome .sh-course h3{margin:0 0 8px;font-size:19px}
+#ntcStudentHome .sh-course-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#ntcStudentHome .sh-course-actions button{background:none;border:0;border-radius:6px;padding:0;color:#ce2369;font-size:13px;min-height:36px}
+#ntcStudentHome .sh-course-actions button+button{position:relative;padding-left:12px}
+#ntcStudentHome .sh-course-actions button+button:before{content:'';position:absolute;height:14px;left:0;top:11px;background:#efc9da;width:1px}
+#ntcStudentHome .sh-extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-top:15px}
+#ntcStudentHome .sh-extra{background:white;border:1px solid var(--sh-line);border-radius:13px;color:#36354d;padding:19px;font-size:16px;font-weight:650;text-align:left}
+#ntcStudentHome .sh-extra:hover{border-color:#f23883;color:#c42166}
+@media(max-width:1150px){body.ntc-student-home #homeView{padding:26px 22px}#ntcStudentHome .sh-task{padding:16px}#ntcStudentHome .sh-task h3{font-size:17px}#ntcStudentHome .sh-course{padding:22px 14px 16px;gap:11px}#ntcStudentHome .sh-course-actions{gap:5px}}
+@media(max-width:1000px){#ntcStudentHome .sh-task-grid{grid-template-columns:1fr}#ntcStudentHome .sh-task{position:relative;min-height:137px;padding-right:145px}#ntcStudentHome .sh-task-foot{position:absolute;right:16px;bottom:19px}#ntcStudentHome .sh-due{margin-bottom:0}#ntcStudentHome .sh-task h3{margin-top:10px}#ntcStudentHome .sh-course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ntcStudentHome .sh-resume{gap:14px;flex-wrap:wrap}#ntcStudentHome .sh-resume>.sh-btn{margin-left:auto}#ntcStudentHome .sh-extras{grid-template-columns:1fr}}
+@media(max-width:600px){body.ntc-student-home #homeView{padding:22px 15px}#ntcStudentHome h1{font-size:26px}#ntcStudentHome h2{font-size:21px}#ntcStudentHome .sh-course{gap:9px;flex-direction:column;align-items:flex-start;padding:20px 14px 15px}#ntcStudentHome .sh-course-actions{gap:0;flex-direction:column;align-items:flex-start}#ntcStudentHome .sh-course-actions button+button{padding-left:0}#ntcStudentHome .sh-course-actions button+button:before{display:none}#ntcStudentHome .sh-book{width:37px;height:39px;border-radius:9px}#ntcStudentHome .sh-book svg{width:23px;height:23px}#ntcStudentHome .sh-resume{padding:18px}#ntcStudentHome .sh-resume h3{font-size:17px}#ntcStudentHome .sh-resume>.sh-btn{width:100%;margin-top:3px}#ntcStudentHome .sh-task{padding-right:120px}#ntcStudentHome .sh-task-foot .sh-btn{font-size:13px;padding:10px 12px}#ntcStudentHome .sh-task h3{font-size:16px}}
+body.ntc-student-home #topbar .menu-btn,body.ntc-student-home #topbar .btn-logout{color:#cc246b;background:#ffedf5}
+body.ntc-student-home #topbar .user-pill{background:#fff0f6;color:#3a354c}
+body.ntc-student-home .sidebar .sidebar-item,body.ntc-student-home .sidebar .sidebar-group-toggle{background:transparent;color:#50566d;box-shadow:none;border:0}
+body.ntc-student-home .sidebar .sidebar-item.active{background:#ffedf5;color:#c62267}
+body.ntc-student-home .sidebar .sidebar-item .icon{background:#fff1f7}
