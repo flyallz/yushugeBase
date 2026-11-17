@@ -1,0 +1,269 @@
+/* ==========================================================
+   THEME: HỒNG ĐẤT — UI-only override
+   Palette: #B55268 / #C99A59 / #FFF5F3
+   This file intentionally contains CSS only; no learning data,
+   answers, scoring logic, audio paths or JavaScript are changed.
+   ========================================================== */
+:root{
+  --primary:#B55268;
+  --primary-dark:#914457;
+  --primary-light:#F7E5E9;
+  --accent:#C99A59;
+  --accent-dark:#A9793F;
+  --accent-light:#F7E9D8;
+  --bg:#FFF5F3;
+  --surface:#FFFCFB;
+  --border:#ECD6DA;
+  --text:#342C2E;
+  --text-muted:#7C686D;
+
+  /* HSK2/HSK3 compatibility variables */
+  --main-bg-60:#FFF5F3;
+  --gold-30:#C99A59;
+  --accent-red-10:#B55268;
+  --light-gold:#F8EBDD;
+  --border-gold:#ECD6DA;
+  --text-dark:#342C2E;
+
+  /* Topic compatibility variables */
+  --gray-border:#E7D6D9;
+  --gray-light:#FBF5F4;
+  --text-soft:#735F64;
+
+  /* HSK4 review compatibility variables (not HSK4 workbook pages) */
+  --paper:#FFF5F3;
+  --paper-dark:#F3E4E2;
+  --ink:#342C2E;
+  --ink-soft:#756267;
+  --seal:#B55268;
+  --seal-dark:#914457;
+  --gold:#C99A59;
+  --line:#E5CDD1;
+  --card-back:#914457;
+}
+
+html{accent-color:#B55268;}
+body{
+  background:#FFF5F3 !important;
+  color:var(--text,#342C2E);
+}
+
+/* ---------- Main website shell ---------- */
+.topbar{
+  background:linear-gradient(135deg,#B55268 0%,#9A485A 72%,#8B4051 100%) !important;
+  box-shadow:0 4px 18px rgba(115,55,70,.18) !important;
+}
+.topbar .user-pill{background:rgba(255,255,255,.16) !important;}
+.topbar .user-pill .avatar{background:#C99A59 !important;color:#fff !important;}
+
+/* User requested a LIGHT sidebar/menu */
+.sidebar{
+  background:#FFF9F8 !important;
+  border-right:1px solid #EEDCDF !important;
+  box-shadow:8px 0 24px rgba(110,68,77,.035);
+}
+.sidebar-section-title{color:#987980 !important;}
+.sidebar-item,
+.sidebar-group-toggle{color:#49383C !important;}
+.sidebar-item:hover,
+.sidebar-group-toggle:hover{background:#FBECEF !important;}
+.sidebar-item:not(.active) .icon,
+.sidebar-group-toggle .icon{
+  background:#F8EADD !important;
+  color:#A87542 !important;
+}
+.sidebar-item.active{
+  background:linear-gradient(135deg,#F4DCE1,#F8E7EA) !important;
+  color:#8B4051 !important;
+  border:1px solid #E7C5CC !important;
+  box-shadow:0 4px 12px rgba(181,82,104,.08) !important;
+  font-weight:700 !important;
+}
+.sidebar-item.active .icon{
+  background:#EBCBD2 !important;
+  color:#8B4051 !important;
+}
+.sidebar-divider{background:#EEDCDF !important;}
+.sidebar-group-toggle .arrow{color:#A4878D !important;}
+
+.home-view,.dashboard-view{background:linear-gradient(180deg,#FFF8F6 0%,#FFF5F3 100%) !important;}
+.home-hero{
+  background:linear-gradient(135deg,#B55268 0%,#9B485B 66%,#C99A59 145%) !important;
+  box-shadow:0 12px 30px rgba(181,82,104,.16) !important;
+  border:1px solid rgba(255,255,255,.28);
+}
+.feature-card,.stat-card,.table-wrap,.login-card{
+  background:#FFFCFB !important;
+  border-color:#ECD6DA !important;
+  box-shadow:0 6px 20px rgba(116,73,82,.055) !important;
+}
+.feature-card h4{color:#914457 !important;}
+.home-tip{
+  background:#F8EBDD !important;
+  border-color:#E8CEAE !important;
+}
+.iframe-toolbar{background:#FFFCFB !important;border-bottom-color:#ECD6DA !important;}
+.btn-back{background:#FFF5F3 !important;border-color:#E7CDD2 !important;color:#914457 !important;}
+.btn-back:hover{background:#F9E7EA !important;}
+.login-overlay{background:linear-gradient(135deg,#FFF5F3,#F7E9D8) !important;}
+.login-card h2{color:#B55268 !important;}
+.btn-login,.btn-refresh{background:linear-gradient(135deg,#B55268,#99485A) !important;}
+thead{background:#F8EBDD !important;}
+th{color:#765538 !important;border-bottom-color:#E9D8C5 !important;}
+tr:hover{background:#FFF8F6 !important;}
+
+/* ---------- Shared lesson surfaces ---------- */
+.header,.page-header{
+  background:linear-gradient(135deg,#B55268 0%,#99485A 100%) !important;
+  color:#fff !important;
+  border-color:#B55268 !important;
+  box-shadow:0 7px 22px rgba(181,82,104,.14) !important;
+}
+.header h1,.header h2,.header h3,.header p,
+.page-header h1,.page-header h2,.page-header h3,.page-header p,
+.page-header .subtitle{color:#fff !important;}
+.lesson-badge{
+  background:#F3DFCB !important;
+  color:#765137 !important;
+  border:1px solid #E2C19D !important;
+}
+.section,
+.lessonCard,
+.card,
+.panel-card,
+.intro-card,
+.footer-card{
+  border-color:#ECD6DA !important;
+}
+.section{
+  background:#FFFCFB !important;
+  box-shadow:0 5px 18px rgba(112,72,80,.045) !important;
+}
+h2{
+  color:#9B4659 !important;
+  border-left-color:#C99A59 !important;
+}
+h3{color:#8F4354;}
+
+/* Tabs/navigation: soft by default, clear active state */
+.tab-btn,.nav-tab{
+  background:#F8E7EA !important;
+  color:#8F4354 !important;
+  border-color:#EACDD3 !important;
+}
+.tab-btn:hover,.nav-tab:hover:not(.active){background:#F4DDE2 !important;color:#7D3849 !important;}
+.tab-btn.active,.nav-tab.active{
+  background:#B55268 !important;
+  color:#fff !important;
+  border-color:#B55268 !important;
+  box-shadow:0 3px 10px rgba(181,82,104,.13);
+}
+.nav-tabs,.name-bar{background:#FFFCFB !important;border-color:#E8D4D8 !important;}
+.name-bar b{color:#B55268 !important;}
+
+/* Tables & learning cards */
+.vocab-table th,
+table thead,
+.textbook-vocab-table th{
+  background:#F8EBDD !important;
+}
+.vocab-table td,.vocab-table th,
+td,th{border-color:#EADADC !important;}
+.question,
+.memory-info,
+.stat-item,
+.tongue,
+.intro-card,
+.group-header{
+  background:#FFF1F2 !important;
+}
+.group-header{color:#914457 !important;border-left-color:#B55268 !important;}
+.intro-card{border-left-color:#C99A59 !important;}
+.intro-card b{color:#9B6B35 !important;}
+.opt:hover,.option:hover:not(:disabled),.match-item:hover{background:#FBECEF !important;}
+
+/* Primary action controls — semantic correct/wrong colors are deliberately untouched */
+button:not(.correct):not(.wrong),
+.speak-btn,.replay-btn{
+  border-color:#B55268;
+}
+button:not(.tab-btn):not(.nav-tab):not(.flash-btn):not(.option):not(.match-item):not(.correct):not(.wrong){
+  background:#B55268;
+  color:#fff;
+}
+button:not(.tab-btn):not(.nav-tab):not(.flash-btn):not(.option):not(.match-item):not(.correct):not(.wrong):hover{
+  background:#984759;
+}
+
+/* Flashcards / memory / interactive surfaces */
+.front,.flash-front,.mem-front,.mem-front-face.type-viet{
+  background:linear-gradient(145deg,#FFF0F2,#FFFCFB) !important;
+}
+.back{
+  background:linear-gradient(145deg,#F7E6E9,#FFF7F5) !important;
+}
+.mem-back,.mem-back-face{
+  background:linear-gradient(135deg,#B55268,#914457) !important;
+}
+.pinyin,.pinyin-big,.vocab-card .pinyin{color:#B55268 !important;}
+.hanzi-big,.mem-front-face .mfh{color:#914457 !important;}
+.progress-inner,.progress-bar-fill{
+  background:linear-gradient(90deg,#B55268,#C99A59) !important;
+}
+
+/* Inputs/focus — visual only */
+input:not([type="radio"]):not([type="checkbox"]),select,textarea{
+  border-color:#E3CDD2;
+}
+input:not([type="radio"]):not([type="checkbox"]):focus,select:focus,textarea:focus{
+  border-color:#B55268 !important;
+  box-shadow:0 0 0 3px rgba(181,82,104,.09);
+  outline:none;
+}
+
+/* Topic cards */
+.vocab-card,.match-item,.mem-face,.flash-face{
+  border-color:#E8D3D7;
+}
+.vocab-card:hover{box-shadow:0 8px 22px rgba(181,82,104,.11) !important;}
+.flash-btn:hover{border-color:#B55268 !important;color:#B55268 !important;}
+.match-score{color:#914457 !important;}
+
+/* Keep the palette light and readable on mobile, no geometry changes. */
+@media(max-width:720px){
+  .sidebar{box-shadow:10px 0 28px rgba(89,53,62,.08);}
+}
+
+/* ===== FINAL SIDEBAR LIGHT ROSE NAV ===== */
+.sidebar .sidebar-item,
+.sidebar .sidebar-group-toggle{
+  background:#F9E8EC !important;
+  border:1px solid #F0D7DD !important;
+  color:#684B53 !important;
+  margin-bottom:6px !important;
+  box-shadow:none !important;
+}
+.sidebar .sidebar-item:hover,
+.sidebar .sidebar-group-toggle:hover{
+  background:#F4DDE2 !important;
+  border-color:#E7C8D0 !important;
+}
+.sidebar .sidebar-item.active{
+  background:#ECC9D1 !important;
+  color:#7E3F4F !important;
+  border-color:#DFAEB9 !important;
+  box-shadow:0 3px 10px rgba(181,82,104,.07) !important;
+}
+.sidebar .sidebar-item .icon,
+.sidebar .sidebar-group-toggle .icon{
+  background:#FFF8F5 !important;
+  color:#9A5969 !important;
+}
+.sidebar .sidebar-item.active .icon{
+  background:#F6DDE2 !important;
+  color:#873F50 !important;
+}
+.sidebar .game-center-nav{
+  margin-top:10px !important;
+  border-top-color:#E8CCD2 !important;
+}
