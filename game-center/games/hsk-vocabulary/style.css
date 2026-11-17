@@ -1,0 +1,204 @@
+:root{--ink:#26384c;--rose:#a34560;--rose-dark:#7f3048;--cream:#fff9f3;--line:#ead3d7;--gold:#d6ac64;--soft:#f6e7eb}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,Arial,sans-serif;line-height:1.5}[hidden]{display:none!important}button,input{font:inherit}button{min-height:46px;border:1px solid var(--line);border-radius:13px;padding:12px 20px;background:var(--rose);color:#fff;font-weight:650;cursor:pointer;touch-action:manipulation}button:hover{filter:brightness(.96)}button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.secondary{background:#fff;color:var(--ink)}header{display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;border-bottom:1px solid var(--line);gap:14px}header a{font-weight:800;color:var(--rose-dark);text-decoration:none;font-size:23px}header a span{display:block;font-size:12px;letter-spacing:2px}.tag,.eyebrow{font-size:12px;letter-spacing:1.8px;font-weight:800;color:var(--rose)}main{max-width:1150px;margin:auto;padding:34px 24px 60px}h1{font-size:clamp(30px,5vw,52px);line-height:1.2;margin:14px 0}h2{font-size:18px;margin:25px 0 14px}p{margin:12px 0}.intro{padding:10px 0 24px}.identity{display:flex;flex-wrap:wrap;align-items:end;gap:12px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff}.identity label{flex:1;min-width:150px;font-size:14px;font-weight:700}.identity input{display:block;width:100%;border:1px solid var(--line);border-radius:9px;padding:10px;margin-top:6px}.identity p{width:100%;margin:0}.tabs{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}.tabs button{background:#fff;color:var(--ink);flex:1}.tabs button.active,.game-card.active{border:2px solid var(--rose);background:var(--soft);color:var(--rose-dark)}.menu-columns{display:grid;grid-template-columns:1fr 1fr;gap:36px}.game-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.game-card{padding:22px 16px;text-align:left;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:20px}.game-card span{display:block;font-size:35px;margin-bottom:12px}.game-card strong,.game-card small{display:block}.game-card small{font-weight:400;margin-top:8px}.lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.lessons button{background:white;color:var(--ink);text-align:left;font-size:15px;padding:12px}.lessons small{display:block;color:#786877;font-weight:400}.muted,.footnote{color:#716b78;font-size:14px}.footnote{margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}.hud{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;flex-wrap:wrap}.question{text-align:center;padding:20px 0}.question h1{font-size:clamp(32px,5vw,55px)}#pinyin{color:var(--rose);font-size:21px}.track{height:8px;background:#eedce0;border-radius:10px;overflow:hidden;margin:10px 0 18px}.track>div{height:100%;width:0;background:var(--gold)}.road{position:relative;height:380px;overflow:hidden;border:6px solid #d6c4ac;border-radius:22px;background:#2c3c51;touch-action:none}.horizon{position:absolute;top:10px;width:100%;text-align:center;font-size:11px;letter-spacing:2px;color:#b2bec9}.lane-lines{position:absolute;inset:45px 0 0;background:linear-gradient(90deg,transparent 32.8%,#ffffff88 32.8%,#ffffff88 33.2%,transparent 33.2%,transparent 66.2%,#ffffff88 66.2%,#ffffff88 66.6%,transparent 66.6%)}.gates{position:absolute;top:50px;left:0;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 12px}.gates button{background:var(--cream);color:var(--ink);border:3px solid transparent;padding:12px 8px;min-height:70px;font-size:clamp(13px,2vw,18px);box-shadow:0 4px 0 #0003;overflow-wrap:anywhere}.gates button.selected{border-color:var(--gold);background:#ffebbc}.finish-line{position:absolute;left:0;bottom:76px;width:100%;height:12px;background:repeating-linear-gradient(90deg,#fff 0 12px,#222 12px 24px)}#car{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);width:50px;height:82px;background:#c65670;border:3px solid #f48ca1;border-radius:16px;box-shadow:0 5px 15px #0008;transition:left .14s ease}.car-roof{position:absolute;inset:22px 6px 20px;background:#23435a;border-radius:8px}#car i{position:absolute;top:12px;width:9px;height:12px;background:#ffe39b;border-radius:3px}#car i:first-of-type{left:4px}#car i:last-of-type{right:4px}.head-options{display:grid;grid-template-columns:1fr 1fr;gap:16px}.head-option{border:2px solid var(--line);background:white;border-radius:20px;text-align:center;padding:28px 10px;font-size:36px}.head-option small{display:block;font-size:16px;color:var(--rose)}.head-option.active{border-color:var(--rose);background:var(--soft)}.hold{max-width:500px;margin:24px auto 10px}#headHint{text-align:center}#feedback{background:white;border:2px solid var(--line);padding:18px;margin:18px 0;border-radius:15px;font-size:19px}.correct{border-color:#418963!important}.incorrect{border-color:#b74355!important}.video-shell{position:relative;max-width:560px;background:#26384c;border-radius:22px;overflow:hidden}.video-shell video{width:100%;display:block;transform:scaleX(-1);aspect-ratio:4/3;object-fit:cover}.face-frame{position:absolute;inset:15% 28%;border:3px dashed #ffe3a3;border-radius:50%;pointer-events:none}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}.overlay{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:#26384cbb;padding:20px}.overlay>div{max-width:450px;padding:30px;background:var(--cream);border-radius:20px}#wrongList article{background:#fff;border:1px solid var(--line);padding:16px;border-radius:12px;margin:10px 0}#wrongList b{font-size:23px}@media(max-width:650px){main{padding:22px 14px 40px}.menu-columns{grid-template-columns:1fr;gap:0}.tag{display:none}.game-card{padding:18px 12px}.lessons{grid-template-columns:repeat(3,1fr)}.road{height:340px}.gates{gap:4px;padding:0 4px}.gates button{font-size:14px;padding:8px 4px}.head-option{font-size:29px;padding:24px 8px}.hud{gap:8px}header{padding:12px 16px}header a{font-size:18px}.identity{padding:12px}}@media(prefers-reduced-motion:reduce){#car{transition:none}}
+
+/* Đua xe: toàn màn hình, có bố cục dự phòng khi trình duyệt không hỗ trợ Fullscreen. */
+body.race-fullscreen{overflow:hidden}
+body.race-fullscreen>header{display:none}
+body.race-fullscreen main{position:fixed;inset:0;z-index:5;max-width:none;margin:0;padding:0;background:var(--cream);overflow:hidden}
+body.race-fullscreen #play{display:flex;flex-direction:column;height:100vh;height:100dvh;padding:12px max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));gap:0}
+body.race-fullscreen .hud{flex-shrink:0}
+body.race-fullscreen .hud button{padding:8px 12px;min-height:42px}
+body.race-fullscreen .question{padding:8px 0;flex-shrink:0}
+body.race-fullscreen .question h1{margin:4px 0;font-size:clamp(30px,5vw,48px)}
+body.race-fullscreen .question p{margin:2px 0;font-size:18px}
+body.race-fullscreen .track{flex-shrink:0;margin:4px 0 10px}
+body.race-fullscreen .road{height:auto;flex:1;min-height:130px;width:100%;max-width:1200px;align-self:center}
+body.race-fullscreen #controls{font-size:12px;text-align:center;margin:6px 0 0;flex-shrink:0}
+body.race-fullscreen #feedback{position:absolute;left:5%;right:5%;bottom:78px;z-index:2;max-height:35vh;overflow:auto;box-shadow:0 4px 25px #0005;background:var(--cream)}
+body.race-fullscreen #next{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:3}
+body.race-fullscreen .lane-lines{background:repeating-linear-gradient(to bottom,#ffffffaa 0 24px,transparent 24px 48px) 33.333% 0 / 3px 48px repeat-y,repeating-linear-gradient(to bottom,#ffffffaa 0 24px,transparent 24px 48px) 66.666% 0 / 3px 48px repeat-y;animation:roadFlow var(--road-speed,.5s) linear infinite}
+@keyframes roadFlow{to{background-position:33.333% 48px,66.666% 48px}}
+body.race-fullscreen:has(#paused:not([hidden])) .lane-lines{animation-play-state:paused}
+@media(max-height:460px){body.race-fullscreen .question h1{font-size:28px}body.race-fullscreen .question{padding:2px}body.race-fullscreen .question .eyebrow,body.race-fullscreen #controls{display:none}body.race-fullscreen .road{min-height:120px}.race-fullscreen .gates{top:28px}.race-fullscreen .gates button{min-height:42px;padding:6px}.race-fullscreen #car{height:55px;width:36px;bottom:10px}.race-fullscreen .finish-line{bottom:55px}}
+@media(prefers-reduced-motion:reduce){body.race-fullscreen .lane-lines{animation:none}}
+/* Đường đua liên tục: navy + vàng, phản hồi không che câu hỏi. */
+.studied-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:13px;background:#fff3cf;border-radius:12px}.studied-check input{width:20px;height:20px;flex-shrink:0;accent-color:var(--rose)}
+body.race-fullscreen main{background:linear-gradient(150deg,#172b45,#0e192b);color:#fff}
+body.race-fullscreen .hud{color:#f8deb1;gap:8px}
+body.race-fullscreen .hud .secondary{background:#253d59;color:#fff;border-color:#496380}
+body.race-fullscreen .question{background:#ffffff09;border:1px solid #ffffff16;border-radius:15px;margin:8px 0;padding:10px 12px}
+body.race-fullscreen .question .eyebrow{color:#dcb975}
+body.race-fullscreen .question h1{font-size:clamp(22px,3.3vw,38px);line-height:1.25}
+body.race-fullscreen #pinyin:empty{display:none}
+body.race-fullscreen .track{background:#ffffff18}
+body.race-fullscreen #controls{color:#b9c9d9}
+body.race-fullscreen .road{border:2px solid #d6ac6488;box-shadow:inset 0 0 80px #0008,0 0 28px #d6ac6418;background:linear-gradient(#213956,#14253b 60%,#0b182a);overflow:hidden;perspective:700px}
+body.race-fullscreen .horizon{color:#dcb975;letter-spacing:3px;z-index:1}
+body.race-fullscreen .gates{z-index:2;transform-origin:center center;will-change:transform}
+body.race-fullscreen .gates button{font-size:clamp(26px,4.5vw,48px);font-weight:800;line-height:1.2;min-height:75px;padding:12px 6px;background:linear-gradient(140deg,#fbefd2,#e7cb8e);color:#172b45;border:2px solid #edcf8a;border-radius:12px;box-shadow:0 5px 0 #877443,0 12px 22px #0005;text-shadow:0 1px #fff}
+body.race-fullscreen .gates button.selected{background:#fff7df;border:3px solid #fff;box-shadow:0 0 20px #f7d88266,0 5px 0 #a88d56}
+.track-side{position:absolute;top:22px;bottom:0;width:14px;background:repeating-linear-gradient(to bottom,#dcb975 0 24px,#705832 24px 48px);animation:roadFlowSide var(--road-speed,.5s) linear infinite;opacity:.65}.track-side.left{left:8px;transform:skewX(-8deg);transform-origin:bottom}.track-side.right{right:8px;transform:skewX(8deg);transform-origin:bottom}
+@keyframes roadFlowSide{to{background-position:0 48px}}
+.speed-lines{position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 15%,#ffffff05 15.2%,transparent 15.4%),linear-gradient(80deg,transparent 85%,#ffffff05 85.2%,transparent 85.4%)}
+body.race-fullscreen #car{z-index:3;background:linear-gradient(90deg,#95304e,#ef829b 48%,#ac3657);border-color:#f1a3b4;box-shadow:0 6px 0 #070d15,0 8px 20px #0008}
+.flames{position:absolute;top:93%;left:8px;right:8px;height:38px;pointer-events:none;background:linear-gradient(#26f1a188,#56faca00);clip-path:polygon(10% 0,90% 0,100% 70%,65% 45%,50% 100%,35% 45%,0 70%);opacity:0}
+#car.boost{box-shadow:0 0 36px #26f1a1,0 6px 0 #070d15;animation:carBoost .55s ease-out}#car.boost .flames{opacity:1;animation:fire .15s infinite alternate}
+#car.crash{animation:carShake .35s ease-out}
+.road.hit-correct{border-color:#47f3ae!important;box-shadow:inset 0 -60px 80px #28e79020,0 0 25px #35e9a655!important}.road.hit-wrong{border-color:#f27d91!important;box-shadow:inset 0 0 50px #df375222!important}
+@keyframes fire{to{height:55px;filter:brightness(1.3)}}@keyframes carBoost{50%{filter:brightness(1.3)}}@keyframes carShake{20%,60%{margin-left:-7px}40%,80%{margin-left:7px}100%{margin-left:0}}
+#raceToast{position:absolute;left:50%;bottom:110px;transform:translateX(-50%);z-index:4;border-radius:999px;padding:10px 18px;font-size:clamp(14px,2vw,20px);font-weight:800;max-width:85%;text-align:center;pointer-events:none;white-space:normal}#raceToast.success{background:#1ad688;color:#072c25;box-shadow:0 0 25px #1ad68855}#raceToast.error{background:#6a2639;color:#fff;border:1px solid #f397aa}
+#combo{background:#f0ca78;color:#182c42;padding:6px 10px;border-radius:999px;font-size:13px}
+#raceProgress{display:flex;align-items:center;gap:10px;padding:9px 4px;color:#e5c586;font-size:12px}#raceProgress>div{flex:1;background:#ffffff18;height:5px;border-radius:10px;overflow:hidden}#raceProgress i{display:block;background:#dfbb74;height:100%;transition:width .15s}#raceProgress>span{font-size:20px}
+body.race-fullscreen:has(#paused:not([hidden])) .track-side{animation-play-state:paused}
+@media(max-width:650px){body.race-fullscreen .gates button{font-size:clamp(22px,6vw,34px);min-height:66px}body.race-fullscreen .hud{font-size:12px}body.race-fullscreen #soundToggle{font-size:12px;padding:6px 9px;min-height:36px}body.race-fullscreen .hud button{font-size:12px}body.race-fullscreen .question h1{font-size:24px}}
+@media(max-height:460px){body.race-fullscreen .question{margin:2px 0;padding:4px 8px}body.race-fullscreen .question h1{font-size:21px}body.race-fullscreen .gates button{min-height:44px;font-size:25px}#raceProgress{padding:2px;font-size:11px}#raceToast{bottom:62px;padding:6px 12px}.flames{height:22px}}
+@media(prefers-reduced-motion:reduce){.track-side,#car.boost,#car.crash,#car.boost .flames{animation:none}}
+
+@font-face{font-family:HSKHan;src:url('vendor/hsk-hanzi.woff') format('woff');font-display:swap}body.race-fullscreen .gates button{font-family:HSKHan,system-ui,sans-serif}
+
+/* Đường dài có điểm tụ; vận tốc cảnh độc lập với đồng hồ câu hỏi. */
+body.race-fullscreen .perspective-road{display:block;position:absolute;inset:20px 0 0;width:100%;height:calc(100% - 20px);pointer-events:none}
+.perspective-road{display:none}.road-edge{stroke:#dfbe73;stroke-width:8;fill:none;opacity:.75}.road-dashes{stroke:#e1edf9;stroke-width:5;fill:none;stroke-dasharray:32 22;animation:dashRush var(--road-speed,.18s) linear infinite}
+@keyframes dashRush{to{stroke-dashoffset:-54}}
+body.race-fullscreen .lane-lines,body.race-fullscreen .track-side{display:none}
+body.race-fullscreen .road{background:linear-gradient(#122a49,#204366 22%,#172b44 50%,#101b2d)}
+body.race-fullscreen .road:before{content:'';position:absolute;top:10px;left:10%;right:10%;height:45px;background:radial-gradient(ellipse,#88aacb22,transparent 65%);pointer-events:none}
+.scenery{position:absolute;inset:0;overflow:hidden;pointer-events:none}.post{position:absolute;top:7%;height:30px;width:7px;background:linear-gradient(#fff6c3 0 15%,#609fbc 15% 22%,#293a50 22%);border-radius:2px;box-shadow:0 0 12px #ffe6ac55;opacity:0;animation:passPost calc(var(--road-speed,.18s)*8) linear infinite;transform-origin:bottom}
+.post.left{left:44%;--travel:-46vw}.post.right{right:44%;--travel:46vw}.post.p2{animation-delay:calc(var(--road-speed,.18s)*-2)}.post.p3{animation-delay:calc(var(--road-speed,.18s)*-4)}.post.p4{animation-delay:calc(var(--road-speed,.18s)*-6)}
+@keyframes passPost{0%{opacity:0;transform:translate(0,0) scale(.18)}15%{opacity:.5}70%{opacity:1}100%{opacity:0;transform:translate(var(--travel),75vh) scale(4)}}
+body.race-fullscreen .gates{top:30px;transform-origin:center center}
+body.race-fullscreen #car{width:60px;height:94px;bottom:20px;transform:translateX(-50%) rotate(var(--steer,0deg));transition:left .13s ease-out,transform .12s ease-out}
+body.race-fullscreen .car-roof{background:linear-gradient(#526b84,#1a304a);box-shadow:inset 0 2px 0 #dbe7fa55}
+.gate-trail{pointer-events:none;animation:gatePass .28s ease-in forwards;z-index:4!important}.gate-trail button{opacity:1!important}
+@keyframes gatePass{to{translate:0 140px;opacity:0}}
+body.race-fullscreen .question{padding:6px 10px;margin:5px 0}body.race-fullscreen .hud{font-size:13px}body.race-fullscreen .question h1{font-size:clamp(22px,3vw,34px)}
+body.race-fullscreen:has(#paused:not([hidden])) .road-dashes,body.race-fullscreen:has(#paused:not([hidden])) .post{animation-play-state:paused}
+@media(max-width:650px){body.race-fullscreen #car{width:52px;height:84px}body.race-fullscreen .hud{gap:6px;font-size:12px}body.race-fullscreen .hud button{padding:6px 9px;min-height:36px}body.race-fullscreen #controls{font-size:10px}body.race-fullscreen .question .eyebrow{font-size:10px}body.race-fullscreen .question h1{font-size:22px}body.race-fullscreen #raceProgress{padding:4px}}
+@media(max-height:460px){body.race-fullscreen #car{width:36px;height:55px;bottom:10px}body.race-fullscreen .question{padding:2px 8px;margin:2px 0}}
+@media(prefers-reduced-motion:reduce){.road-dashes,.post,.gate-trail{animation:none}body.race-fullscreen #car{transition:none}.gate-trail{display:none}}
+/* Camera trung tâm, lựa chọn chỉ bằng tư thế. */
+body.head-mode{background:#12243b;color:#fff}body.head-mode header{background:#12243b}body.head-mode header a{color:#edcc8b}body.head-mode .question .eyebrow{color:#e4bf75}body.head-mode .question{padding:12px 0}body.head-mode .hud .secondary{background:#29405b;color:white;border-color:#506580}body.head-mode .muted{color:#bac9d9}
+#headOptions{display:grid;grid-template-columns:minmax(85px,1fr) minmax(140px,2fr) minmax(85px,1fr);gap:14px;align-items:center;max-width:950px;margin:auto}
+#headOptions .camera-center{grid-column:2;grid-row:2;min-width:0}#headOptions .head-option[data-side="0"]{grid-column:1;grid-row:2}#headOptions .head-option[data-side="1"]{grid-column:3;grid-row:2}#headOptions .head-option[data-side="2"]{grid-column:2;grid-row:1}
+#headOptions .head-option{position:relative;padding:22px 10px;background:#243d59;color:#fff;border:3px solid #d1b27055;border-radius:20px;font-size:clamp(24px,4vw,42px);font-family:HSKHan,system-ui,sans-serif;min-width:0;overflow-wrap:anywhere;pointer-events:none;box-shadow:0 10px 30px #0002}
+#headOptions .head-direction{display:block;font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.4px;color:#e5c484;margin-bottom:10px}#headOptions .head-option.active{background:linear-gradient(#243d59,#243d59) padding-box,conic-gradient(#55ebbe var(--hold,0deg),#d1b27055 0) border-box;border-color:transparent;box-shadow:0 0 20px #55ebbe33}#headOptions .head-option small{color:#ead9af}
+.camera-center .video-shell{width:100%;max-width:none;border:3px solid #dfbd75;border-radius:24px;box-shadow:0 10px 35px #0005}.camera-center .face-frame{border-color:#e7ce9366}.camera-center video{aspect-ratio:1;object-fit:cover}
+body.head-mode #feedback{background:#203b58;color:#fff;max-width:800px;margin:18px auto}body.head-mode #headHint{min-height:44px}body.head-mode #headStage .hold{margin:18px auto 8px}
+@media(max-width:650px){#headOptions{gap:8px;grid-template-columns:minmax(78px,1fr) minmax(140px,1.7fr) minmax(78px,1fr)}#headOptions .head-option{padding:16px 5px;font-size:26px;border-radius:14px}#headOptions .head-direction{font-size:10px}.camera-center .video-shell{border-radius:17px}body.head-mode main{padding:16px 10px}body.head-mode .question h1{font-size:28px}}
+
+#headOptions .head-option.head-correct{border-color:#47dca7;background:#174d48}#headOptions .head-option.head-incorrect{border-color:#ee8094;background:#5e293e}
+
+/* Nghiêng đầu: khung hình hồng đất, hai đáp án, không cuộn khi chơi. */
+body.head-mode{background:#f9ecef;color:#49323c;overflow:hidden}
+body.head-mode>header{display:none}
+body.head-mode main{position:fixed;inset:0;margin:0;padding:0;max-width:none;background:radial-gradient(ellipse at top,#fff9f6,#f6dfe5);overflow:hidden}
+body.head-mode #play{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:1080px;margin:auto;padding:12px max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));overflow:hidden}
+body.head-mode .hud{flex-shrink:0;gap:8px;color:#7f3048;font-size:13px}
+body.head-mode .hud .secondary{background:#fff5f7;color:#7f3048;border-color:#d9acb8;min-height:38px;padding:7px 12px}
+body.head-mode .question{flex-shrink:0;padding:8px 4px;margin:6px 0;border:1px solid #e9c5cf;border-radius:14px;background:#ffffff66}
+body.head-mode .question .eyebrow{color:#9a4560;font-size:11px}
+body.head-mode .question h1{font-size:clamp(20px,3.5vw,34px);margin:6px 0;line-height:1.2}
+body.head-mode .track{flex-shrink:0;background:#e9c8d2;margin:4px 0 8px}
+body.head-mode #headStage{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+body.head-mode #headOptions{flex:1;min-height:0;width:100%;display:grid;grid-template-columns:minmax(0,1fr) clamp(90px,25vw,170px) minmax(0,1fr);gap:12px;align-content:center;align-items:center;margin:auto;max-width:900px}
+body.head-mode #headOptions .camera-center{grid-column:2;grid-row:1;display:flex;justify-content:center;align-items:center}
+body.head-mode #headOptions .head-option[data-side="0"]{grid-column:1;grid-row:1}
+body.head-mode #headOptions .head-option[data-side="1"]{grid-column:3;grid-row:1}
+body.head-mode #headOptions .head-option{background:#fff8fa;color:#75324b;border-color:#d6a2b2;box-shadow:0 6px 20px #a3456014;padding:18px 8px;font-size:clamp(21px,4vw,38px);line-height:1.2;max-height:36dvh;overflow:hidden}
+body.head-mode #headOptions .head-direction{color:#9b4a64;font-size:11px;margin-bottom:9px}
+body.head-mode #headOptions .head-option small{color:#9c5b71;font-size:14px;margin-top:8px}
+body.head-mode #headOptions .head-option.active{background:linear-gradient(#fff7f9,#fff7f9) padding-box,conic-gradient(#ad4b6c var(--hold,0deg),#dfb6c3 0) border-box;border-color:transparent;box-shadow:0 0 20px #ad4b6c22}
+body.head-mode .camera-center .video-shell{width:100%;max-width:28dvh;aspect-ratio:1;border-radius:50%;border:3px solid #c37c95;box-shadow:0 5px 18px #93405a22;overflow:hidden}
+body.head-mode .camera-center video{width:100%;height:100%;aspect-ratio:1;object-fit:cover}
+body.head-mode .camera-center .face-frame{border-color:#f5d3de88;inset:15% 23%}
+body.head-mode #headOptions .head-option.head-correct{background:#e8f8ee;border-color:#49a376;color:#216344}
+body.head-mode #headOptions .head-option.head-incorrect{background:#ffe6eb;border-color:#c64c69;color:#96304c}
+body.head-mode #headHint{color:#7f3048;font-size:14px;min-height:0;margin:8px 0;flex-shrink:0}
+body.head-mode #controls{color:#8c6472;font-size:12px;text-align:center;margin:5px 0;flex-shrink:0}
+body.head-mode #feedback{background:#fff8f9;color:#75324b;margin:6px 0;padding:8px 12px;max-height:24dvh;overflow:auto;font-size:16px;flex-shrink:0}
+body.head-mode #feedback p{margin:4px 0;font-size:14px}
+body.head-mode:has(#feedback:not([hidden])) #headHint,body.head-mode:has(#feedback:not([hidden])) .hold{display:none}
+@media(max-width:650px){body.head-mode .hud{font-size:11px;gap:5px}body.head-mode .hud .secondary{font-size:12px;padding:6px 9px;min-height:34px}body.head-mode #headOptions{gap:8px}body.head-mode #headOptions .head-option{font-size:25px;padding:16px 5px}body.head-mode #headOptions .head-direction{font-size:10px}body.head-mode .question h1{font-size:23px}}
+@media(max-height:460px){body.head-mode .question{padding:3px;margin:3px 0}body.head-mode .question h1{font-size:20px;margin:3px 0}body.head-mode #headOptions .head-option{padding:10px 6px;font-size:23px}body.head-mode #headOptions .head-direction{margin-bottom:3px}body.head-mode #controls{display:none}body.head-mode #headHint{margin:4px;font-size:12px}body.head-mode #feedback{max-height:20dvh;font-size:14px}body.head-mode #feedback p{margin:1px;font-size:12px}}
+
+#filterCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}.camera-filters{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.camera-filters button{background:#fff5f8;color:#8b3c58;border-color:#d9adbc;font-size:14px;min-height:40px;padding:8px 14px}.camera-filters button.selected{background:#a34560;color:#fff;border-color:#a34560}
+/* Night-city race; selectors scoped so the pink camera game stays unchanged. */
+.cityscape{display:none}
+body.race-fullscreen main{background:#0b112a}
+body.race-fullscreen #play{position:relative;padding:0;isolation:isolate}
+body.race-fullscreen .road{position:absolute;inset:0;max-width:none;width:100%;height:100%;min-height:0;border:0;border-radius:0;z-index:-1;background:#10172e;perspective:none;box-shadow:none}
+body.race-fullscreen .cityscape{display:block;position:absolute;inset:0;background:url('city.svg') center center/100% 100% no-repeat}
+body.race-fullscreen .road:before{display:none}
+body.race-fullscreen .perspective-road{top:32%;height:68%;z-index:1}
+body.race-fullscreen .road-edge{stroke:#ff5b63;stroke-width:12;stroke-dasharray:42 32;animation:dashRush var(--road-speed,.18s) linear infinite}
+body.race-fullscreen .road-dashes{stroke-width:3;stroke-dasharray:40 36}
+body.race-fullscreen .horizon{position:absolute;top:auto;bottom:18px;left:18px;color:#f4d18b;font-size:10px;letter-spacing:1px;z-index:5}
+body.race-fullscreen .scenery{top:31%;z-index:2}
+body.race-fullscreen .hud{display:contents}
+body.race-fullscreen #counter,body.race-fullscreen #score{position:absolute;top:25px;min-width:110px;padding:25px 15px 10px;background:linear-gradient(145deg,#1a2a50ee,#101b36ee);border:1px solid #8b99c62b;border-radius:14px;box-shadow:0 8px 20px #0003;color:#fff;font-size:22px;font-weight:800}
+body.race-fullscreen #counter{left:18px}
+body.race-fullscreen #counter:before{content:'TIẾN TRÌNH';position:absolute;left:15px;top:9px;font-size:9px;letter-spacing:1.5px;color:#aebbd5}
+body.race-fullscreen #score{right:18px}
+body.race-fullscreen #score:before{content:'ĐIỂM';position:absolute;left:15px;top:9px;font-size:9px;letter-spacing:1.5px;color:#aebbd5}
+body.race-fullscreen #combo{position:absolute;right:25px;top:100px;z-index:6}
+body.race-fullscreen #lessonLabel{position:absolute;left:18px;top:115px;font-size:11px;color:#b9c6df;max-width:180px}
+body.race-fullscreen .question{position:absolute;top:24px;left:50%;transform:translateX(-50%);width:52%;max-width:660px;text-align:center;background:linear-gradient(150deg,#21315bfa,#142042fa);border:2px solid #d7b76c;border-radius:16px;padding:10px 12px;margin:0;box-shadow:0 8px 25px #0004}
+body.race-fullscreen .question h1{color:#fff9e9;font-size:clamp(25px,3.5vw,44px);margin:5px 0;line-height:1.2}
+body.race-fullscreen .question .eyebrow{font-size:10px;color:#edd28e}
+body.race-fullscreen #timeTrack{position:absolute;top:135px;left:30%;width:40%;height:4px;z-index:5;background:#fff2;margin:0}
+body.race-fullscreen #timeFill{background:#e9c777}
+body.race-fullscreen .gates{top:37%;left:5%;width:90%;gap:2%;z-index:4}
+body.race-fullscreen .gates button{background:linear-gradient(150deg,#21345b,#101d39);color:#fff9e9;border:2px solid #d7b76c;box-shadow:0 0 12px #e5c46b55,0 7px 14px #0005;text-shadow:0 2px #0008;border-radius:12px;font-size:clamp(28px,5vw,64px);padding:10px 4px;min-height:70px}
+body.race-fullscreen .gates button.selected{background:linear-gradient(150deg,#354975,#1b2c50);border:3px solid #fff2c6;box-shadow:0 0 24px #e5c46b88,0 7px 14px #0005}
+body.race-fullscreen #car{width:clamp(90px,13vw,180px);height:auto;aspect-ratio:220/130;bottom:62px;background:none;border:0;border-radius:0;box-shadow:none;z-index:6;transform:translateX(-50%) rotate(var(--steer,0deg));filter:drop-shadow(0 12px 8px #0006)}
+body.race-fullscreen #car svg{width:100%;height:100%;display:block;position:relative;z-index:1}
+body.race-fullscreen #car .flames{top:72%;height:50px;z-index:0}
+body.race-fullscreen #car.boost{filter:drop-shadow(0 0 20px #2ff8a0);box-shadow:none}
+body.race-fullscreen .finish-line{bottom:calc(62px + clamp(90px,13vw,180px)*.6);opacity:0}
+body.race-fullscreen #raceToast{bottom:175px;z-index:8}
+body.race-fullscreen #pause,body.race-fullscreen #soundToggle,body.race-fullscreen #musicToggle,body.race-fullscreen #fullscreenToggle,body.race-fullscreen #raceExit{position:absolute;bottom:14px;z-index:10;padding:8px 11px;min-height:36px;border-radius:20px;background:#0b132be8;border:1px solid #ffffff2b;color:#f1dba6;font-size:12px}
+body.race-fullscreen #raceExit{left:18px}
+body.race-fullscreen #fullscreenToggle{right:15px}
+body.race-fullscreen #soundToggle{right:64px}
+body.race-fullscreen #musicToggle{right:179px}
+body.race-fullscreen #pause{right:287px}
+body.race-fullscreen #controls{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:36%;font-size:10px;color:#c8d2e6;background:#090f2588;border-radius:15px;margin:0;padding:6px;z-index:5;pointer-events:none}
+body.race-fullscreen #raceProgress{position:absolute;top:99px;left:23px;width:103px;font-size:10px;padding:0;z-index:5}
+body.race-fullscreen #raceProgress>span,body.race-fullscreen #raceProgressText{display:none}
+body.head-mode #fullscreenToggle{display:none!important}
+body.head-mode #musicToggle{background:#fff5f7;color:#7f3048;border-color:#d9acb8;font-size:12px;min-height:34px;padding:6px 9px}
+@media(max-width:700px){body.race-fullscreen .question{top:95px;width:94%;padding:8px}.question h1{overflow-wrap:anywhere}body.race-fullscreen .question h1{font-size:27px}body.race-fullscreen #counter,body.race-fullscreen #score{top:12px;min-width:90px;font-size:17px;padding:23px 12px 7px}body.race-fullscreen #counter{left:12px}body.race-fullscreen #score{right:12px}body.race-fullscreen #counter:before,body.race-fullscreen #score:before{left:12px}body.race-fullscreen #lessonLabel{top:13px;left:115px;right:112px;max-width:none;text-align:center;font-size:10px}body.race-fullscreen #combo{top:49px;right:115px;font-size:10px;padding:3px 7px}body.race-fullscreen #raceProgress{top:76px;left:17px;width:90px}body.race-fullscreen #timeTrack{top:188px;left:15%;width:70%}body.race-fullscreen .perspective-road{top:35%;height:65%}body.race-fullscreen .gates{top:40%;left:1%;width:98%;gap:2%}body.race-fullscreen .gates button{font-size:clamp(22px,6vw,34px);min-height:60px;padding:8px 2px}body.race-fullscreen #car{width:100px;bottom:98px}body.race-fullscreen .finish-line{bottom:160px}body.race-fullscreen #controls{bottom:62px;width:94%;font-size:10px}body.race-fullscreen .horizon{bottom:85px;left:12px;font-size:8px}body.race-fullscreen #pause{right:244px}body.race-fullscreen #musicToggle{right:151px}body.race-fullscreen #soundToggle{right:47px}body.race-fullscreen #fullscreenToggle{right:7px}body.race-fullscreen #raceExit{left:7px}body.race-fullscreen #pause,body.race-fullscreen #musicToggle,body.race-fullscreen #soundToggle,body.race-fullscreen #raceExit,body.race-fullscreen #fullscreenToggle{font-size:10px;padding:7px 8px;min-height:34px;bottom:14px}body.race-fullscreen #raceToast{bottom:185px;font-size:13px}}
+@media(max-height:460px) and (min-width:600px){body.race-fullscreen .question{top:10px;padding:4px 8px;width:52%}body.race-fullscreen .question h1{font-size:25px}body.race-fullscreen #counter,body.race-fullscreen #score{top:10px;font-size:16px}body.race-fullscreen #raceProgress{top:80px}body.race-fullscreen #lessonLabel{top:93px}body.race-fullscreen #combo{top:78px}body.race-fullscreen #timeTrack{top:85px}body.race-fullscreen #car{width:95px;bottom:55px}body.race-fullscreen .finish-line{bottom:110px}body.race-fullscreen .gates{top:37%}body.race-fullscreen .gates button{font-size:30px;min-height:46px}body.race-fullscreen #controls{bottom:55px;font-size:9px;width:42%}body.race-fullscreen #raceToast{bottom:123px;padding:5px 12px}body.race-fullscreen .horizon{font-size:8px;bottom:15px}}
+body.race-fullscreen:has(#paused:not([hidden])) .road-edge{animation-play-state:paused}
+/* Compact controls never overlap, including when the device has no Mandarin voice. */
+body.race-fullscreen #musicToggle,body.race-fullscreen #soundToggle,body.race-fullscreen #fullscreenToggle{font-size:0!important;width:36px;height:36px;padding:0;display:grid;place-items:center}
+body.race-fullscreen #musicToggle{right:106px}
+body.race-fullscreen #soundToggle{right:60px}
+body.race-fullscreen #fullscreenToggle{right:14px}
+body.race-fullscreen #pause{right:152px}
+body.race-fullscreen #musicToggle:after{content:'♫';font-size:20px}
+body.race-fullscreen #musicToggle[aria-pressed="false"]:after{content:'♫';opacity:.35}
+body.race-fullscreen #soundToggle:after{content:'🔊';font-size:16px}
+body.race-fullscreen #soundToggle[aria-pressed="false"]:after{content:'🔇'}
+body.race-fullscreen #fullscreenToggle:after{content:'⛶';font-size:20px}
+body.race-fullscreen #controls{bottom:59px;width:45%;max-width:600px}
+@media(max-width:700px){body.race-fullscreen #controls{width:94%;bottom:60px}body.race-fullscreen #pause{right:152px}body.race-fullscreen #musicToggle{right:106px}body.race-fullscreen #soundToggle{right:60px}body.race-fullscreen #fullscreenToggle{right:14px}}
+/* Preview contains rendered face/background; raw video is only the detector input. */
+#videoShell{background:#f3dce5}
+#videoShell video{opacity:0}
+#cameraScene{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#filterCanvas{z-index:2}
+#videoShell .face-frame{z-index:3;pointer-events:none}
+.background-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0;color:#8b3c58;font-size:13px}
+.background-controls button{font-size:13px;min-height:38px;padding:8px 12px;background:#fff5f8;color:#8b3c58;border-color:#d9adbc}
+.background-controls button.selected{background:#a34560;color:white}
+.camera-privacy-note{font-size:12px;color:#906376;max-width:600px}
+.camera-filters{gap:6px}
+.camera-filters button{font-size:12px;padding:7px 10px;min-height:36px}
+#musicStatus{font-size:11px;color:#9a4560}
+body.race-fullscreen #musicStatus{position:absolute;bottom:98px;right:15px;color:#f2dca9;background:#111c38e8;padding:5px 9px;border-radius:8px;z-index:12}
+#calibration .video-shell{width:min(320px,70vw);aspect-ratio:1;margin:12px auto;border-radius:50%;border:3px solid #c37c95}
+#calibration .video-shell video{height:100%;object-fit:cover}
+
+.lessons .review-lesson{background:linear-gradient(135deg,#fff0d6,#f8dfe8);border:2px solid #cb92a6;color:#81384f;box-shadow:0 4px 12px #a3456010}.lessons .review-lesson strong{font-size:15px}.lessons .review-lesson small{color:#87556a;font-size:12px}.lessons .review-lesson:disabled{opacity:.6}.head-mode #lessonLabel{max-width:190px;font-size:11px}
+
+.speech-check{margin-top:12px}.speech-check button{font-size:13px;min-height:38px;padding:8px 12px}.speech-check p{font-size:12px;color:#7f3048;margin:7px 0}.speech-error{color:#9a3550!important}#speechStatus{font-size:11px;color:#7f3048}body.race-fullscreen #speechStatus{position:absolute;bottom:145px;left:50%;transform:translateX(-50%);max-width:90%;padding:6px 12px;border-radius:9px;color:#f5dcb3;background:#132342ee;z-index:15;text-align:center}body.head-mode #speechStatus{width:100%;font-size:11px;text-align:center}
