@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Game 02 · Giải Mã Hán Tự</title>
+<link rel="stylesheet" href="assets/game.css">
+</head>
+<body>
+<div class="app-shell">
+<main>
+<section class="screen active" id="screen-start">
+  <div class="intro-line">
+    <div><div class="kicker">GAME 02 · 汉字结构挑战</div><h1>Giải Mã Hán Tự</h1><p>Chọn thành phần còn thiếu để hoàn thiện chữ. Trả lời đúng sẽ hiện pinyin – nghĩa và phát âm tiếng Phổ thông.</p></div>
+    <div class="intro-demo" aria-hidden="true"><span>讠</span><i>+</i><span>青</span><i>=</i><b>请</b></div>
+  </div>
+  <div class="section-head"><div><div class="kicker">CHỌN TRÌNH ĐỘ</div><h2>HSK 1–6</h2></div><p>HSK1–2: 50 câu · HSK3–6: 100 câu</p></div>
+  <div class="level-grid" id="level-grid"></div>
+  <div class="cta-row"><button class="primary-btn" id="start-btn">Bắt đầu</button><span class="small-note" id="selected-copy">Đang chọn HSK 1</span></div>
+</section>
+
+<section class="screen" id="screen-game">
+  <div class="game-statusbar">
+    <button class="ghost-btn compact-exit" id="home-btn">← Thoát</button>
+    <div class="status-main">
+      <div class="breadcrumb" id="game-breadcrumb"></div>
+      <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    </div>
+    <div class="status-item"><span>Câu</span><b id="q-count">1 / 10</b></div>
+    <div class="status-item"><span>Điểm</span><b id="score">0</b></div>
+    <div class="status-item"><span>Đã gặp</span><b id="seen-count">0 / 50</b></div>
+    <div class="timer"><span>Thời gian</span><div class="timer-ring" id="timer-text">60</div></div>
+  </div>
+
+  <div class="game-main centered-game">
+    <div class="puzzle-card">
+      <div class="prompt">Chọn <strong>thành phần Hán tự</strong> còn thiếu để tạo thành chữ hoàn chỉnh.</div>
+      <div class="equation">
+        <div class="part"><div class="part-box" id="part-show">—</div><div class="part-label">Thành phần A</div></div>
+        <span class="eq-op">+</span>
+        <div class="part"><div class="part-box missing" id="part-missing">?</div><div class="part-label">Thành phần B</div></div>
+        <span class="eq-op">=</span>
+        <div class="part"><div class="part-box result missing" id="part-result">?</div><div class="part-label">Hán tự</div></div>
+      </div>
+      <div class="hint-card" id="hint-card"><div class="hint-label">GỢI Ý</div><div class="hint-main" id="hint-pin">—</div><div class="hint-sub" id="hint-meaning">—</div></div>
+      <div class="meta-result" id="meta-result"><div class="meta-hanzi" id="meta-char"></div><div class="meta-pinyin" id="meta-pin"></div><div class="meta-meaning" id="meta-meaning"></div></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options" id="options"></div>
+    <div class="actions"><button class="secondary-btn" id="skip-btn">Bỏ qua</button><button class="primary-btn next-btn" id="next-btn">Câu tiếp theo</button></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-result"><div class="result-shell"><div class="result-card"><div class="result-kicker">KẾT QUẢ</div><h2 id="result-title">Hoàn thành</h2><div class="result-score" id="result-pct">0%</div><div class="result-caption" id="result-caption"></div><div class="stats" id="stats"></div><div class="review" id="review"></div><div class="result-actions" id="result-actions"></div></div></div></section>
+</main></div>
+<script src="../../assets/tts.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/game.js"></script>
+  <script src="assets/ui-adapter.js"></script>
+</body></html>
