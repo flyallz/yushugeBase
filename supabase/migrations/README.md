@@ -169,6 +169,65 @@ In the dev project, check:
       03 (RLS on all 29), 04-A via option B (345 rows), 05 (4 functions
       + 40 policies on 19 tables), 06 (6 policies on storage.objects).
       Only the dev project was touched; live untouched.
+- [x] **Migration status 2026-11-18 — 05b/05c EXECUTED AND VERIFIED IN DEV
+      2026-11-18 12:08–12:31:** live public schema actually holds
+      **54 functions**, not the 4 in 05. The frontend calls ~25 RPCs
+      (ntc_list_game_assignments etc.); their absence is why assigned
+      games fail to load on the replica. 05b executed in 23 small
+      chunks (05b_s1..s23) via the dev SQL Editor: function count
+      4 → 8 → 17 → 23 → 28 → 36 → 41 → 49 → 54, verified after each
+      batch. 05c executed (8 business triggers + event trigger
+      ensure_rls): distinct trigger count 8 verified (the raw
+      information_schema count 11 counts the 3 BEFORE INSERT OR UPDATE
+      triggers twice, once per event type). 2026-11-18 12:04: chunk 1
+      (23 KB) was REJECTED by the SQL Editor ("Query is too large to
+      be run via the SQL Editor") — nothing executed, function count
+      still 4. Re-split into ≤7 KB pieces (05b_s1..s23, 08b_s1..s7)
+      and execute piece by piece; that size works.
+- [x] **Migration status 2026-11-18 — 07/08/09 EXECUTED AND VERIFIED IN DEV
+      2026-11-18 12:31–12:39:** teachers 1; **classes 9, not 5** —
+      GV, YGS-B001, YGS-B002, YGS-B003, YSG001–YSG005 (the backfill
+      UNION over homework_windows / ntc_game_assignments /
+      ntc_topic_review_assignments / daily_activity_writings / profiles
+      found 4 extra codes the earlier "5 classes" count missed; they
+      are real data, so they stay); class_members 10 (= 9 teacher rows
+      + 1 student); functions 56; public policies 50; hardcoded-email
+      policies 0. Note: the email check must use pg_policies columns
+      qual / with_check, not polqual / polwithcheck (the latter does
+      not exist on the view). 08b fix 2026-11-18: ntc_roster_v2's class
+      list had an AND/OR precedence leak — "(owns AND NOT hidden) OR
+      (has student)" let another teacher's class through; parenthesised
+      to owns AND ((NOT hidden) OR (has student)) in
+      08b_scope_by_class.sql, 08b_s1.sql and gen_08b.py (verified the
+      fixed generator reproduces the fixed file byte-for-byte); the
+      other 08b owns_class sites were audited and are correctly
+      parenthesised.
+      08b status 2026-11-18 12:53: ALL 7 chunks executed and verified
+      (functions 57, public policies 50, roster_v2 paren check = 1).
+      s6 re-send fixed the transcription slip (missing paren in pasted
+      text, not in the files). Sync-trigger test 2026-11-18 12:54–12:58:
+      UPDATE / INSERT / DELETE paths all behave (test-student moved
+      YSG001→YSG002→YSG001 with class_members following; temp
+      test-dash profile created YSG003 membership and its DELETE
+      removed it; count 0 after cleanup). Home warnings check same
+      time: logged in as test-student on the replica, both "加载失败"
+      warnings are gone (no match for 加载失败 / Thử lại); homework
+      card + course cards load normally.
+      07_multiteacher_model.sql (teachers / classes / class_members +
+      backfill from existing class codes YSG001–YSG005, additive only);
+      08_unify_teacher_check.sql (3 teacher-check functions now read
+      the teachers table; 13 policies rewritten, email branches and
+      JWT role branches replaced by public.is_teacher(); verified
+      13/13 identical except the substitutions); 09_rls_zero_policy_tables.sql
+      (10 new policies for learning_sessions / results / activity_logs /
+      teachers / classes / class_members + a sync trigger keeping
+      class_members in step with profiles.class_code).
+      Still open: 08b (scope RPC list views and old teacher-wide
+      policies by class — written 2026-11-18 by script gen_08b.py from
+      the 05b/05 verbatim copies: helper ntc_teacher_owns_class + 14 RPC
+      functions + 27 policies; leaderboards deliberately left
+      centre-wide; also fixes 2 non-COALESCE role checks that 08
+      missed, in learning_attempt_reviews and learning_lifetime_stats).
 
 Tables (29): activity_logs, app_settings, daily_activity_writings,
 game_best_records, homework_student_overrides, homework_submissions,
@@ -245,14 +304,9 @@ These are gaps in the live report, recorded here instead of guessed:
    last in the file. Fix by creating a dev auth user with that UUID
    first, or by setting those two columns to NULL for dev testing.
    The other UUID columns in 04 have no FK recorded and insert fine.
-10. **KNOWN BLOCKER in 05 — `can_submit_homework()` missing.**
-    Only policy #16 references it; its definition was not exported
-    and is not invented. 05 places #16 last so the other 39 policies
-    are created first; expect #16 to fail with "function
-    can_submit_homework(uuid, uuid) does not exist" until the
-    definition is exported from live via
-    `select pg_get_functiondef(oid) from pg_proc where proname =
-    'can_submit_homework';` and added to 05 above the policies.
+10. **RESOLVED 2026-11-17 — `can_submit_homework()` blocker in 05.**
+    Its definition was exported verbatim from live and added to 05
+    above the policies; 05 executed cleanly and policy #16 exists.
     The hardcoded teacher email in `homework_is_teacher()` (and in
     several policies) is migrated verbatim and must be replaced by
     the multi-teacher upgrade, not shipped as-is.

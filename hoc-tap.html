@@ -4078,8 +4078,12 @@ async function doLogin() {
       if (!pwd) throw new Error('Vui lòng nhập mật khẩu giáo viên');
       const { data, error } = await sb.auth.signInWithPassword({ email: nameOrEmail, password: pwd });
       if (error) throw error;
-      const isTeacherRole = data.user?.app_metadata?.role === 'teacher';
-      if (!isTeacherRole) {
+      // 老师身份以 teachers 表为准（多教师升级 07/08），不在表里或未激活就不是老师。
+      // 原先查 JWT 的 app_metadata.role，但新老师开号时没人给他们写这个字段，
+      // 结果有老师表的老师也进不来；RLS 只允许老师读自己的行，查到即是本人。
+      const { data: teacherRow, error: teacherErr } = await sb.from('teachers').select('id').eq('auth_user_id', data.user.id).eq('is_active', true).maybeSingle();
+      if (teacherErr) throw teacherErr;
+      if (!teacherRow) {
         await sb.auth.signOut();
         throw new Error('Tài khoản này chưa được cấp quyền giáo viên.');
       }
