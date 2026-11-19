@@ -99,7 +99,7 @@
   'Chưa đến giờ mở':'未到开放时间',
   'Chưa phân lớp':'尚未分班',
   'Học viên':'学员',
-  'Khá':'良好',
+  'Khá': '一般',
   'Toàn bộ':'全部',
   'Tạm dừng':'暂停',
   'Đang học':'正在学习',
@@ -461,7 +461,32 @@
   '⏳ Đang cập nhật bảng xếp hạng...': '⏳ 正在更新排行榜…',
   '⏳ Đang tải lịch sử học tập...': '⏳ 正在加载学习记录…',
   '⏳ Đang tải...': '⏳ 正在加载…',
-  '📚 Làm bài nhiều nhất': '📚 做题最多'
+  '📚 Làm bài nhiều nhất': '📚 做题最多',
+  'Bài khác nhau': '不同作业数',
+  'Chấm và trả bài': '批改并返还',
+  'Combo': '连击',
+  'Game': '游戏',
+  'Ghi lại': '重新录制',
+  'Luyện nói theo': '跟读练习',
+  'Lượt nộp': '提交次数',
+  'Mức cao nhất': '最高等级',
+  'Mức đánh giá': '评分等级',
+  'Nhận xét': '评语',
+  'Nhận xét bằng giọng nói': '语音评语',
+  'Nền tảng học tiếng Trung': '中文学习平台',
+  'Sách BT': '练习册',
+  'Thời gian học': '学习时长',
+  'Thời gian học trong 7 ngày': '7 天内学习时长',
+  'Toàn bài': '整课',
+  'Trễ hạn': '已逾期',
+  'Tối đa 2 phút. Có thể nghe lại trước khi trả bài.': '最长 2 分钟，返还前可再听一遍。',
+  'Tốt': '良好',
+  'Tổng lượt nộp': '总提交次数',
+  'Tổng điểm tốt nhất': '最佳总分',
+  'Xuất sắc': '优秀',
+  'chưa có hoạt động': '暂无活动',
+  'vừa xong': '刚刚',
+  'Đúng hạn': '按时'
  };
  function chinese(value){
   if(dictionary[value])return dictionary[value];
@@ -469,9 +494,24 @@
   if(/^Sách (?:BT|bài tập) HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace(/^Sách (?:BT|bài tập) /,'')+' 练习册';
   if(/^Bài \d+(?:–\d+)?$/.test(value))return '第 '+value.slice(4)+' 课';
   if(/^\d+ bài$/.test(value))return value.replace(' bài',' 课');
+  if(/^Chào bạn$/.test(value))return '你好';
+  if(/^Chào (.+)$/.test(value))return value.replace(/^Chào /,'你好 ');
+  if(/^(\d+) giây$/.test(value))return value.replace(' giây',' 秒');
+  if(/^(\d+) phút$/.test(value))return value.replace(' phút',' 分钟');
+  if(/^(\d+) giờ$/.test(value))return value.replace(' giờ',' 小时');
+  if(/^(\d+) giờ (\d+) phút$/.test(value))return value.replace(/^(\d+) giờ (\d+) phút$/,'$1 小时 $2 分钟');
+  if(/^(\d+) giây trước$/.test(value))return value.replace(' giây trước',' 秒前');
+  if(/^(\d+) phút trước$/.test(value))return value.replace(' phút trước',' 分钟前');
+  if(/^(\d+) giờ trước$/.test(value))return value.replace(' giờ trước',' 小时前');
+  if(/^(\d+) ngày trước$/.test(value))return value.replace(' ngày trước',' 天前');
+  if(/^(\d+) học sinh có dữ liệu$/.test(value))return value.replace(/(\d+) học sinh có dữ liệu/,'$1 名学生有数据');
+  if(/^(\d+) chủ đề$/.test(value))return value.replace(' chủ đề',' 个主题');
+  if(/^(\d+) trò chơi$/.test(value))return value.replace(' trò chơi',' 个游戏');
+  if(/^(\d+) kết quả$/.test(value))return value.replace(' kết quả',' 个结果');
+  if(/^(\d+) tệp$/.test(value))return value.replace(' tệp',' 个文件');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
-  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
+  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
  const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#homeworkView,#homeView,#lessonHomeworkPanel';
@@ -489,8 +529,8 @@
    translateAttrs(el);
    for(const child of el.querySelectorAll('*'))translateAttrs(child);
   }
-  const button=document.getElementById('ntcOuterLanguage');
-  if(button){if(button.textContent!=='Việt / 中文')button.textContent='Việt / 中文';button.setAttribute('aria-label',language==='vi'?'Chuyển menu sang tiếng Trung':'将菜单切换为越南语');button.setAttribute('aria-pressed',String(language==='zh'));button.title=language==='vi'?'Tiếng Việt · Bấm để đổi sang 中文':'中文 · 点击切换为 Tiếng Việt';}
+  for(const id of ['ntcOuterLanguage','ntcOuterLanguageLogin']){const button=document.getElementById(id);
+  if(button){if(button.textContent!=='Việt / 中文')button.textContent='Việt / 中文';button.setAttribute('aria-label',language==='vi'?'Chuyển menu sang tiếng Trung':'将菜单切换为越南语');button.setAttribute('aria-pressed',String(language==='zh'));button.title=language==='vi'?'Tiếng Việt · Bấm để đổi sang 中文':'中文 · 点击切换为 Tiếng Việt';}}
   document.documentElement.lang=language==='zh'?'zh-CN':'vi';
  }
 
@@ -510,7 +550,9 @@
   }
  }
  function schedule(){if(!queued){queued=true;queueMicrotask(apply);}}
- document.getElementById('ntcOuterLanguage')?.addEventListener('click',()=>{language=language==='vi'?'zh':'vi';try{localStorage.setItem(key,language);}catch{}apply();});
+ function toggleLanguage(){language=language==='vi'?'zh':'vi';try{localStorage.setItem(key,language);}catch{}apply();}
+ document.getElementById('ntcOuterLanguage')?.addEventListener('click',toggleLanguage);
+ document.getElementById('ntcOuterLanguageLogin')?.addEventListener('click',toggleLanguage);
  const observer=new MutationObserver(schedule);observer.observe(document.body,{childList:true,subtree:true,characterData:true});
  addEventListener('storage',event=>{if(event.key===key){language=event.newValue==='zh'?'zh':'vi';apply();}});
  addEventListener('pagehide',()=>observer.disconnect(),{once:true});apply();
