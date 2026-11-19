@@ -5391,6 +5391,8 @@ function renderHomePicker(category=null,group=null){
  if(!category){
   const cats=HOME_CATEGORIES.filter(([name])=>{const ref=MATERIAL_REF_BY_CATEGORY[name];return !ref||!myMaterials||myMaterials.has(ref);});
   cats.forEach(([name,icon,detail])=>grid.appendChild(homeTile(name,detail,icon,()=>openStudyModule(name))));
+  const dbg2 = document.getElementById('ntcMaterialsDebug');
+  if (dbg2) dbg2.textContent += ' | cats: ' + cats.length + ' / ' + HOME_CATEGORIES.length;
   if(!cats.length){const p=document.createElement('p');p.textContent='Giáo viên chưa phân bổ tài liệu cho lớp của bạn. Vui lòng liên hệ giáo viên.';host.appendChild(p);}
   return;
  }
