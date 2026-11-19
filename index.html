@@ -59,6 +59,8 @@ async function loadTeacherBranding(){
     if(heroZalo){if(b.zalo_url)heroZalo.href=b.zalo_url;setBrandText(heroZalo,'Nhắn '+viName,'联系'+zhName+'老师');}
     const photo=document.querySelector('.photo');
     if(photo&&b.photo_url)photo.src=absBrandUrl(b.photo_url);
+    // 没照片的老师不显示明玉的照片：把整个照片区藏起来（头像以后在品牌表单里传）。
+    if(teacherSlug!=='co-ngoc'&&!b.photo_url){const pw=document.querySelector('.photo-wrap');if(pw)pw.style.display='none';}
     const tag=document.querySelector('.photo-tag b');
     if(tag)setBrandText(tag,viName+' · '+zhName,zhName+' · '+viName);
     const navAbout=document.querySelector('.navlinks a[href="#giaovien"]');
