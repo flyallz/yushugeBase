@@ -513,6 +513,18 @@
   'Chưa có bài viết nào đã ẩn.':'暂无已隐藏的作文。',
   'Mã lớp mới':'新班级代码',
   'Chuyển học sinh đã chọn':'转移所选学生',
+  'Chưa có tài khoản học sinh đăng ký。':'尚未有学生账号注册。',
+  'Chưa có lớp đã duyệt.':'暂无已审核的班级。',
+  'Chưa có lịch mở bài.':'暂无开放作业安排。',
+  'Chưa có học sinh nộp.':'暂无学生提交。',
+  'Chưa có bài học sinh nộp.':'暂无学生提交的作业。',
+  'Hiện không có bài đang giao.':'目前暂无正在布置的作业。',
+  'Không có câu sai':'没有错题',
+  'Không có câu sai.':'没有错题。',
+  'Không có dữ liệu câu sai.':'暂无错题数据。',
+  'Chưa có lần nộp HSK4 nào có dữ liệu câu sai.':'暂无含错题数据的 HSK4 提交记录。',
+  'Chưa có kết quả bài tập được gửi về.':'暂无已提交的作业结果。',
+  'Chưa có bước hoàn thành':'尚未完成任何步骤',
  };
  function chinese(value){
   if(dictionary[value])return dictionary[value];
@@ -531,6 +543,8 @@
   if(/^(\d+) giờ trước$/.test(value))return value.replace(' giờ trước',' 小时前');
   if(/^(\d+) ngày trước$/.test(value))return value.replace(' ngày trước',' 天前');
   if(/^Cập nhật (\d{2}:\d{2}:\d{2})$/.test(value))return value.replace(/^Cập nhật (\d{2}:\d{2}:\d{2})$/,'更新于 $1');
+  if(/^Không có câu sai trong (\d+) câu tự chấm$/.test(value))return value.replace(/^Không có câu sai trong (\d+) câu tự chấm$/,'在 $1 道自评题中没有错题');
+  if(/^Lần nộp (\d+)$/.test(value))return value.replace(/^Lần nộp (\d+)$/,'第 $1 次提交');
   if(/^(\d+) học sinh có dữ liệu$/.test(value))return value.replace(/(\d+) học sinh có dữ liệu/,'$1 名学生有数据');
   if(/^(\d+) chủ đề$/.test(value))return value.replace(' chủ đề',' 个主题');
   if(/^(\d+) trò chơi$/.test(value))return value.replace(' trò chơi',' 个游戏');
@@ -548,7 +562,7 @@
   if(/^(\d+) mục$/.test(value))return value.replace(' mục',' 个模块');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
-  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
+  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
  const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#homeworkView,#homeView,#lessonHomeworkPanel';
