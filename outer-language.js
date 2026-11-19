@@ -503,7 +503,16 @@
   'Chuyển lớp…':'转班…',
   'Chọn giáo viên…':'选择老师…',
   'Phân gói này':'指派此包',
-  'Gói tài liệu':'资料包'
+  'Gói tài liệu':'资料包',
+  'Bài tập học sinh':'学生练习',
+  'Không có mục trong nhóm này.':'本组暂无内容。',
+  'Bài tập và ôn tập chủ đề quá hạn; game xem tại mục Giao game.':'已逾期的作业和主题复习；游戏请看布置游戏。',
+  'Trang riêng:':'个人主页：',
+  'Đã tải. Sửa rồi nhấn “Lưu thương hiệu”.':'已加载。修改后点“保存品牌信息”。',
+  'Chưa có bài viết nào được nộp.':'暂无提交的作文。',
+  'Chưa có bài viết nào đã ẩn.':'暂无已隐藏的作文。',
+  'Mã lớp mới':'新班级代码',
+  'Chuyển học sinh đã chọn':'转移所选学生',
  };
  function chinese(value){
   if(dictionary[value])return dictionary[value];
@@ -521,6 +530,7 @@
   if(/^(\d+) phút trước$/.test(value))return value.replace(' phút trước',' 分钟前');
   if(/^(\d+) giờ trước$/.test(value))return value.replace(' giờ trước',' 小时前');
   if(/^(\d+) ngày trước$/.test(value))return value.replace(' ngày trước',' 天前');
+  if(/^Cập nhật (\d{2}:\d{2}:\d{2})$/.test(value))return value.replace(/^Cập nhật (\d{2}:\d{2}:\d{2})$/,'更新于 $1');
   if(/^(\d+) học sinh có dữ liệu$/.test(value))return value.replace(/(\d+) học sinh có dữ liệu/,'$1 名学生有数据');
   if(/^(\d+) chủ đề$/.test(value))return value.replace(' chủ đề',' 个主题');
   if(/^(\d+) trò chơi$/.test(value))return value.replace(' trò chơi',' 个游戏');
@@ -538,7 +548,7 @@
   if(/^(\d+) mục$/.test(value))return value.replace(' mục',' 个模块');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
-  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
+  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
  const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#homeworkView,#homeView,#lessonHomeworkPanel';
