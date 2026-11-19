@@ -374,6 +374,16 @@ tr:hover { background: #fffdf5; }
 
 /* ===== GIÁM SÁT HỌC SINH - GIÁO VIÊN ===== */
 .teacher-dashboard-wrap { max-width: 1050px; }
+
+/* ===== 超管视图：超管与老师界面分开 ===== */
+/* 超管（body.ntc-admin-ui）只看管理：隐藏通向学生视图的侧栏菜单与老师工作台整块。 */
+body.ntc-admin-ui [data-page="home"],
+body.ntc-admin-ui #roleNoticeNav,
+body.ntc-admin-ui [data-page="learning-records"],
+body.ntc-admin-ui #homeworkNav,
+body.ntc-admin-ui #courseNavSection,
+body.ntc-admin-ui #sidebarCourseDivider { display: none !important; }
+body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
 .teacher-stat-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
   padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
@@ -705,8 +715,8 @@ tr:hover { background: #fffdf5; }
       <span id="homeworkPendingBadge" class="homework-badge" style="margin-left:auto" aria-label="Bài mới chờ chấm"></span>
     </button>
   </div>
-  <div class="sidebar-divider"></div>
-  <div class="sidebar-section">
+  <div class="sidebar-divider" id="sidebarCourseDivider"></div>
+  <div class="sidebar-section" id="courseNavSection">
     <div class="sidebar-section-title">Khoá học</div>
     <div id="courseNav"></div>
     <button class="sidebar-group-toggle game-center-nav" id="gameCenterToggle" onclick="toggleGameCenterGroup(this)" aria-expanded="false">
@@ -794,6 +804,7 @@ tr:hover { background: #fffdf5; }
 
   <!-- Dashboard giáo viên -->
   <div class="lms-view" id="teacherDashboardView">
+    <div id="ntcAdminView" style="display:none;max-width:1050px"></div>
     <div class="teacher-dashboard-wrap">
       <div class="lms-header">
         <div>
@@ -3853,6 +3864,7 @@ const NOTICES = [
 // ============================================
 let currentUser = null; // { name, maLop, tenLop, role, teacherId, classes }
 let isTeacher = false;
+let isAdmin = false; // 超管（ntc_is_admin 判定）；只决定界面分流，不参与鉴权。
 let loginMode = 'student';
 let allResults = [];
 let activeLearningSessionId = null;
@@ -4339,6 +4351,12 @@ async function doLogout() {
   localStorage.removeItem('user_ysg');
   currentUser = null;
   isTeacher = false;
+  isAdmin = false;
+  document.body.classList.remove('ntc-admin-ui');
+  const _adminView = document.getElementById('ntcAdminView');
+  if (_adminView) _adminView.style.display = 'none';
+  const _wrap = document.querySelector('#teacherDashboardView .teacher-dashboard-wrap');
+  if (_wrap) _wrap.style.display = '';
   if (sb) { try { await sb.auth.signOut(); } catch (e) {} }
   document.getElementById('loginOverlay').style.display = 'flex';
   document.getElementById('topbar').style.display = 'none';
@@ -4361,6 +4379,7 @@ function enterApp() {
 
   const teacherNav = document.getElementById('teacherDashboardNav');
   teacherNav?.classList.toggle('hidden', !isTeacher);
+  if (!isTeacher) { isAdmin = false; document.body.classList.remove('ntc-admin-ui'); }
   configureRoleNoticeNav();
   configureHomeworkNav();
   startHomeworkRealtimeSync();
@@ -6158,6 +6177,34 @@ async function adminUnassignPack(packId, teacherId, btn) {
   await loadAdminPacks();
 }
 
+// ---------- 超管视图：超管与老师界面分开 ----------
+// 超管只看管理（待审批老师 + 全站管理），老师工作台整块隐藏；普通老师不受影响。
+// 两张超管卡片是搬 DOM 节点（事件与 id 都保留），不是复制；卡片原有的显示/隐藏
+// 仍由 loadTeacherApprovals / loadTeacherAdminConsole 按 ntc_is_admin 决定。
+async function applyAdminView() {
+  if (!sb || !isTeacher) return false;
+  const { data, error } = await sb.rpc('ntc_is_admin');
+  if (error) { console.warn('Admin check:', error); return false; }
+  isAdmin = !!data;
+  document.body.classList.toggle('ntc-admin-ui', isAdmin);
+  const adminView = document.getElementById('ntcAdminView');
+  const wrap = document.querySelector('#teacherDashboardView .teacher-dashboard-wrap');
+  const approvalsCard = document.getElementById('teacherApprovalsCard');
+  const consoleCard = document.getElementById('teacherAdminConsoleCard');
+  if (isAdmin) {
+    if (adminView) {
+      if (approvalsCard) adminView.appendChild(approvalsCard);
+      if (consoleCard) adminView.appendChild(consoleCard);
+      adminView.style.display = 'block';
+    }
+    if (wrap) wrap.style.display = 'none';
+  } else {
+    if (adminView) adminView.style.display = 'none';
+    if (wrap) wrap.style.display = '';
+  }
+  return isAdmin;
+}
+
 async function goTeacherDashboard() {
   if (!isTeacher) return;
   setLessonFocusMode(false);
@@ -6169,6 +6216,9 @@ async function goTeacherDashboard() {
   loadHsk3WorkbookAccessState().catch(err => console.warn('HSK3 workbook setting:', err));
   document.getElementById('contentFrame').src = 'about:blank';
   setActiveSidebar('teacher-dashboard');
+  // 先分流超管/老师：超管的卡片在 teacher-home ensure() 搬移之前就移出工作台，
+  // 老师工作台随即隐藏，之后的数据加载不再闪一下旧的混合页面。
+  await applyAdminView().catch(err => console.warn('Admin view:', err));
   await loadTeacherDashboard(false);
   await loadStudentAccountApprovals();
   await loadTeacherBrandingCard().catch(err => console.warn('Teacher branding:', err));
