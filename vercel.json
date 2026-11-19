@@ -1,1 +1,1 @@
-{"rewrites":[{"destination":"/game-center/:path*","source":"/game/:path*"}]}
+{"rewrites": [{"destination": "/game-center/:path*", "source": "/game/:path*"}, {"destination": "/index.html", "source": "/t/:slug"}, {"destination": "/index.html", "source": "/t/:slug/"}], "redirects": [{"source": "/game-center", "destination": "/game-center/", "permanent": false}]}
