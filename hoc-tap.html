@@ -5427,6 +5427,11 @@ async function goHome() {
   document.getElementById('homeView').style.display = '';
   await loadMyMaterials();
   renderHomePicker();
+  // TEMP DEBUG — remove after diagnosis: re-count tiles 2s later to catch a later re-render.
+  setTimeout(() => {
+    const d = document.getElementById('ntcMaterialsDebug');
+    if (d) d.textContent += ' | tiles now: ' + document.querySelectorAll('#homePicker .home-choice').length;
+  }, 2000);
   document.getElementById('contentFrame').src = 'about:blank';
   document.getElementById('lessonHomeworkPanel').classList.remove('open');
   document.getElementById('lessonHomeworkToggle').style.display='none';
