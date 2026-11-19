@@ -54,7 +54,7 @@ async function loadTeacherBranding(){
     if(meta)meta.content='Cùng '+viName+' học tiếng Trung. Thông tin giáo viên, lớp học trực tuyến và tư vấn lớp 1–1.';
     const brandEl=document.querySelector('.brand');
     if(brandEl&&brandEl.childNodes[0])brandEl.childNodes[0].textContent=b.brand_name;
-    setBrandText(document.querySelector('.hero .eyebrow'),b.tagline_vi||null,b.tagline_zh||null);
+    setBrandText(document.querySelector('.hero .eyebrow'),b.tagline_vi||('Cùng '+viName+' học tiếng Trung'),b.tagline_zh||('和'+zhName+'一起学中文'));
     const heroZalo=document.querySelector('.hero .actions a.btn.light');
     if(heroZalo){if(b.zalo_url)heroZalo.href=b.zalo_url;setBrandText(heroZalo,'Nhắn '+viName,'联系'+zhName+'老师');}
     const photo=document.querySelector('.photo');

@@ -38,11 +38,12 @@
     pages('homework_submissions','id,window_id,user_id,status,submitted_at,submission_kind,part_key,attempt_number',q=>q.order('id')),
     pages('homework_student_overrides','*',q=>q.order('window_id').order('user_id')),
     pages('daily_activity_writings','id,user_id,student_name,class_code,status,teacher_hidden,created_at',q=>q.eq('teacher_hidden',false).order('id')),
-    window.NTCTopicReviews.refresh()
+    window.NTCTopicReviews.refresh(),
+    (async()=>{const {data:t}=await sb.from('teachers').select('slug').eq('auth_user_id',id).maybeSingle();if(!t?.slug)return[];const {data:c}=await sb.rpc('ntc_get_teacher_classes',{p_slug:t.slug});return (c||[]).map(x=>x.code);})()
    ]);
    if(!teacher(id)||owner!==id||token!==sequence)return;
    const critical=results.slice(0,4).find(r=>r.status==='rejected');if(critical)throw critical.reason;
-   data={profiles:results[0].value,windows:results[1].value,rows:results[2].value,overrides:results[3].value,daily:results[4].status==='fulfilled'?results[4].value:[],topics:results[5].status==='fulfilled'?results[5].value:[],warnings:[]};
+   data={profiles:results[0].value,windows:results[1].value,rows:results[2].value,overrides:results[3].value,daily:results[4].status==='fulfilled'?results[4].value:[],topics:results[5].status==='fulfilled'?results[5].value:[],classList:results[6].status==='fulfilled'?results[6].value:[],warnings:[]};
    if(results[4].status==='rejected')data.warnings.push('Chưa tải được bài viết theo chủ đề. Số chờ chấm chưa bao gồm phần này.');
    if(results[5].status==='rejected')data.warnings.push('Chưa tải được ôn tập chủ đề. Số quá hạn chưa bao gồm phần này.');
    paint();

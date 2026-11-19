@@ -22,6 +22,7 @@
   pending.sort((a,b)=>b.at-a.at);redo.sort((a,b)=>a.at-b.at);late.sort((a,b)=>a.at-b.at);
   const approvals=pendingProfiles.map(p=>({kind:'approval',person:p,title:'Tài khoản học sinh',status:'Chờ duyệt',at:0}));
   const classes=new Map();for(const p of approved){const c=norm(p.class_code);if(c)classes.set(c,(classes.get(c)||0)+1);}
+  for(const c of (data.classList||[])){const n=norm(c);if(n&&!classes.has(n))classes.set(n,0);}
   return {pending,redo,late,approvals,classes:[...classes].sort((a,b)=>a[0].localeCompare(b[0]))};
  }
  root.NTCTeacherHomeModel={summary};if(typeof module!=='undefined'&&module.exports)module.exports=root.NTCTeacherHomeModel;
