@@ -869,6 +869,13 @@ tr:hover { background: #fffdf5; }
           <select id="adminStudentClassFilter" style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:180px"><option value="">Tất cả lớp</option></select>
         </div>
         <div id="adminStudentList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+        <div style="font-weight:800;color:var(--text);margin-top:14px">📦 Gói tài liệu</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <input id="adminPackName" placeholder="Tên gói, ví dụ: Gói HSK1" style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;flex:1;min-width:160px">
+          <input id="adminPackDesc" placeholder="Mô tả (không bắt buộc)" style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;flex:1;min-width:160px">
+          <button class="btn-sm" onclick="adminCreatePack(this)">＋ Tạo gói</button>
+        </div>
+        <div id="adminPackList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
       </div>
 
       <div id="hsk1WorkbookControlCard" style="margin:0 0 16px;max-width:900px;padding:14px 16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -5380,7 +5387,12 @@ function renderHomePicker(category=null,group=null){
  const path=document.getElementById('homePickerPath');path.textContent=['Trang chủ',category,group].filter(Boolean).join(' › ');
  const back=document.getElementById('homePickerBack');back.hidden=!category;back.onclick=()=>renderHomePicker(group?category:null);
  const grid=document.createElement('div');grid.className='home-features home-choice-grid';host.appendChild(grid);
- if(!category){HOME_CATEGORIES.forEach(([name,icon,detail])=>grid.appendChild(homeTile(name,detail,icon,()=>openStudyModule(name))));return;}
+ if(!category){
+  const cats=HOME_CATEGORIES.filter(([name])=>{const ref=MATERIAL_REF_BY_CATEGORY[name];return !ref||!myMaterials||myMaterials.has(ref);});
+  cats.forEach(([name,icon,detail])=>grid.appendChild(homeTile(name,detail,icon,()=>openStudyModule(name))));
+  if(!cats.length){const p=document.createElement('p');p.textContent='Giáo viên chưa phân bổ tài liệu cho lớp của bạn. Vui lòng liên hệ giáo viên.';host.appendChild(p);}
+  return;
+ }
  if(category==='Game Center'){
   grid.appendChild(homeTile('Mắt Thần Hán Tự','Luyện nhận diện chữ Hán','👀',()=>openGameCenter('mat-than')));
   grid.appendChild(homeTile('Giải Mã Hán Tự','Luyện ghi nhớ chữ Hán','🧩',()=>openGameCenter('giai-ma')));
@@ -5410,6 +5422,7 @@ async function goHome() {
   if (!isTeacher) await finishActiveLearningSession();
   hideAllViews();
   document.getElementById('homeView').style.display = '';
+  await loadMyMaterials();
   renderHomePicker();
   document.getElementById('contentFrame').src = 'about:blank';
   document.getElementById('lessonHomeworkPanel').classList.remove('open');
@@ -5861,6 +5874,7 @@ async function approveTeacher(teacherId, btn) {
 // 只认 ntc_is_admin；列表与变改都走 SECURITY DEFINER 的管理 RPC。
 // 普通老师调这些 RPC 只会拿到空列表 / false，不会报错。
 let adminConsoleClasses = [];
+let adminConsoleTeachers = [];
 async function loadTeacherAdminConsole() {
   if (!sb || !isTeacher) return;
   const card = document.getElementById('teacherAdminConsoleCard');
@@ -5879,10 +5893,12 @@ async function loadTeacherAdminConsole() {
   }
   const teachers = teachersRes.data || [], classes = classesRes.data || [];
   adminConsoleClasses = classes;
+  adminConsoleTeachers = teachers;
   renderAdminTeachers(teachers);
   renderAdminClasses(classes);
   fillAdminStudentFilters(teachers, classes);
   await loadAdminStudents();
+  await loadAdminPacks();
   if (status) status.textContent = teachers.length + ' giáo viên · ' + classes.length + ' lớp.';
 }
 function fillAdminStudentFilters(teachers, classes) {
@@ -5991,6 +6007,148 @@ async function adminMoveStudent(userId, btn) {
     return;
   }
   await loadTeacherAdminConsole();
+}
+
+// ---------- 资料分发 v1（迁移 12） ----------
+// 包内条目 = 学生首页九宫格的 9 个模块；Shadowing 不进包，沿用其全局开关。
+const MATERIAL_REF_OPTIONS = [['hsk1','HSK1'],['hsk2','HSK2'],['hsk3','HSK3'],['hsk4','HSK4'],['hsk5','HSK5'],['hsk6','HSK6'],['hsk7-9','HSK7\u20139'],['topic','Chủ đề'],['game','Game Center']];
+const MATERIAL_REF_LABELS = Object.fromEntries(MATERIAL_REF_OPTIONS);
+const MATERIAL_REF_BY_CATEGORY = {'HSK1':'hsk1','HSK2':'hsk2','HSK3':'hsk3','HSK4':'hsk4','HSK5':'hsk5','HSK6':'hsk6','HSK7\u20139':'hsk7-9','Chủ đề':'topic','Game Center':'game'};
+let myMaterials = null; // null = 未加载 / 老师 / 加载失败（全部放行）；Set = 学生分到的模块
+async function loadMyMaterials() {
+  myMaterials = null;
+  if (sb && !isTeacher) {
+    try {
+      const { data, error } = await sb.rpc('ntc_get_my_materials');
+      if (error) throw error;
+      myMaterials = new Set((data || []).map(r => r.item_ref));
+    } catch (e) {
+      console.warn('My materials:', e);
+      myMaterials = null;
+    }
+  }
+  applyMaterialsVisibility();
+}
+function applyMaterialsVisibility() {
+  const show = !myMaterials || myMaterials.has('game');
+  const t = document.getElementById('gameCenterToggle');
+  const c = document.getElementById('gameCenterChildren');
+  if (t) t.style.display = show ? '' : 'none';
+  if (c) c.style.display = show ? '' : 'none';
+}
+async function loadAdminPacks() {
+  const box = document.getElementById('adminPackList');
+  if (!box) return;
+  box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Đang tải...</div>';
+  const { data, error } = await sb.rpc('ntc_admin_list_packs');
+  if (error) { box.innerHTML = '<div style="font-size:12px;color:#b64b5d">' + escapeHtml(error.message) + '</div>'; return; }
+  const packs = data || [];
+  await Promise.all(packs.map(async p => {
+    const [itemsRes, teachersRes] = await Promise.all([
+      sb.rpc('ntc_admin_list_pack_items', { p_pack_id: p.id }),
+      sb.rpc('ntc_admin_list_pack_teachers', { p_pack_id: p.id })
+    ]);
+    p.items = itemsRes.data || [];
+    p.teachers = teachersRes.data || [];
+  }));
+  renderAdminPacks(packs);
+}
+function renderAdminPacks(packs) {
+  const box = document.getElementById('adminPackList');
+  if (!box) return;
+  if (!packs.length) { box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Chưa có gói tài liệu.</div>'; return; }
+  box.innerHTML = packs.map(p => {
+    const items = (p.items || []).map(it => '<span style="display:inline-flex;gap:4px;align-items:center;border:1px solid var(--border);border-radius:20px;background:#fff;padding:3px 9px;font-size:11.5px">' + escapeHtml(MATERIAL_REF_LABELS[it.item_ref] || it.item_ref) + ' <button type="button" style="border:0;background:none;cursor:pointer;color:#b64b5d;font:inherit;padding:0" onclick="adminRemovePackItem(\'' + p.id + '\', \'' + it.item_ref + '\', this)">×</button></span>').join(' ');
+    const assigned = (p.teachers || []).map(t => '<span style="display:inline-flex;gap:4px;align-items:center;border:1px solid var(--border);border-radius:20px;background:#fff;padding:3px 9px;font-size:11.5px">' + escapeHtml(t.display_name || 'Giáo viên') + ' <button type="button" style="border:0;background:none;cursor:pointer;color:#b64b5d;font:inherit;padding:0" onclick="adminUnassignPack(\'' + p.id + '\', \'' + t.teacher_id + '\', this)">×</button></span>').join(' ');
+    const itemOptions = MATERIAL_REF_OPTIONS.map(([ref, label]) => '<option value="' + ref + '">' + label + '</option>').join('');
+    const teacherOptions = adminConsoleTeachers.map(t => '<option value="' + t.id + '">' + escapeHtml(t.display_name || 'Giáo viên') + ' · /t/' + escapeHtml(t.slug || '') + '</option>').join('');
+    return adminRow('<div style="min-width:0;flex:1"><div style="font-weight:800;color:var(--text)">' + escapeHtml(p.name) + ' <span style="font-size:11px;color:var(--text-muted);font-weight:700">' + (p.item_count || 0) + ' mục · ' + (p.teacher_count || 0) + ' giáo viên</span></div>'
+      + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(p.description || '') + '</div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' + (items || '<span style="font-size:11.5px;color:var(--text-muted)">Chưa có mục nào.</span>') + '</div>'
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;align-items:center"><select style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:180px">' + itemOptions + '</select><button class="btn-sm" onclick="adminAddPackItem(\'' + p.id + '\', this)">＋ Thêm mục</button></div>'
+      + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">' + (assigned || '<span style="font-size:11.5px;color:var(--text-muted)">Chưa phân cho giáo viên nào.</span>') + '</div>'
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;align-items:center"><select style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:200px"><option value="">Chọn giáo viên…</option>' + teacherOptions + '</select><button class="btn-sm" onclick="adminAssignPack(\'' + p.id + '\', this)">Phân gói này</button></div></div>'
+      + '<div style="display:flex;gap:7px"><button class="btn-sm" onclick="adminDeletePack(\'' + p.id + '\', this)">🗑 Xóa gói</button></div>');
+  }).join('');
+}
+async function adminCreatePack(btn) {
+  if (!sb) return;
+  const nameEl = document.getElementById('adminPackName');
+  const descEl = document.getElementById('adminPackDesc');
+  const name = nameEl ? nameEl.value.trim() : '';
+  if (!name) { alert('Nhập tên gói trước.'); return; }
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_create_pack', { p_name: name, p_description: descEl ? descEl.value.trim() : '' });
+  if (error || !data) {
+    alert('Không tạo được gói: ' + (error?.message || 'Vui lòng thử lại.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  if (nameEl) nameEl.value = '';
+  if (descEl) descEl.value = '';
+  await loadAdminPacks();
+}
+async function adminDeletePack(packId, btn) {
+  if (!sb || !packId) return;
+  if (!confirm('Xóa gói này? Các mục và phân công trong gói sẽ bị xóa theo.')) return;
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_delete_pack', { p_pack_id: packId });
+  if (error || !data) {
+    alert('Không xóa được gói: ' + (error?.message || 'Vui lòng thử lại.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  await loadAdminPacks();
+}
+async function adminAddPackItem(packId, btn) {
+  if (!sb || !packId || !btn) return;
+  const sel = btn.parentElement ? btn.parentElement.querySelector('select') : null;
+  const ref = sel ? sel.value : '';
+  if (!ref) return;
+  btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_add_pack_item', { p_pack_id: packId, p_item_type: 'course', p_item_ref: ref });
+  if (error || !data) {
+    alert('Không thêm được mục: ' + (error?.message || 'Vui lòng thử lại.'));
+    btn.disabled = false;
+    return;
+  }
+  await loadAdminPacks();
+}
+async function adminRemovePackItem(packId, ref, btn) {
+  if (!sb || !packId || !ref) return;
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_remove_pack_item', { p_pack_id: packId, p_item_type: 'course', p_item_ref: ref });
+  if (error || !data) {
+    alert('Không gỡ được mục: ' + (error?.message || 'Vui lòng thử lại.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  await loadAdminPacks();
+}
+async function adminAssignPack(packId, btn) {
+  if (!sb || !packId || !btn) return;
+  const sel = btn.parentElement ? btn.parentElement.querySelector('select') : null;
+  const teacherId = sel ? sel.value : '';
+  if (!teacherId) { alert('Chọn giáo viên trước.'); return; }
+  btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_assign_pack', { p_pack_id: packId, p_teacher_id: teacherId });
+  if (error || !data) {
+    alert('Không phân được gói: ' + (error?.message || 'Vui lòng thử lại.'));
+    btn.disabled = false;
+    return;
+  }
+  await loadAdminPacks();
+}
+async function adminUnassignPack(packId, teacherId, btn) {
+  if (!sb || !packId || !teacherId) return;
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_unassign_pack', { p_pack_id: packId, p_teacher_id: teacherId });
+  if (error || !data) {
+    alert('Không thu hồi được: ' + (error?.message || 'Vui lòng thử lại.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  await loadAdminPacks();
 }
 
 async function goTeacherDashboard() {
