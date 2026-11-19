@@ -486,7 +486,8 @@
   'Xuất sắc': '优秀',
   'chưa có hoạt động': '暂无活动',
   'vừa xong': '刚刚',
-  'Đúng hạn': '按时'
+  'Đúng hạn': '按时',
+  'Nhập mật khẩu': '请输入密码'
  };
  function chinese(value){
   if(dictionary[value])return dictionary[value];
@@ -509,6 +510,11 @@
   if(/^(\d+) trò chơi$/.test(value))return value.replace(' trò chơi',' 个游戏');
   if(/^(\d+) kết quả$/.test(value))return value.replace(' kết quả',' 个结果');
   if(/^(\d+) tệp$/.test(value))return value.replace(' tệp',' 个文件');
+  if(value.endsWith(' →'))return chinese(value.slice(0,-2).trim())+' →';
+  if(/^(\d+) mục cần chú ý$/.test(value))return value.replace(/(\d+) mục cần chú ý/,'$1 项需要注意');
+  if(/^(\d+) bài giao$/.test(value))return value.replace(/(\d+) bài giao/,'$1 项已布置作业');
+  if(/^(\d+) game$/.test(value))return value.replace(/(\d+) game/,'$1 个游戏');
+  if(/^(\d+) bài trả chưa xem$/.test(value))return value.replace(/(\d+) bài trả chưa xem/,'$1 项未查看的返还作业');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
   if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
