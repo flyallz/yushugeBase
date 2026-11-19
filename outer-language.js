@@ -164,7 +164,7 @@
   'Quản trị viên':'管理员',
   'Quản trị toàn hệ thống':'系统管理',
   'Tạo gói':'新建资料包',
-  'Xóa gói':'删除资料包',
+  'Xóa gói':'删除包',
   'Mô tả (không bắt buộc)':'描述（选填）',
   'Tên gói, ví dụ: Gói HSK1':'包名，例如：HSK1 资料包',
   'Nhập tên gói trước.':'请先输入包名。',
@@ -487,7 +487,23 @@
   'chưa có hoạt động': '暂无活动',
   'vừa xong': '刚刚',
   'Đúng hạn': '按时',
-  'Nhập mật khẩu': '请输入密码'
+  'Nhập mật khẩu': '请输入密码',
+  'Không có giáo viên nào đang chờ duyệt.':'暂无待审核的老师。',
+  'Chưa có giáo viên.':'暂无老师。',
+  'Chưa có lớp.':'暂无班级。',
+  'Không có học sinh phù hợp.':'没有符合条件的学生。',
+  'Chưa có gói tài liệu.':'暂无资料包。',
+  'Chưa có mục nào.':'暂无模块。',
+  'Chưa phân cho giáo viên nào.':'尚未指派给任何老师。',
+  'Duyệt':'通过',
+  'Dừng':'停用',
+  'Khóa':'锁定',
+  'Thêm mục':'添加模块',
+  'Chuyển':'转班',
+  'Chuyển lớp…':'转班…',
+  'Chọn giáo viên…':'选择老师…',
+  'Phân gói này':'指派此包',
+  'Gói tài liệu':'资料包'
  };
  function chinese(value){
   if(dictionary[value])return dictionary[value];
@@ -515,9 +531,14 @@
   if(/^(\d+) bài giao$/.test(value))return value.replace(/(\d+) bài giao/,'$1 项已布置作业');
   if(/^(\d+) game$/.test(value))return value.replace(/(\d+) game/,'$1 个游戏');
   if(/^(\d+) bài trả chưa xem$/.test(value))return value.replace(/(\d+) bài trả chưa xem/,'$1 项未查看的返还作业');
+  if(/^(\d+) giáo viên$/.test(value))return value.replace(' giáo viên',' 位老师');
+  if(/^(\d+) lớp\.$/.test(value))return value.replace(/^(\d+) lớp\.$/,'$1 个班级。');
+  if(/^(\d+) lớp$/.test(value))return value.replace(' lớp',' 个班级');
+  if(/^(\d+) học sinh$/.test(value))return value.replace(' học sinh',' 名学生');
+  if(/^(\d+) mục$/.test(value))return value.replace(' mục',' 个模块');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
-  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
+  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
  const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#homeworkView,#homeView,#lessonHomeworkPanel';

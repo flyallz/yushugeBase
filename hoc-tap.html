@@ -805,7 +805,7 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
   <!-- Dashboard giáo viên -->
   <div class="lms-view" id="teacherDashboardView">
     <div id="ntcAdminView" style="display:none;max-width:1050px"></div>
-    <div class="teacher-dashboard-wrap">
+    <div class="teacher-dashboard-wrap" style="display:none">
       <div class="lms-header">
         <div>
           <h2>📊 Giám sát học sinh</h2>
@@ -6183,12 +6183,12 @@ async function adminUnassignPack(packId, teacherId, btn) {
 // 仍由 loadTeacherApprovals / loadTeacherAdminConsole 按 ntc_is_admin 决定。
 async function applyAdminView() {
   if (!sb || !isTeacher) return false;
-  const { data, error } = await sb.rpc('ntc_is_admin');
-  if (error) { console.warn('Admin check:', error); return false; }
-  isAdmin = !!data;
-  document.body.classList.toggle('ntc-admin-ui', isAdmin);
   const adminView = document.getElementById('ntcAdminView');
   const wrap = document.querySelector('#teacherDashboardView .teacher-dashboard-wrap');
+  const { data, error } = await sb.rpc('ntc_is_admin');
+  if (error) { console.warn('Admin check:', error); if (wrap) wrap.style.display = ''; return false; }
+  isAdmin = !!data;
+  document.body.classList.toggle('ntc-admin-ui', isAdmin);
   const approvalsCard = document.getElementById('teacherApprovalsCard');
   const consoleCard = document.getElementById('teacherAdminConsoleCard');
   if (isAdmin) {
