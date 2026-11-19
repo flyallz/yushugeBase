@@ -731,7 +731,6 @@ tr:hover { background: #fffdf5; }
   <div class="home-view" id="homeView">
 <div id="ntcStudentHome" hidden></div>
     <nav class="home-picker-nav" aria-label="Vị trí học tập"><button type="button" id="homePickerBack" hidden>← Quay lại</button><span id="homePickerPath">Trang chủ</span></nav><div id="homePicker"><div class="home-features home-choice-grid"><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK1')"><span class="feature-icon">📗</span><h4>HSK1</h4><p>Ôn tập và sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK2')"><span class="feature-icon">📘</span><h4>HSK2</h4><p>Ôn tập và sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK3')"><span class="feature-icon">📙</span><h4>HSK3</h4><p>Ôn tập và sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK4')"><span class="feature-icon">📕</span><h4>HSK4</h4><p>Ôn tập và sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK5')"><span class="feature-icon">📒</span><h4>HSK5</h4><p>Sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('HSK6')"><span class="feature-icon">📔</span><h4>HSK6</h4><p>Sách bài tập</p></button><button type="button" class="feature-card home-choice" onclick="openStudyModule('HSK7–9')"><span class="feature-icon">📚</span><h4>HSK7–9</h4><p>Ôn tập từ vựng · Bài 1–5</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('Chủ đề')"><span class="feature-icon">🎨</span><h4>Chủ đề</h4><p>Luyện tập theo chủ đề</p></button><button type="button" class="feature-card home-choice" onclick="renderHomePicker('Game Center')"><span class="feature-icon">🎮</span><h4>Game Center</h4><p>Luyện nhớ chữ Hán</p></button></div></div>
-<div id="ntcMaterialsDebug" style="font-size:11px;color:#999;margin-top:8px">materials: not run</div>
 
   </div>
 
@@ -5391,8 +5390,6 @@ function renderHomePicker(category=null,group=null){
  if(!category){
   const cats=HOME_CATEGORIES.filter(([name])=>{const ref=MATERIAL_REF_BY_CATEGORY[name];return !ref||!myMaterials||myMaterials.has(ref);});
   cats.forEach(([name,icon,detail])=>grid.appendChild(homeTile(name,detail,icon,()=>openStudyModule(name))));
-  const dbg2 = document.getElementById('ntcMaterialsDebug');
-  if (dbg2) dbg2.textContent += ' | cats: ' + cats.length + ' / ' + HOME_CATEGORIES.length;
   if(!cats.length){const p=document.createElement('p');p.textContent='Giáo viên chưa phân bổ tài liệu cho lớp của bạn. Vui lòng liên hệ giáo viên.';host.appendChild(p);}
   return;
  }
@@ -5427,11 +5424,6 @@ async function goHome() {
   document.getElementById('homeView').style.display = '';
   await loadMyMaterials();
   renderHomePicker();
-  // TEMP DEBUG — remove after diagnosis: re-count tiles 2s later to catch a later re-render.
-  setTimeout(() => {
-    const d = document.getElementById('ntcMaterialsDebug');
-    if (d) d.textContent += ' | tiles now: ' + document.querySelectorAll('#homePicker .home-choice').length;
-  }, 2000);
   document.getElementById('contentFrame').src = 'about:blank';
   document.getElementById('lessonHomeworkPanel').classList.remove('open');
   document.getElementById('lessonHomeworkToggle').style.display='none';
@@ -6024,23 +6016,17 @@ const MATERIAL_REF_LABELS = Object.fromEntries(MATERIAL_REF_OPTIONS);
 const MATERIAL_REF_BY_CATEGORY = {'HSK1':'hsk1','HSK2':'hsk2','HSK3':'hsk3','HSK4':'hsk4','HSK5':'hsk5','HSK6':'hsk6','HSK7\u20139':'hsk7-9','Chủ đề':'topic','Game Center':'game'};
 let myMaterials = null; // null = 未加载 / 老师 / 加载失败（全部放行）；Set = 学生分到的模块
 async function loadMyMaterials() {
-  // TEMP DEBUG — remove after diagnosis: show the RPC outcome on the page.
   myMaterials = null;
-  let dbgMsg = 'null';
   if (sb && !isTeacher) {
     try {
       const { data, error } = await sb.rpc('ntc_get_my_materials');
       if (error) throw error;
       myMaterials = new Set((data || []).map(r => r.item_ref));
-      dbgMsg = [...myMaterials].join(',') || '(empty)';
     } catch (e) {
       console.warn('My materials:', e);
       myMaterials = null;
-      dbgMsg = 'ERROR: ' + (e && e.message ? e.message : String(e));
     }
   }
-  const dbg = document.getElementById('ntcMaterialsDebug');
-  if (dbg) dbg.textContent = 'materials: ' + dbgMsg;
   applyMaterialsVisibility();
 }
 function applyMaterialsVisibility() {
