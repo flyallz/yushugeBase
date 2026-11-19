@@ -850,6 +850,27 @@ tr:hover { background: #fffdf5; }
         </div>
       </div>
 
+      <div id="teacherAdminConsoleCard" style="display:none;margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:800;color:var(--text)">🛠️ Quản trị toàn hệ thống</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Chỉ quản trị viên mới thấy mục này. Xem tất cả giáo viên / lớp / học sinh, duyệt học sinh, chuyển lớp.</div>
+          </div>
+          <button class="btn-sm" onclick="loadTeacherAdminConsole()">↻ Làm mới</button>
+        </div>
+        <div id="adminConsoleStatus" style="font-size:12px;color:var(--text-muted);margin-top:8px">Đang tải...</div>
+        <div style="font-weight:800;color:var(--text);margin-top:14px">👥 Giáo viên</div>
+        <div id="adminTeacherList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+        <div style="font-weight:800;color:var(--text);margin-top:14px">🏫 Lớp học</div>
+        <div id="adminClassList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+        <div style="font-weight:800;color:var(--text);margin-top:14px">🎓 Học sinh</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <select id="adminStudentTeacherFilter" style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:220px"><option value="">Tất cả giáo viên</option></select>
+          <select id="adminStudentClassFilter" style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:180px"><option value="">Tất cả lớp</option></select>
+        </div>
+        <div id="adminStudentList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+      </div>
+
       <div id="hsk1WorkbookControlCard" style="margin:0 0 16px;max-width:900px;padding:14px 16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
         <div>
           <div style="font-weight:800;color:var(--text)">📕 Sách BT HSK1</div>
@@ -5836,6 +5857,142 @@ async function approveTeacher(teacherId, btn) {
   await loadTeacherApprovals();
 }
 
+// ---------- 管理员控制台（迁移 11） ----------
+// 只认 ntc_is_admin；列表与变改都走 SECURITY DEFINER 的管理 RPC。
+// 普通老师调这些 RPC 只会拿到空列表 / false，不会报错。
+let adminConsoleClasses = [];
+async function loadTeacherAdminConsole() {
+  if (!sb || !isTeacher) return;
+  const card = document.getElementById('teacherAdminConsoleCard');
+  const status = document.getElementById('adminConsoleStatus');
+  const { data: isAdmin } = await sb.rpc('ntc_is_admin');
+  if (!isAdmin) { if (card) card.style.display = 'none'; return; }
+  if (card) card.style.display = 'block';
+  if (status) status.textContent = 'Đang tải...';
+  const [teachersRes, classesRes] = await Promise.all([
+    sb.rpc('ntc_admin_list_teachers'),
+    sb.rpc('ntc_admin_list_classes')
+  ]);
+  if (teachersRes.error || classesRes.error) {
+    if (status) status.textContent = 'Không tải được: ' + ((teachersRes.error || classesRes.error).message || 'Vui lòng thử lại.');
+    return;
+  }
+  const teachers = teachersRes.data || [], classes = classesRes.data || [];
+  adminConsoleClasses = classes;
+  renderAdminTeachers(teachers);
+  renderAdminClasses(classes);
+  fillAdminStudentFilters(teachers, classes);
+  await loadAdminStudents();
+  if (status) status.textContent = teachers.length + ' giáo viên · ' + classes.length + ' lớp.';
+}
+function fillAdminStudentFilters(teachers, classes) {
+  const tf = document.getElementById('adminStudentTeacherFilter');
+  const cf = document.getElementById('adminStudentClassFilter');
+  if (tf) {
+    const cur = tf.value;
+    tf.innerHTML = '<option value="">Tất cả giáo viên</option>' + teachers.map(t => '<option value="' + t.id + '">' + escapeHtml(t.display_name || 'Giáo viên') + ' · /t/' + escapeHtml(t.slug || '') + '</option>').join('');
+    tf.value = cur; tf.onchange = () => loadAdminStudents();
+  }
+  if (cf) {
+    const cur = cf.value;
+    cf.innerHTML = '<option value="">Tất cả lớp</option>' + classes.map(c => '<option value="' + c.code + '">' + escapeHtml(c.code) + '</option>').join('');
+    cf.value = cur; cf.onchange = () => loadAdminStudents();
+  }
+}
+async function loadAdminStudents() {
+  const box = document.getElementById('adminStudentList');
+  if (!box) return;
+  const tf = document.getElementById('adminStudentTeacherFilter');
+  const cf = document.getElementById('adminStudentClassFilter');
+  box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Đang tải...</div>';
+  const { data, error } = await sb.rpc('ntc_admin_list_students', {
+    p_teacher_id: (tf && tf.value) || null,
+    p_class_code: (cf && cf.value) || null
+  });
+  if (error) { box.innerHTML = '<div style="font-size:12px;color:#b64b5d">' + escapeHtml(error.message) + '</div>'; return; }
+  renderAdminStudents(data || []);
+}
+function adminRow(inner) {
+  return '<div style="border:1px solid var(--border);border-radius:11px;background:#fff;padding:11px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">' + inner + '</div>';
+}
+function renderAdminTeachers(rows) {
+  const box = document.getElementById('adminTeacherList');
+  if (!box) return;
+  if (!rows.length) { box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Chưa có giáo viên.</div>'; return; }
+  box.innerHTML = rows.map(r => {
+    const st = !r.is_active ? '⏳ Chờ duyệt' : (r.is_admin ? '👑 Quản trị viên' : '✅ Đang hoạt động');
+    const toggle = r.is_admin ? '' : (r.is_active
+      ? '<button class="btn-sm" onclick="adminSetTeacherActive(\'' + r.id + '\', false, this)">🔒 Dừng</button>'
+      : '<button class="btn-sm" onclick="adminSetTeacherActive(\'' + r.id + '\', true, this)">✅ Duyệt</button>');
+    return adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.display_name || 'Giáo viên') + ' <span style="font-size:11px;color:var(--text-muted);font-weight:700">/t/' + escapeHtml(r.slug || '') + '</span></div>'
+      + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.email || '') + ' · ' + st + ' · ' + (r.class_count || 0) + ' lớp · ' + (r.student_count || 0) + ' học sinh</div></div>'
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap">' + toggle + '</div>');
+  }).join('');
+}
+function renderAdminClasses(rows) {
+  const box = document.getElementById('adminClassList');
+  if (!box) return;
+  if (!rows.length) { box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Chưa có lớp.</div>'; return; }
+  box.innerHTML = rows.map(r => adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.code || '') + '</div>'
+    + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.teacher_name || '') + ' · ' + (r.student_count || 0) + ' học sinh</div></div>')).join('');
+}
+function renderAdminStudents(rows) {
+  const box = document.getElementById('adminStudentList');
+  if (!box) return;
+  if (!rows.length) { box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Không có học sinh phù hợp.</div>'; return; }
+  box.innerHTML = rows.map(r => {
+    const st = r.approval_status || 'pending';
+    const statusText = st === 'approved' ? '✅ Đã duyệt' : st === 'blocked' ? '🔒 Đã khóa' : st === 'rejected' ? '❌ Từ chối' : '⏳ Chờ duyệt';
+    const actions = st === 'pending'
+      ? '<button class="btn-sm" onclick="adminSetStudentApproval(\'' + r.user_id + '\', \'approved\', this)">✅ Duyệt</button><button class="btn-sm" onclick="adminSetStudentApproval(\'' + r.user_id + '\', \'rejected\', this)">❌ Từ chối</button>'
+      : st === 'approved' ? '<button class="btn-sm" onclick="adminSetStudentApproval(\'' + r.user_id + '\', \'blocked\', this)">🔒 Khóa</button>'
+      : '<button class="btn-sm" onclick="adminSetStudentApproval(\'' + r.user_id + '\', \'approved\', this)">↩ Mở lại</button>';
+    const move = '<select style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:150px"><option value="">Chuyển lớp…</option>'
+      + adminConsoleClasses.map(c => '<option value="' + c.code + '"' + (c.code === r.class_code ? ' selected' : '') + '>' + escapeHtml(c.code) + '</option>').join('') + '</select>'
+      + '<button class="btn-sm" onclick="adminMoveStudent(\'' + r.user_id + '\', this)">Chuyển</button>';
+    return adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.full_name || 'Học sinh') + ' <span style="font-size:11px;color:var(--text-muted);font-weight:700">' + escapeHtml(r.class_code || '') + '</span></div>'
+      + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.email || '') + ' · ' + statusText + ' · ' + escapeHtml(r.teacher_name || '') + '</div></div>'
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">' + actions + move + '</div>');
+  }).join('');
+}
+async function adminSetTeacherActive(teacherId, active, btn) {
+  if (!sb || !teacherId) return;
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_set_teacher_active', { p_teacher_id: teacherId, p_active: active });
+  if (error || !data) {
+    alert('Không cập nhật được: ' + (error?.message || 'Không thể sửa trạng thái của chính mình.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  await loadTeacherAdminConsole();
+  await loadTeacherApprovals();
+}
+async function adminSetStudentApproval(userId, status, btn) {
+  if (!sb || !userId) return;
+  if (btn) btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_set_student_approval', { p_user_id: userId, p_status: status });
+  if (error || !data) {
+    alert('Không cập nhật được: ' + (error?.message || 'Vui lòng thử lại.'));
+    if (btn) btn.disabled = false;
+    return;
+  }
+  await loadAdminStudents();
+}
+async function adminMoveStudent(userId, btn) {
+  if (!sb || !userId || !btn) return;
+  const sel = btn.parentElement ? btn.parentElement.querySelector('select') : null;
+  const to = sel ? sel.value : '';
+  if (!to) { alert('Chọn lớp đích trước.'); return; }
+  btn.disabled = true;
+  const { data, error } = await sb.rpc('ntc_admin_move_student', { p_user_id: userId, p_to_class: to });
+  if (error || !data) {
+    alert('Không chuyển được: ' + (error?.message || 'Vui lòng thử lại.'));
+    btn.disabled = false;
+    return;
+  }
+  await loadTeacherAdminConsole();
+}
+
 async function goTeacherDashboard() {
   if (!isTeacher) return;
   setLessonFocusMode(false);
@@ -5851,6 +6008,7 @@ async function goTeacherDashboard() {
   await loadStudentAccountApprovals();
   await loadTeacherBrandingCard().catch(err => console.warn('Teacher branding:', err));
   await loadTeacherApprovals().catch(err => console.warn('Teacher approvals:', err));
+  await loadTeacherAdminConsole().catch(err => console.warn('Teacher admin console:', err));
   await loadDailyWritingSubmissions();
   startTeacherDashboardRefresh();
 }
