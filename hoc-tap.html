@@ -6089,9 +6089,15 @@ async function adminCreatePack(btn) {
   await loadAdminPacks();
 }
 async function adminDeletePack(packId, btn) {
-  if (!sb || !packId) return;
-  if (!confirm('Xóa gói này? Các mục và phân công trong gói sẽ bị xóa theo.')) return;
-  if (btn) btn.disabled = true;
+  if (!sb || !packId || !btn) return;
+  // 不用原生 confirm()：自动化点不开、真实用户也容易误点；改成按钮上两步确认。
+  if (btn.dataset.confirm !== 'yes') {
+    btn.dataset.confirm = 'yes';
+    btn.textContent = '⚠ Chắc chắn xóa?';
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.confirm; btn.textContent = '🗑 Xóa gói'; } }, 5000);
+    return;
+  }
+  btn.disabled = true;
   const { data, error } = await sb.rpc('ntc_admin_delete_pack', { p_pack_id: packId });
   if (error || !data) {
     alert('Không xóa được gói: ' + (error?.message || 'Vui lòng thử lại.'));
