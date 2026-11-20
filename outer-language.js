@@ -6,7 +6,7 @@
   'HSK6上 và HSK6下':'HSK6上、HSK6下','Trang chính':'主菜单','Trang chủ':'首页','Khoá học':'课程','Khóa học':'课程','Giám sát học sinh':'学生学习管理','Trang cá nhân':'个人主页','Thông báo':'通知','Bài tập của tôi':'我的作业','Giao bài tập':'布置作业','Giao bài / Chấm bài':'布置与批改作业','Giao bài & Chấm bài':'布置与批改作业','Bài chờ chấm':'待批改作业','Kỷ lục học tập':'学习记录','Đăng xuất':'退出登录','Quay lại':'返回','Chọn game':'选择游戏','Game Center':'游戏中心','Chủ đề':'主题','Shadowing':'跟读练习','Ôn tập':'复习','Sách bài tập':'练习册','Ôn tập và sách bài tập':'复习与练习册','Luyện tập theo chủ đề':'主题练习','Luyện nghe và phát âm':'听力与发音练习','Luyện nhớ chữ Hán':'汉字记忆练习','Mắt Thần Hán Tự':'汉字识别','Giải Mã Hán Tự':'汉字解码','Đua xe từ vựng':'词汇赛车','Nghiêng đầu chọn từ':'歪头选词','Luyện nhận diện chữ Hán':'汉字识别练习','Luyện ghi nhớ chữ Hán':'汉字记忆练习','HSK1–6 · Chọn chữ Hán':'HSK1–6 · 选择汉字','HSK1–6 · Camera và filter':'HSK1–6 · 摄像头与滤镜','Trạng thái gửi bài':'作业提交状态',
   'Thông tin cá nhân':'个人信息','Giới thiệu bản thân (tiếng Việt)':'自我介绍（越语）','Giới thiệu bản thân (tiếng Trung)':'自我介绍（中文）','Quá trình học tập':'学历时间线','Thêm quá trình học tập':'添加学历','Tên đầy đủ (tiếng Việt)':'全名（越语）','Tên đầy đủ (tiếng Trung)':'全名（中文）','Chức danh (tiếng Việt)':'身份头衔（越语）','Chức danh (tiếng Trung)':'身份头衔（中文）','Trường (tiếng Việt)':'学校（越语）','Trường (tiếng Trung)':'学校（中文）','Nhãn':'标签','＋ Thêm nhãn':'＋ 添加标签','Học bổng':'奖学金','Thêm học bổng':'添加奖学金','Lưu thông tin cá nhân':'保存个人信息','Lớp học trên trang riêng':'主页上的课程','Tên lớp':'课程名','Cấp độ':'级别','Giới thiệu':'简介','Lịch học':'上课时间','Hiển thị trên trang riêng':'在主页显示','Xóa':'删除','Năm':'年份段','Tiêu đề (tiếng Việt)':'标题（越语）','Tiêu đề (tiếng Trung)':'标题（中文）','Mô tả (tiếng Việt)':'描述（越语）','Mô tả (tiếng Trung)':'描述（中文）','Nội dung (tiếng Việt)':'内容（越语）','Nội dung (tiếng Trung)':'内容（中文）',
   'Giới thiệu bản thân, quá trình học tập, nhãn và học bổng — hiển thị trên trang riêng của bạn.':'自我介绍、学历时间线、标签和奖学金——显示在你的个人主页上。','Chọn lớp hiển thị trên trang riêng và sửa tên, cấp độ, giới thiệu, lịch học. Bỏ chọn là ẩn lớp khỏi trang riêng.':'选择要在个人主页上显示的班级，并修改课程名、级别、简介、上课时间。取消勾选即在主页隐藏该班。',
-  'Đã tải. Sửa rồi nhấn “Lưu thông tin cá nhân”.':'已加载。修改后点“保存个人信息”。','Đã tải. Sửa từng lớp rồi nhấn “Lưu”.':'已加载。逐个修改后点“保存”。','✅ Đã lưu thông tin cá nhân.':'✅ 个人信息已保存。','✅ Đã lưu lớp học.':'✅ 课程已保存。','Chưa có lớp nào.':'暂无班级。',
+  'Đã tải. Sửa rồi nhấn “Lưu thông tin cá nhân”.':'已加载。修改后点“保存个人信息”。','Đã tải. Sửa từng lớp rồi nhấn “Lưu”.':'已加载。逐个修改后点“保存”。','✅ Đã lưu thông tin cá nhân.':'✅ 个人信息已保存。','✅ Đã lưu lớp học.':'✅ 课程已保存。','✅ Đã lưu thương hiệu. Mở trang riêng /t/<định danh> để xem.':'✅ 品牌信息已保存。打开个人页面 /t/<标识> 查看。','Chưa có lớp nào.':'暂无班级。',
   'Ôn tập HSK4(3.0) 上':'HSK4(3.0) 上 复习',
   'Ôn tập HSK4(2.0)':'HSK4(2.0) 复习',
   'Ôn tập HSK4(3.0)':'HSK4(3.0) 复习',
@@ -67,7 +67,7 @@
   'Ví dụ: co-ngoc':'例如：co-ngoc',
   'Ví dụ: Nguyễn Văn A':'例如：Nguyễn Văn A',
   'Ví dụ: Cùng cô Ngọc học tiếng Trung':'例如：和明玉老师一起学中文',
-  'Ví dụ: Ngọc Thư Các':'例如：玉书阁',
+  'Ví dụ: Ngọc Thư Các':'例如：玉书阁','Ví dụ: 明玉老师':'例如：明玉老师','Ví dụ: 和明玉老师一起学中文':'例如：和明玉老师一起学中文','Ví dụ: Lương Huỳnh Minh Ngọc':'例如：Lương Huỳnh Minh Ngọc','Ví dụ: 梁黄明玉':'例如：梁黄明玉','Ví dụ: Nghiên cứu sinh tiến sĩ – Nguyên lí Giáo dục học':'例如：Nghiên cứu sinh tiến sĩ – Nguyên lí Giáo dục học','Ví dụ: 教育学原理专业博士研究生':'例如：教育学原理专业博士研究生','Ví dụ: Đại học Tây Nam · Trùng Khánh, Trung Quốc':'例如：Đại học Tây Nam · Trùng Khánh, Trung Quốc','Ví dụ: 西南大学 · 中国重庆':'例如：西南大学 · 中国重庆',
   'Chọn khoá học ở menu bên trái để bắt đầu ôn tập nhé.':'请从左侧菜单选择课程开始复习。',
   'Bài tập tuần này':'本周作业',
   'Các em hoàn thành Bài 5 - HSK2 trước thứ 6 nhé.':'请同学们在周五前完成 HSK2 第 5 课。',
@@ -431,7 +431,7 @@
   'Không lưu được kết quả:': '结果保存失败：',
   'Không lưu được kỷ lục game:': '游戏记录保存失败：',
   'Không lưu được tiến độ:': '进度保存失败：',
-  'Không lưu được. Tài khoản chưa được duyệt hoặc đã bị khóa.': '保存失败，账号未通过审核或已被锁定。',
+  'Không lưu được. Tài khoản chưa được duyệt hoặc đã bị khóa.': '保存失败，账号未通过审核或已被锁定。','Không tìm thấy hồ sơ giáo viên.':'未找到老师档案。','Không lưu được. Lớp không thuộc về bạn hoặc tài khoản chưa được duyệt.':'保存失败：该班级不属于你或账号尚未通过审核。','Không lưu được: Vui lòng thử lại.':'保存失败：请重试。','Ảnh quá lớn (tối đa 5MB).':'图片太大（最多 5MB）。','Không lưu được: Ảnh quá lớn (tối đa 5MB).':'保存失败：图片太大（最多 5MB）。',
   'Không lưu được:': '保存失败：',
   'Không nộp được bài.': '作业提交失败。',
   'Không thu hồi được:': '撤回失败：',
@@ -536,6 +536,10 @@
   if(/^ÔN TẬP HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace('ÔN TẬP ','')+' 复习';
   if(/^SÁCH (?:BT|BÀI TẬP) HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace(/^SÁCH (?:BT|BÀI TẬP) /,'')+' 练习册';
   if(/^Hạn: (.+)$/.test(value))return value.replace(/^Hạn: (.+)$/,'截止：$1');
+  if(/^Không lưu được: (.+)$/.test(value))return value.replace(/^Không lưu được: (.+)$/,'保存失败：$1');
+  if(/^Không tải được thương hiệu: (.+)$/.test(value))return value.replace(/^Không tải được thương hiệu: (.+)$/,'品牌加载失败：$1');
+  if(/^Không tải được thông tin cá nhân: (.+)$/.test(value))return value.replace(/^Không tải được thông tin cá nhân: (.+)$/,'个人信息加载失败：$1');
+  if(/^Không tải được lớp học: (.+)$/.test(value))return value.replace(/^Không tải được lớp học: (.+)$/,'课程加载失败：$1');
   if(/^Bài \d+(?:–\d+)?$/.test(value))return '第 '+value.slice(4)+' 课';
   if(/^\d+ bài$/.test(value))return value.replace(' bài',' 课');
   if(/^Chào bạn$/.test(value))return '你好';
