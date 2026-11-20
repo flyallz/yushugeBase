@@ -530,6 +530,9 @@
   if(dictionary[value])return dictionary[value];
   if(/^Ôn tập HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace('Ôn tập ','')+' 复习';
   if(/^Sách (?:BT|bài tập) HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace(/^Sách (?:BT|bài tập) /,'')+' 练习册';
+  if(/^ÔN TẬP HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace('ÔN TẬP ','')+' 复习';
+  if(/^SÁCH (?:BT|BÀI TẬP) HSK[1-6](?: ?\(\d\.\d\))? ?[上下]?$/.test(value))return value.replace(/^SÁCH (?:BT|BÀI TẬP) /,'')+' 练习册';
+  if(/^Hạn: (.+)$/.test(value))return value.replace(/^Hạn: (.+)$/,'截止：$1');
   if(/^Bài \d+(?:–\d+)?$/.test(value))return '第 '+value.slice(4)+' 课';
   if(/^\d+ bài$/.test(value))return value.replace(' bài',' 课');
   if(/^Chào bạn$/.test(value))return '你好';
