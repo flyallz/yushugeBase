@@ -495,3 +495,23 @@ forged write was rejected server-side, nothing landed):
 
 Conclusion: cross-tenant isolation holds at the API/RLS layer, not
 just in the UI. UI-level test (2026-11-19 09:22) had already passed.
+
+## 15. ntc_get_teacher_classes 排除存档班（2026-11-20，已执行并核对通过）
+- 原因：删班有历史记录时只存档（ntc_hidden_classes），不删 classes 行；但 ntc_get_teacher_classes 不排除存档班，班级管理总览、个人主页“主页上的课程”、首页课程卡三处仍显示已删的班；花名册本来就过滤存档班，两边不一致。
+- 改动：CREATE OR REPLACE ntc_get_teacher_classes（返回列不变），加 NOT EXISTS 排除当前老师在 ntc_hidden_classes 里的班（按 code + teachers.auth_user_id 对，hidden 表的 teacher_id 存的是 Auth UUID）。
+- 前端不用改，三处都走同一个 RPC。超管 ntc_admin_list_classes 不走此函数，不受影响。
+- 执行与核对（2026-11-20 14:24–14:26，SQL Editor，开发库 only）：执行成功（Success. No rows returned）。核对：ntc_hidden_classes 共 6 行——GV、YSG-B002、YSG002、YSG003、YSG004、YSG005（即用户在班级管理删掉的 6 个班，全为有历史记录的存档删）；ntc_get_teacher_classes('co-ngoc') 返回 3 行——YGS-B001、YSG-B003、YSG001（is_listed 全 true），count(*) = 3，与 9 - 6 一致。修正：班级管理顶上的“班级”总览也走这个 RPC，之前称“花名册过滤、总览不过滤”的说法不准确——总览与上架卡、首页一样都不过滤，迁移 15 一次修了三处。
+- 注：repo 副本 README 尚未同步本条，下次推前端时随同更新。
+
+## 16. 超管删除三件套（2026-11-20，文件已写，待执行/部署/验证）
+- 批准：用户 2026-11-20 14:25 亲口批准“删学生、删老师、删班级都补上”，只给超管用。
+- 迁移 16_admin_delete_functions.sql（16,023 字节，两份副本逐字节一致）：3 个 RPC，全部 SECURITY DEFINER、ntc_is_admin() 门控、非超管返回 {ok:false, reason:'NOT_ADMIN'}。
+  - ntc_admin_delete_student_data(p_user_id)：删学生 21 张表的全部数据行（按 01 枚举：ntc_game_runs→ntc_game_recipients 先后顺序有要求，复合外键无级联；homework_submissions 因 RESTRICT 外键必须在删 Auth 号之前；profiles 只删 account_type='student' 的行），返回 jsonb 各表删除数。
+  - ntc_admin_delete_teacher(p_teacher_id)：名下任一班有学生（任何审核状态）→ HAS_STUDENTS；不能删自己（IS_SELF）、不能删另一超管（IS_ADMIN）；名下空班按 08b 删班规则（有历史存档、无历史真删，存档行 teacher_id 填该老师的 Auth UUID）；删该老师建的主题复习指派（先删学生行再删指派，否则 created_by NO ACTION 外键拦删号）；删资料包指派；内部调 §1 清老师的学生侧数据；删 teachers 行与老师档案行；返回 auth_user_id 供 Edge Function 删号。
+  - ntc_admin_delete_class(p_code)：可删任意老师的班，不设归属限制；有学生 → HAS_STUDENTS；有历史存档（teacher_id 填班主老师的 Auth UUID）、无历史真删；返回 {class_code, archived}。
+  - 刻意不删的：homework_windows / ntc_game_assignments / ntc_class_moves（班级历史）、无外键的 created_by / approved_by 引用、app_settings.updated_by（删号自动 SET NULL）。
+- Edge Function supabase/functions/admin-delete-user/index.ts（新建，8,472 字节）：JWT 校验必须开（与注册函数相反）；前端带 session token 调；先以调用者 JWT 调对应 RPC（第二道门），再用 service_role 删 student-homework 桶文件（前缀 <user_id>/ 与 teacher-feedback/<user_id>/，递归 list，文件夹以 id 为 null 识别），最后 Admin API 删 Auth 用户；Storage 失败不阻断删号（记进 storage_error），Auth 删号失败报 AUTH_DELETE_FAILED + data_deleted:true。kind='student' 时 user_id 是学生 Auth UUID；kind='teacher' 时 user_id 是 teachers.id。
+- 前端 hoc-tap.html（仅超管控制台内）：老师行（超管行与自己行不显示）、班级行、学生行各加“🗑 Xóa”删除按钮；两步确认仿 adminDeletePack（armDeleteConfirm，5 秒回退），第一次点在 #adminConsoleStatus 写整句警告；删完刷新列表、状态写进 adminConsoleStatus；reason 映射用整句文案。outer-language.js +20 键（628 键），'🗑 Xóa' 走已有 emoji 前缀规则 + 'Xóa' 键、'⚠ Chắc chắn xóa?' 已有，无重复键。
+- 执行与部署（2026-11-20，开发库 only）：迁移 3 块执行成功（14:35–14:38，SQL Editor），函数总数 82 → 85；Edge Function admin-delete-user 已部署（14:35–14:37，Via Editor 粘贴），JWT 校验确认开，无授权头请求返回 401 UNAUTHORIZED_NO_AUTH_HEADER。
+- 复核修正（2026-11-20，我）：子代理初版 adminDeleteTeacher 只调 RPC、不走 Edge Function，老师登录账号会漏删；已改成与删学生同一条路（调 admin-delete-user，kind='teacher'），另补 1 条词典（628 键）——老师侧 AUTH_DELETE_FAILED 不能点重试（RPC 会报 NOT_FOUND），状态句改为指引去后台 Authentication → Users 手动删号；学生侧重试可行（RPC 幂等），保留“请重试”。
+- 状态：迁移已执行、函数已部署；待推前端、真删测试（新建测试学生/老师再删，验证清单见 16 文件末尾）。

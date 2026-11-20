@@ -705,11 +705,12 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
     <button class="sidebar-item hidden" id="teacherDashboardNav" data-page="teacher-dashboard" onclick="goTeacherDashboard()">
       <div class="icon">📊</div> Giám sát học sinh
     </button>
+    <button class="sidebar-item" id="homeworkNav" data-page="homework" onclick="goHomeworkCenter()">
+      <div class="icon" id="homeworkNavIcon">📤</div> <span id="homeworkNavLabel">Bài tập của tôi</span>
+      <span id="homeworkPendingBadge" class="homework-badge" style="margin-left:auto" aria-label="Bài mới chờ chấm"></span>
+    </button>
     <button class="sidebar-item hidden" id="teacherClassesNav" data-page="teacher-classes" onclick="goTeacherClasses()">
       <div class="icon">🏫</div> Quản lý lớp
-    </button>
-    <button class="sidebar-item hidden" id="teacherBrandingNav" data-page="teacher-branding" onclick="goTeacherBranding()">
-      <div class="icon">🎨</div> Trang cá nhân
     </button>
     <button class="sidebar-item" id="roleNoticeNav" data-page="notices" onclick="goRoleNoticePage()">
       <div class="icon" id="roleNoticeIcon">📢</div> <span id="roleNoticeLabel">Thông báo</span>
@@ -718,9 +719,8 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
     <button class="sidebar-item" data-page="learning-records" onclick="goLearningRecords()">
       <div class="icon">🏆</div> Kỷ lục học tập
     </button>
-    <button class="sidebar-item" id="homeworkNav" data-page="homework" onclick="goHomeworkCenter()">
-      <div class="icon" id="homeworkNavIcon">📤</div> <span id="homeworkNavLabel">Bài tập của tôi</span>
-      <span id="homeworkPendingBadge" class="homework-badge" style="margin-left:auto" aria-label="Bài mới chờ chấm"></span>
+    <button class="sidebar-item hidden" id="teacherBrandingNav" data-page="teacher-branding" onclick="goTeacherBranding()">
+      <div class="icon">🎨</div> Trang cá nhân
     </button>
   </div>
   <div class="sidebar-divider" id="sidebarCourseDivider"></div>
@@ -6226,6 +6226,7 @@ async function approveTeacher(teacherId, btn) {
 // 普通老师调这些 RPC 只会拿到空列表 / false，不会报错。
 let adminConsoleClasses = [];
 let adminConsoleTeachers = [];
+let adminSelfTeacherId = null; // 超管自己的 teachers.id：自己的老师行不显示删除按钮（服务端 ntc_admin_delete_teacher 也会以 IS_SELF 拒绝）
 async function loadTeacherAdminConsole() {
   if (!sb || !isTeacher) return;
   const card = document.getElementById('teacherAdminConsoleCard');
@@ -6234,6 +6235,11 @@ async function loadTeacherAdminConsole() {
   if (!isAdmin) { if (card) card.style.display = 'none'; return; }
   if (card) card.style.display = 'block';
   if (status) status.textContent = 'Đang tải...';
+  // 自己的 teachers.id（用于隐藏自己那行的删除按钮；取不到也不影响，服务端还会拦）。
+  try {
+    const { data: selfRow } = await sb.from('teachers').select('id').eq('auth_user_id', currentUser?.authId).maybeSingle();
+    adminSelfTeacherId = selfRow?.id || null;
+  } catch (e) { adminSelfTeacherId = null; }
   const [teachersRes, classesRes] = await Promise.all([
     sb.rpc('ntc_admin_list_teachers'),
     sb.rpc('ntc_admin_list_classes')
@@ -6291,9 +6297,12 @@ function renderAdminTeachers(rows) {
     const toggle = r.is_admin ? '' : (r.is_active
       ? '<button class="btn-sm" onclick="adminSetTeacherActive(\'' + r.id + '\', false, this)">🔒 Dừng</button>'
       : '<button class="btn-sm" onclick="adminSetTeacherActive(\'' + r.id + '\', true, this)">✅ Duyệt</button>');
+    // 删除：超管行不显示，自己的行不显示（服务端还会以 IS_ADMIN / IS_SELF 拒绝）。
+    const del = (!r.is_admin && r.id !== adminSelfTeacherId)
+      ? '<button class="btn-sm" onclick="adminDeleteTeacher(\'' + r.id + '\', this)">🗑 Xóa</button>' : '';
     return adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.display_name || 'Giáo viên') + ' <span style="font-size:11px;color:var(--text-muted);font-weight:700">/t/' + escapeHtml(r.slug || '') + '</span></div>'
       + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.email || '') + ' · ' + st + ' · ' + (r.class_count || 0) + ' lớp · ' + (r.student_count || 0) + ' học sinh</div></div>'
-      + '<div style="display:flex;gap:7px;flex-wrap:wrap">' + toggle + '</div>');
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap">' + toggle + del + '</div>');
   }).join('');
 }
 function renderAdminClasses(rows) {
@@ -6301,7 +6310,8 @@ function renderAdminClasses(rows) {
   if (!box) return;
   if (!rows.length) { box.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Chưa có lớp.</div>'; return; }
   box.innerHTML = rows.map(r => adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.code || '') + '</div>'
-    + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.teacher_name || '') + ' · ' + (r.student_count || 0) + ' học sinh</div></div>')).join('');
+    + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.teacher_name || '') + ' · ' + (r.student_count || 0) + ' học sinh</div></div>'
+    + '<div style="display:flex;gap:7px;flex-wrap:wrap"><button class="btn-sm" onclick="adminDeleteClass(\'' + r.code + '\', this)">🗑 Xóa</button></div>')).join('');
 }
 function renderAdminStudents(rows) {
   const box = document.getElementById('adminStudentList');
@@ -6317,9 +6327,10 @@ function renderAdminStudents(rows) {
     const move = '<select style="padding:8px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;max-width:150px"><option value="">Chuyển lớp…</option>'
       + adminConsoleClasses.map(c => '<option value="' + c.code + '"' + (c.code === r.class_code ? ' selected' : '') + '>' + escapeHtml(c.code) + '</option>').join('') + '</select>'
       + '<button class="btn-sm" onclick="adminMoveStudent(\'' + r.user_id + '\', this)">Chuyển</button>';
+    const del = '<button class="btn-sm" onclick="adminDeleteStudent(\'' + r.user_id + '\', this)">🗑 Xóa</button>';
     return adminRow('<div style="min-width:0"><div style="font-weight:800;color:var(--text)">' + escapeHtml(r.full_name || 'Học sinh') + ' <span style="font-size:11px;color:var(--text-muted);font-weight:700">' + escapeHtml(r.class_code || '') + '</span></div>'
       + '<div style="font-size:11.5px;color:var(--text-muted);margin-top:3px">' + escapeHtml(r.email || '') + ' · ' + statusText + ' · ' + escapeHtml(r.teacher_name || '') + '</div></div>'
-      + '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">' + actions + move + '</div>');
+      + '<div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">' + actions + del + move + '</div>');
   }).join('');
 }
 async function adminSetTeacherActive(teacherId, active, btn) {
@@ -6357,6 +6368,128 @@ async function adminMoveStudent(userId, btn) {
     btn.disabled = false;
     return;
   }
+  await loadTeacherAdminConsole();
+}
+
+// ---------- 超管删除三件套（迁移 16）：删学生账号、删老师、删班级 ----------
+// 两步确认仿 adminDeletePack：不用原生 confirm()；第一次点只改按钮文案 + 在状态行写警告，5 秒内再点才执行。
+function armDeleteConfirm(btn, warnText) {
+  const status = document.getElementById('adminConsoleStatus');
+  if (btn.dataset.confirm !== 'yes') {
+    btn.dataset.confirm = 'yes';
+    btn.textContent = '⚠ Chắc chắn xóa?';
+    if (status && warnText) status.textContent = warnText;
+    setTimeout(() => { if (btn.isConnected) { delete btn.dataset.confirm; btn.textContent = '🗑 Xóa'; } }, 5000);
+    return false;
+  }
+  delete btn.dataset.confirm;
+  btn.textContent = '🗑 Xóa';
+  return true;
+}
+// RPC 返回的 reason → 状态行文案（整句进词典，不拼可变后缀）。
+function adminDeleteReasonText(reason, kind) {
+  if (reason === 'HAS_STUDENTS') return kind === 'class' ? 'Lớp này vẫn còn học sinh, không thể xóa.' : 'Giáo viên này vẫn còn học sinh, không thể xóa.';
+  if (reason === 'IS_SELF') return 'Không thể xóa tài khoản của chính mình.';
+  if (reason === 'IS_ADMIN') return 'Không thể xóa quản trị viên.';
+  if (reason === 'NOT_FOUND') return 'Không tìm thấy.';
+  if (reason === 'NOT_ADMIN') return 'Không có quyền quản trị.';
+  return kind === 'class' ? 'Không xóa được lớp. Vui lòng thử lại.' : 'Không xóa được giáo viên. Vui lòng thử lại.';
+}
+async function adminDeleteStudent(userId, btn) {
+  if (!sb || !userId || !btn) return;
+  if (!armDeleteConfirm(btn, 'Xác nhận xóa? Tài khoản đăng nhập, hồ sơ, bài tập và dữ liệu học tập của học sinh này sẽ bị xóa toàn bộ, không thể khôi phục.')) return;
+  btn.disabled = true;
+  const status = document.getElementById('adminConsoleStatus');
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session?.access_token) throw new Error('NO_SESSION');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    let response;
+    try {
+      // 删账号必须带 JWT（admin-delete-user 的 JWT 校验是开着的），与注册函数相反。
+      response = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/admin-delete-user`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_CONFIG.publishableKey, 'Authorization': 'Bearer ' + session.access_token },
+        body: JSON.stringify({ user_id: userId, kind: 'student' }),
+        signal: controller.signal
+      });
+    } finally { clearTimeout(timeoutId); }
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.ok === false) {
+      if (status) status.textContent = result.error === 'AUTH_DELETE_FAILED'
+        ? 'Đã xóa dữ liệu học sinh nhưng không xóa được tài khoản đăng nhập. Hãy thử lại.'
+        : 'Không xóa được học sinh. Vui lòng thử lại.';
+      btn.disabled = false;
+      return;
+    }
+    if (status) status.textContent = result.storage_error
+      ? '✅ Đã xóa học sinh (còn tệp trong Storage, hãy kiểm tra lại).'
+      : '✅ Đã xóa học sinh.';
+    await loadTeacherAdminConsole();
+  } catch (e) {
+    if (status) status.textContent = (e && e.message === 'NO_SESSION')
+      ? 'Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.'
+      : 'Không xóa được học sinh. Vui lòng thử lại.';
+    btn.disabled = false;
+  }
+}
+async function adminDeleteTeacher(teacherId, btn) {
+  if (!sb || !teacherId || !btn) return;
+  if (!armDeleteConfirm(btn, 'Xác nhận xóa? Lớp trống của giáo viên này sẽ được lưu trữ hoặc xóa theo quy tắc, tài khoản đăng nhập và hồ sơ cũng sẽ bị xóa.')) return;
+  btn.disabled = true;
+  const status = document.getElementById('adminConsoleStatus');
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session?.access_token) throw new Error('NO_SESSION');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+    let response;
+    try {
+      // 删老师也要走 Edge Function 删 Auth 号（只调 RPC 会漏删登录账号），与删学生同一条路。
+      response = await fetch(`${SUPABASE_CONFIG.url}/functions/v1/admin-delete-user`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_CONFIG.publishableKey, 'Authorization': 'Bearer ' + session.access_token },
+        body: JSON.stringify({ user_id: teacherId, kind: 'teacher' }),
+        signal: controller.signal
+      });
+    } finally { clearTimeout(timeoutId); }
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.ok === false) {
+      // 注意：老师这边 AUTH_DELETE_FAILED 不能点重试——数据已清、老师行已删，
+      // 重调 RPC 会报 NOT_FOUND，只能去后台 Authentication → Users 里手动删号。
+      if (status) status.textContent = result.error === 'AUTH_DELETE_FAILED'
+        ? 'Đã xóa dữ liệu giáo viên nhưng không xóa được tài khoản đăng nhập. Hãy xóa tài khoản trong Authentication → Users.'
+        : result.error === 'RPC_REJECTED'
+          ? adminDeleteReasonText(result.reason, 'teacher')
+          : 'Không xóa được giáo viên. Vui lòng thử lại.';
+      btn.disabled = false;
+      return;
+    }
+    if (status) status.textContent = '✅ Đã xóa giáo viên.';
+    await loadTeacherAdminConsole();
+    await loadTeacherApprovals();
+  } catch (e) {
+    if (status) status.textContent = (e && e.message === 'NO_SESSION')
+      ? 'Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.'
+      : 'Không xóa được giáo viên. Vui lòng thử lại.';
+    btn.disabled = false;
+  }
+}
+async function adminDeleteClass(code, btn) {
+  if (!sb || !code || !btn) return;
+  if (!armDeleteConfirm(btn, 'Xác nhận xóa? Lớp có lịch sử sẽ chỉ được lưu trữ (ẩn đi), lớp chưa có lịch sử sẽ bị xóa hẳn.')) return;
+  btn.disabled = true;
+  const status = document.getElementById('adminConsoleStatus');
+  const { data, error } = await sb.rpc('ntc_admin_delete_class', { p_code: code });
+  if (error || !data || data.ok !== true) {
+    if (status) status.textContent = adminDeleteReasonText(data && data.reason, 'class');
+    btn.disabled = false;
+    return;
+  }
+  if (status) status.textContent = data.archived
+    ? '✅ Đã lưu trữ lớp (lớp có lịch sử nên chỉ ẩn, không xóa hẳn).'
+    : '✅ Đã xóa lớp.';
   await loadTeacherAdminConsole();
 }
 
