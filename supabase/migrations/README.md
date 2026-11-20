@@ -213,6 +213,158 @@ In the dev project, check:
       time: logged in as test-student on the replica, both "加载失败"
       warnings are gone (no match for 加载失败 / Thử lại); homework
       card + course cards load normally.
+- [x] **register-student rewritten, deployed to dev and tested
+      end-to-end 2026-11-18 12:58–13:04:** source in
+      supabase/functions/register-student/index.ts (in the repo tree,
+      rides the 19:30 single push). Deployed via Dashboard → Edge
+      Functions → Via Editor. First site-form test failed at the
+      gateway: "Missing authorization header" — the function ships
+      with "Verify JWT with legacy secret" ON by default, but the
+      frontend (live code, unchanged) sends no Authorization header.
+      Fixed by turning JWT verification OFF for this function (matches
+      live; registration is a public endpoint — noted in the source
+      header). Retest passed: site form showed "✅ Đã gửi đăng ký.
+      Vui lòng chờ giáo viên duyệt rồi đăng nhập。", profiles row
+      created (student / pending / YSG001), class_members YSG001 row
+      created by the sync trigger. Test account deleted afterwards
+      (profiles count 0, Auth user deleted).
+- [ ] **Frontend teacher-login gate — third JWT-role check, found by
+      the cross-tenant test 2026-11-18 13:11:** hoc-tap.html:4081
+      gated teacher login on `app_metadata.role === 'teacher'`.
+      Fake teachers A/B (teachers rows active, profiles teacher /
+      approved) were rejected with "Tài khoản này chưa được cấp quyền
+      giáo viên。" because dashboard-created Auth users carry no role
+      claim. Fixed locally in yushugeBase-dev/hoc-tap.html: the gate
+      now queries the teachers table for the signed-in user's own
+      active row (RLS self-read allows it) — the only app_metadata
+      check left in the whole frontend. Rides the 19:30 single push.
+      LIVE ROLLOUT ORDER MATTERS: run 07 (which backfills Mingyu's
+      teachers row) BEFORE deploying this frontend change, or Mingyu
+      herself gets locked out of teacher login. Cross-tenant UI test
+      (A sees only TA-001/学生A, B only TB-001/学生B) runs after the
+      19:30 switch. Fixtures ready in dev: teacher-a/b, student-a/b,
+      TA-001/TB-001 classes + windows + submissions + game
+      assignments, all counts 2.
+- [x] **10_teacher_branding_and_onboarding — written 2026-11-19, EXECUTED
+      AND VERIFIED 2026-11-19 09:49–09:54 in dev (browser SQL Editor,
+      yanfu1999-create login):** teachers 表加品牌字段（brand_name、
+      tagline_vi/zh、photo_url、zalo_url、facebook_url）+ is_admin；回填
+      co-ngoc（品牌 Ngọc Thư Các、管理员 true、照片/Zalo/Facebook）；公开
+      品牌 RPC ntc_get_teacher_branding / ntc_get_teacher_classes
+      （SECURITY DEFINER，只吐品牌字段，不给 anon 开 teachers 表）；本人
+      改品牌 RPC ntc_update_my_branding（只改品牌列）；管理员审批 RPC
+      ntc_is_admin / ntc_list_pending_teachers / ntc_set_teacher_active
+      （禁改自己防自锁，批的同时同步 profiles.approval_status）；新公开
+      桶 teacher-branding（5MB、仅图片）+ 4 条存储策略（公开读、本人目录
+      写）。执行分两块：10_s1.sql（§1–§3）、10_s2.sql（§4–§5），均
+      "Success. No rows returned"。验证 6/6 通过：teachers 3 行
+      （co-ngoc 品牌/管理员/照片齐全，teacher-a/b 为空）；品牌 RPC 1 行
+      （co-ngoc 全字段；注：display_name 为空，属 07 回填既有数据，不影
+      响品牌展示——RPC 里 brand_name 已做 fallback）；班级 RPC 9 行
+      （GV、YGS-B001、YSG-B002、YSG-B003、YSG001–YSG005——注意实际码是
+      YSG-B002/B003，不是任务里写的 YGS-B002/B003）；桶 public true；
+      存储策略 4 条；函数总数 63（57+6）。register-teacher Edge 函数
+      源码已写好（supabase/functions/register-teacher/index.ts），待部署
+      （JWT 校验须关，参考 register-student）。多教师方向用户 2026-11-19
+      拍板：模拟站先做全、没 bug 再迁回正式站；live Developer 权限先不动。
+- [x] **10b_teacher_display_names — written 2026-11-19, EXECUTED AND
+      VERIFIED 2026-11-19 09:57–10:03 in dev:** 补 10：teachers 表加
+      display_name_zh；ntc_update_my_branding 加显示名参数；品牌 RPC
+      返回 display_name_zh；回填 co-ngoc 显示名 Cô Ngọc / 明玉老师。
+      首次执行报 42P13（Postgres 不允许 CREATE OR REPLACE 改函数返回
+      类型），修正为先 DROP FUNCTION IF EXISTS 再建后重跑成功——修正版
+      已写回 10b 文件（可重跑，幂等）。验证：teachers 3 行（co-ngoc
+      Cô Ngọc / 明玉老师；teacher-a/b 显示名 A老师/B老师、中文名空）；
+      品牌 RPC 1 行全字段齐全。register-teacher Edge 函数同日部署成功
+      （Via Editor 粘贴，JWT 校验已关，函数列表现为 register-student +
+      register-teacher）；主代理 curl 空请求验证通过：{} →
+      MISSING_DISPLAY_NAME，错邮箱 → INVALID_EMAIL（均为 400，函数已
+      跑、JWT 确实关着，未建任何账号）。
+- [x] **11_admin_console — written 2026-11-19, EXECUTED AND VERIFIED
+      2026-11-19 11:40–11:49 in dev:** 管理员控制台 RPC（5 个，全部
+      SECURITY DEFINER、只认 ntc_is_admin）：ntc_admin_list_teachers /
+      ntc_admin_list_classes / ntc_admin_list_students（可按老师/班级过滤）/
+      ntc_admin_set_student_approval / ntc_admin_move_student；老师停用复用
+      10 的 ntc_set_teacher_active。变改 RPC 非管理员或参数非法时返回
+      false，不抛错。单文件 5,452 字节，整块执行 Success。验证（JWT
+      claims 设身份）：管理员 dev-teacher：老师 4 行、班级 13 行、学生 5 行
+      （不是预期的 4 行——多的一行是 Cô C 的遗留学生 profiles 记录：
+      register-teacher 时触发器建的学生档案，A/B 当时删了重建、C 的没删；
+      迁移只建函数、不写 profiles，所以是既有数据，E2E 前删掉该行再验）、
+      函数总数 69（不是预期的 68——基数实际为 64 不是 63，5 个新函数按名
+      全在；多出的 1 个疑似 can_submit_homework_before_reopen_20261106，
+      未定论，只记账不阻塞）；普通老师 A：两列表 0 行、两变改 RPC 均
+      false，无数据改动。
+      前端控制台已于 2026-11-19 14:43–14:49 端到端验证通过
+      （管理员 4 老师/13 班/4 学生、筛选、转班/锁定/停用三组往返、
+      普通老师 A 看不到控制台卡）；Cô C 遗留学生档案已删，学生数回到 4。
+- [x] **12_material_packs — written 2026-11-19, EXECUTED AND VERIFIED
+      2026-11-19 15:18–15:23 in dev:**
+      资料分发 v1（3 张新表 + 11 个 RPC，全部 SECURITY DEFINER）：
+      material_packs / material_pack_items / teacher_material_assignments，
+      只开 RLS、不设直接策略（RPC-only）。管理 RPC 只认 ntc_is_admin：
+      list_packs / create_pack / update_pack / delete_pack /
+      list_pack_items / add_pack_item / remove_pack_item /
+      assign_pack / unassign_pack / list_pack_teachers；学生侧
+      ntc_get_my_materials() 按自己班级找到老师、返回已激活包的条目。
+      条目只限 9 个九宫格模块（hsk1..hsk6、hsk7-9、topic、game），
+      Shadowing 不进包（沿用其全局开关）。回填「全部课程」包（9 条目）
+      指派给现有 4 位老师。单文件 8,334 字节超 SQL Editor 安全块，
+      分 12_s1.sql（4,358）+ 12_s2.sql（3,976）两块按顺序跑。
+      两块均 Success，无报错。验证（JWT claims 设身份）：管理员：
+      包 1、条目 9、指派 4，函数总数 80（69 + 11），
+      ntc_admin_list_packs() 1 行（全部课程，9 条目 / 4 老师）；
+      学生 C（auth UUID e4cb1a01-1af8-4ce9-922d-eaf1fb03cb98）
+      ntc_get_my_materials() 9 行；普通老师 A：列表 0 行、
+      create_pack null、assign_pack false，无数据改动。
+      小现象：停用老师即置 is_active=false，界面上显示为“待审批”
+      （复用审批流程，无单独停用标签）；刚批准后待审批列表需手动刷新
+      才消失，属刷新滞后，数据无误。
+- [x] **13_separate_super_admin — written 2026-11-19, EXECUTED AND VERIFIED
+      2026-11-19 20:28–20:30 in dev:**
+      超管与老师分家。新建纯超管 Auth 用户 admin@example.com
+      （UUID 381a246a-0cc6-4e37-982c-7200de0f63f8，Auto Confirm，
+      密码 admin-123，仅开发站测试号）：补 app_metadata role='teacher'
+      （登录路径不依赖它，只是以防万一；doLogin 只查 teachers 表），
+      删掉触发器自动建的学生 profiles 行，插入 teachers 行
+      （slug 'admin'，display_name 'Quản trị viên' / 超管，
+      is_active + is_admin），同时把 co-ngoc 的 is_admin 改为 false
+      （明玉号从此只是普通老师）。验证：teachers 6 行——admin true/true，
+      co-ngoc / co-c / teacher-a / teacher-b / flyall 均为 is_admin false；
+      该 UUID 的 profiles 0 行；role='teacher'。
+      前端配合（hoc-tap.html，提交 fdf8c9e7）：新增 applyAdminView()，
+      超管进老师面板只显示待审批老师 + 全站管理（老师/班级/学生/
+      资料包）两张卡，老师工作台整块（.teacher-dashboard-wrap）和
+      通向学生视图的侧栏菜单全部隐藏；非超管老师行为不变；零新文案。
+      注意：品牌卡在老师工作台里，超管号改不了 co-ngoc 的品牌，
+      要切明玉老师号；超管进面板后老师数据查询仍在后台跑（隐藏的
+      wrap 还在被写），只浪费请求，不影响显示。
+- [x] **14_teacher_profile_and_course_listing — EXECUTED 2026-11-20 in dev:**
+      老师可改项扩展（个人详细信息 + 主页上架）：
+      teachers 表加 profile jsonb（全名/头衔/学校、自我介绍、学历时间线、
+      标签、奖学金），回填 co-ngoc 照 index.html #giaovien 区原文
+      （学历两条、自我介绍、标签、奖学金三条，一个字不编；标签为
+      {vi,zh} 对象）；classes 表加 display_name/level/description/
+      schedule/is_listed（现有班级默认全部上架，主页行为不变）；
+      ntc_get_teacher_branding 改版（返回加 profile，先 DROP 再 CREATE，
+      见 10b 的 42P13 教训），ntc_get_teacher_classes 改版（返回加 id +
+      5 个上架字段，id 是前端按班保存必需的）；新写 RPC
+      ntc_update_my_profile（只改自己行，非 JSON 对象返回 false）与
+      ntc_update_my_class_listing（只改自己名下班级，按
+      classes.teacher_id 对调用者 teachers 行校验，否则返回 false）。
+      单文件 8,571 字节，分 5 段按顺序粘贴执行（2,426 + 348 + 760 +
+      648 + 1,507，均 ≤7KB）。执行后核对全过：co-ngoc profile 非空
+      （intro_zh 与 full_name_zh 梁黄明玉已确认）、classes 9 行
+      is_listed 全 true、两个改版 RPC 返回正确、public 函数总数 82
+      （80 + 2 个新写 RPC；注意：ntc_ 前缀的函数只有 62 个，82 是
+      全部 public 函数数——文件头验证查询的 LIKE 'ntc_%' 口径写错过，
+      已另跑全量计数确认为 82）。
+      前端配合（hoc-tap.html 个人主页视图内新增个人详细信息表单与
+      主页上架表单；index.html 按 profile 渲染介绍区、按 is_listed
+      与上架字段渲染课程卡；outer-language.js 补字典并把
+      #teacherBrandingView 补进翻译 scopes——拆分时品牌卡搬出
+      #teacherDashboardView 后一度不在翻译范围内；档案字段补全修正：
+      全名/头衔/学校 + 双语标签，co-ngoc 渲染后与原站 26 处文案逐字一致）。
       07_multiteacher_model.sql (teachers / classes / class_members +
       backfill from existing class codes YSG001–YSG005, additive only);
       08_unify_teacher_check.sql (3 teacher-check functions now read
@@ -321,3 +473,25 @@ These are gaps in the live report, recorded here instead of guessed:
 - Write RLS policies (including for the 10 zero-policy tables and
   both buckets) and run a cross-tenant test before any migration
   back to NGOCTHUCAC-LMS.
+
+## API-level isolation test — PASSED 2026-11-19 (dev only, curl + anon key)
+
+Direct REST/RPC calls with teacher A and teacher B JWTs (throwaway dev
+test accounts). 10 checks, all passed, no test data created (every
+forged write was rejected server-side, nothing landed):
+
+- A reads own: ntc_list_game_assignments = TA-001 only (1 row);
+  profiles student-a visible (学生A / TA-001).
+- A forged reads: profiles student-b = []; learning_sessions
+  student-b = []; homework_windows class TB-001 = [].
+- A forged writes: ntc_create_game_assignment(TB-001) -> 400
+  "Lớp không thuộc về bạn"; set_homework_window_enabled(TB-001
+  window) -> 400 "Không tìm thấy lịch nộp bài."; direct INSERT into
+  homework_windows(TB-001) -> 403 "new row violates row-level
+  security policy".
+- B reverse: own assignments = TB-001 only; profiles student-a = [];
+  homework_windows TA-001 = []; ntc_create_game_assignment(TA-001)
+  -> 400 "Lớp không thuộc về bạn".
+
+Conclusion: cross-tenant isolation holds at the API/RLS layer, not
+just in the UI. UI-level test (2026-11-19 09:22) had already passed.

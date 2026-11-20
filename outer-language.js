@@ -4,6 +4,9 @@
  try{language=localStorage.getItem(key)==='zh'?'zh':'vi';}catch{}
  const dictionary={
   'HSK6上 và HSK6下':'HSK6上、HSK6下','Trang chính':'主菜单','Trang chủ':'首页','Khoá học':'课程','Khóa học':'课程','Giám sát học sinh':'学生学习管理','Trang cá nhân':'个人主页','Thông báo':'通知','Bài tập của tôi':'我的作业','Giao bài tập':'布置作业','Giao bài / Chấm bài':'布置与批改作业','Giao bài & Chấm bài':'布置与批改作业','Bài chờ chấm':'待批改作业','Kỷ lục học tập':'学习记录','Đăng xuất':'退出登录','Quay lại':'返回','Chọn game':'选择游戏','Game Center':'游戏中心','Chủ đề':'主题','Shadowing':'跟读练习','Ôn tập':'复习','Sách bài tập':'练习册','Ôn tập và sách bài tập':'复习与练习册','Luyện tập theo chủ đề':'主题练习','Luyện nghe và phát âm':'听力与发音练习','Luyện nhớ chữ Hán':'汉字记忆练习','Mắt Thần Hán Tự':'汉字识别','Giải Mã Hán Tự':'汉字解码','Đua xe từ vựng':'词汇赛车','Nghiêng đầu chọn từ':'歪头选词','Luyện nhận diện chữ Hán':'汉字识别练习','Luyện ghi nhớ chữ Hán':'汉字记忆练习','HSK1–6 · Chọn chữ Hán':'HSK1–6 · 选择汉字','HSK1–6 · Camera và filter':'HSK1–6 · 摄像头与滤镜','Trạng thái gửi bài':'作业提交状态',
+  'Thông tin cá nhân':'个人信息','Giới thiệu bản thân (tiếng Việt)':'自我介绍（越语）','Giới thiệu bản thân (tiếng Trung)':'自我介绍（中文）','Quá trình học tập':'学历时间线','Thêm quá trình học tập':'添加学历','Tên đầy đủ (tiếng Việt)':'全名（越语）','Tên đầy đủ (tiếng Trung)':'全名（中文）','Chức danh (tiếng Việt)':'身份头衔（越语）','Chức danh (tiếng Trung)':'身份头衔（中文）','Trường (tiếng Việt)':'学校（越语）','Trường (tiếng Trung)':'学校（中文）','Nhãn':'标签','＋ Thêm nhãn':'＋ 添加标签','Học bổng':'奖学金','Thêm học bổng':'添加奖学金','Lưu thông tin cá nhân':'保存个人信息','Lớp học trên trang riêng':'主页上的课程','Tên lớp':'课程名','Cấp độ':'级别','Giới thiệu':'简介','Lịch học':'上课时间','Hiển thị trên trang riêng':'在主页显示','Xóa':'删除','Năm':'年份段','Tiêu đề (tiếng Việt)':'标题（越语）','Tiêu đề (tiếng Trung)':'标题（中文）','Mô tả (tiếng Việt)':'描述（越语）','Mô tả (tiếng Trung)':'描述（中文）','Nội dung (tiếng Việt)':'内容（越语）','Nội dung (tiếng Trung)':'内容（中文）',
+  'Giới thiệu bản thân, quá trình học tập, nhãn và học bổng — hiển thị trên trang riêng của bạn.':'自我介绍、学历时间线、标签和奖学金——显示在你的个人主页上。','Chọn lớp hiển thị trên trang riêng và sửa tên, cấp độ, giới thiệu, lịch học. Bỏ chọn là ẩn lớp khỏi trang riêng.':'选择要在个人主页上显示的班级，并修改课程名、级别、简介、上课时间。取消勾选即在主页隐藏该班。',
+  'Đã tải. Sửa rồi nhấn “Lưu thông tin cá nhân”.':'已加载。修改后点“保存个人信息”。','Đã tải. Sửa từng lớp rồi nhấn “Lưu”.':'已加载。逐个修改后点“保存”。','✅ Đã lưu thông tin cá nhân.':'✅ 个人信息已保存。','✅ Đã lưu lớp học.':'✅ 课程已保存。','Chưa có lớp nào.':'暂无班级。',
   'Ôn tập HSK4(3.0) 上':'HSK4(3.0) 上 复习',
   'Ôn tập HSK4(2.0)':'HSK4(2.0) 复习',
   'Ôn tập HSK4(3.0)':'HSK4(3.0) 复习',
@@ -565,10 +568,10 @@
   if(/^(\d+) mục$/.test(value))return value.replace(' mục',' 个模块');
   if(value.includes(' · '))return value.split(' · ').map(chinese).join(' · ');
   if(value.includes(' › '))return value.split(' › ').map(chinese).join(' › ');
-  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
+  if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|📝|✕|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|📝|✕|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
- const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#homeworkView,#homeView,#lessonHomeworkPanel';
+ const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#teacherBrandingView,#homeworkView,#homeView,#lessonHomeworkPanel';
  function apply(){
   queued=false;
   for(const el of document.querySelectorAll(scopes)){

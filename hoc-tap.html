@@ -949,6 +949,53 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
           <span id="brandPhotoUrl" style="font-size:11.5px;color:var(--text-muted);word-break:break-all"></span>
         </div>
       </div>
+      <div id="teacherProfileCard" style="margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:800;color:var(--text)">📝 Thông tin cá nhân</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Giới thiệu bản thân, quá trình học tập, nhãn và học bổng — hiển thị trên trang riêng của bạn.</div>
+          </div>
+          <button class="btn-sm" onclick="saveTeacherProfile()">💾 Lưu thông tin cá nhân</button>
+        </div>
+        <div id="teacherProfileStatus" style="font-size:12px;color:var(--text-muted);margin-top:8px">Đang tải...</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+          <label style="font-size:12px;color:var(--text-muted)">Giới thiệu bản thân (tiếng Việt)<textarea id="profileIntroVi" rows="3" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text);resize:vertical"></textarea></label>
+          <label style="font-size:12px;color:var(--text-muted)">Giới thiệu bản thân (tiếng Trung)<textarea id="profileIntroZh" rows="3" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text);resize:vertical"></textarea></label>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+          <label style="font-size:12px;color:var(--text-muted)">Tên đầy đủ (tiếng Việt)<input id="profileFullNameVi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Lương Huỳnh Minh Ngọc"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Tên đầy đủ (tiếng Trung)<input id="profileFullNameZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 梁黄明玉"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Chức danh (tiếng Việt)<input id="profileHeadlineVi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Nghiên cứu sinh tiến sĩ – Nguyên lí Giáo dục học"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Chức danh (tiếng Trung)<input id="profileHeadlineZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 教育学原理专业博士研究生"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Trường (tiếng Việt)<input id="profileSchoolVi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Đại học Tây Nam · Trùng Khánh, Trung Quốc"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Trường (tiếng Trung)<input id="profileSchoolZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 西南大学 · 中国重庆"></label>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:12px;color:var(--text-muted);font-weight:700">Quá trình học tập</div>
+          <div id="profileEduRows" style="display:grid;gap:8px;margin-top:8px"></div>
+          <button class="btn-sm" type="button" style="margin-top:8px" onclick="addProfileEduRow()">＋ Thêm quá trình học tập</button>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:12px;color:var(--text-muted);font-weight:700">Nhãn</div>
+          <div id="profileTagRows" style="display:grid;gap:8px;margin-top:8px"></div>
+          <button class="btn-sm" type="button" style="margin-top:8px" onclick="addProfileTagRow()">＋ Thêm nhãn</button>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:12px;color:var(--text-muted);font-weight:700">Học bổng</div>
+          <div id="profileScholarshipRows" style="display:grid;gap:8px;margin-top:8px"></div>
+          <button class="btn-sm" type="button" style="margin-top:8px" onclick="addProfileScholarshipRow()">＋ Thêm học bổng</button>
+        </div>
+      </div>
+      <div id="teacherClassListingCard" style="margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:800;color:var(--text)">📚 Lớp học trên trang riêng</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Chọn lớp hiển thị trên trang riêng và sửa tên, cấp độ, giới thiệu, lịch học. Bỏ chọn là ẩn lớp khỏi trang riêng.</div>
+          </div>
+        </div>
+        <div id="teacherClassListingStatus" style="font-size:12px;color:var(--text-muted);margin-top:8px">Đang tải...</div>
+        <div id="teacherClassListingRows" style="display:grid;gap:10px;margin-top:12px"></div>
+      </div>
     </div>
   </div>
 
@@ -5793,6 +5840,9 @@ async function setStudentApproval(userId, status) {
 // ---------- 多教师：品牌表单 + 新老师审批（迁移 10/10b） ----------
 // 品牌只改自己的行：走 ntc_update_my_branding（SECURITY DEFINER，只改品牌列）。
 // 审批只有管理员能用：ntc_list_pending_teachers / ntc_set_teacher_active。
+// myTeacherSlug：当前登录老师的 slug（品牌卡加载时填），个人档案与主页上架
+// 两个新区块共用（迁移 14）。
+let myTeacherSlug = '';
 async function loadTeacherBrandingCard() {
   if (!sb || !isTeacher || !currentUser) return;
   const status = document.getElementById('teacherBrandStatus');
@@ -5808,6 +5858,7 @@ async function loadTeacherBrandingCard() {
     if (status) status.textContent = 'Không tìm thấy hồ sơ giáo viên.';
     return;
   }
+  myTeacherSlug = data.slug || '';
   document.getElementById('brandDisplayName').value = data.display_name || '';
   document.getElementById('brandDisplayNameZh').value = data.display_name_zh || '';
   document.getElementById('brandName').value = data.brand_name || '';
@@ -5858,6 +5909,247 @@ async function saveTeacherBranding() {
     if (error) throw error;
     if (!data) throw new Error('Không lưu được. Tài khoản chưa được duyệt hoặc đã bị khóa.');
     if (status) status.textContent = '✅ Đã lưu thương hiệu. Mở trang riêng /t/<định danh> để xem.';
+  } catch (e) {
+    console.error(e);
+    if (status) status.textContent = 'Không lưu được: ' + (e?.message || 'Vui lòng thử lại.');
+  }
+}
+
+// ---------- 多教师：个人档案 + 主页上架（迁移 14） ----------
+// profile 只改自己的行：走 ntc_update_my_profile（SECURITY DEFINER，只改 profile 列）。
+// 上架只改自己名下的班：走 ntc_update_my_class_listing（SECURITY DEFINER，
+// 按 classes.teacher_id 对调用者的 teachers 行校验）。
+function addProfileEduRow(v) {
+  const box = document.getElementById('profileEduRows');
+  if (!box) return;
+  const row = document.createElement('div');
+  row.className = 'profile-edu-row';
+  row.style.cssText = 'border:1px solid var(--border);border-radius:9px;padding:10px;background:#fff';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:110px 1fr 1fr;gap:8px">
+      <label style="font-size:12px;color:var(--text-muted)">Năm<input class="edu-period" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="2026 — 2030"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Tiêu đề (tiếng Việt)<input class="edu-title-vi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Tiêu đề (tiếng Trung)<input class="edu-title-zh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      <label style="font-size:12px;color:var(--text-muted)">Mô tả (tiếng Việt)<input class="edu-desc-vi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Mô tả (tiếng Trung)<input class="edu-desc-zh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+    </div>
+    <div style="margin-top:8px;text-align:right"><button class="btn-sm" type="button" onclick="this.closest('.profile-edu-row').remove()">✕ Xóa</button></div>`;
+  box.appendChild(row);
+  if (v) {
+    row.querySelector('.edu-period').value = v.period || '';
+    row.querySelector('.edu-title-vi').value = v.title_vi || '';
+    row.querySelector('.edu-title-zh').value = v.title_zh || '';
+    row.querySelector('.edu-desc-vi').value = v.desc_vi || '';
+    row.querySelector('.edu-desc-zh').value = v.desc_zh || '';
+  }
+}
+
+function addProfileScholarshipRow(v) {
+  const box = document.getElementById('profileScholarshipRows');
+  if (!box) return;
+  const row = document.createElement('div');
+  row.className = 'profile-scholarship-row';
+  row.style.cssText = 'border:1px solid var(--border);border-radius:9px;padding:10px;background:#fff';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:110px 1fr 1fr;gap:8px">
+      <label style="font-size:12px;color:var(--text-muted)">Năm<input class="sch-period" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="2026"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Nội dung (tiếng Việt)<input class="sch-text-vi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Nội dung (tiếng Trung)<input class="sch-text-zh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+    </div>
+    <div style="margin-top:8px;text-align:right"><button class="btn-sm" type="button" onclick="this.closest('.profile-scholarship-row').remove()">✕ Xóa</button></div>`;
+  box.appendChild(row);
+  if (v) {
+    row.querySelector('.sch-period').value = v.period || '';
+    row.querySelector('.sch-text-vi').value = v.text_vi || '';
+    row.querySelector('.sch-text-zh').value = v.text_zh || '';
+  }
+}
+
+function addProfileTagRow(v) {
+  const box = document.getElementById('profileTagRows');
+  if (!box) return;
+  const row = document.createElement('div');
+  row.className = 'profile-tag-row';
+  row.style.cssText = 'border:1px solid var(--border);border-radius:9px;padding:10px;background:#fff';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <label style="font-size:12px;color:var(--text-muted)">Nội dung (tiếng Việt)<input class="tag-vi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Nội dung (tiếng Trung)<input class="tag-zh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+    </div>
+    <div style="margin-top:8px;text-align:right"><button class="btn-sm" type="button" onclick="this.closest('.profile-tag-row').remove()">✕ Xóa</button></div>`;
+  box.appendChild(row);
+  if (v) {
+    const o = (v && typeof v === 'object') ? v : { vi: v, zh: v };
+    row.querySelector('.tag-vi').value = o.vi || '';
+    row.querySelector('.tag-zh').value = o.zh || o.vi || '';
+  }
+}
+
+function collectTeacherProfile() {
+  const edu = [...document.querySelectorAll('#profileEduRows .profile-edu-row')].map(r => ({
+    period: r.querySelector('.edu-period').value.trim(),
+    title_vi: r.querySelector('.edu-title-vi').value.trim(),
+    title_zh: r.querySelector('.edu-title-zh').value.trim(),
+    desc_vi: r.querySelector('.edu-desc-vi').value.trim(),
+    desc_zh: r.querySelector('.edu-desc-zh').value.trim()
+  })).filter(e => e.period || e.title_vi || e.title_zh || e.desc_vi || e.desc_zh);
+  const scholarships = [...document.querySelectorAll('#profileScholarshipRows .profile-scholarship-row')].map(r => ({
+    period: r.querySelector('.sch-period').value.trim(),
+    text_vi: r.querySelector('.sch-text-vi').value.trim(),
+    text_zh: r.querySelector('.sch-text-zh').value.trim()
+  })).filter(s => s.period || s.text_vi || s.text_zh);
+  const tags = [...document.querySelectorAll('#profileTagRows .profile-tag-row')].map(r => ({
+    vi: r.querySelector('.tag-vi').value.trim(),
+    zh: r.querySelector('.tag-zh').value.trim()
+  })).filter(t => t.vi || t.zh);
+  return {
+    intro_vi: document.getElementById('profileIntroVi').value.trim(),
+    intro_zh: document.getElementById('profileIntroZh').value.trim(),
+    full_name_vi: document.getElementById('profileFullNameVi').value.trim(),
+    full_name_zh: document.getElementById('profileFullNameZh').value.trim(),
+    headline_vi: document.getElementById('profileHeadlineVi').value.trim(),
+    headline_zh: document.getElementById('profileHeadlineZh').value.trim(),
+    school_vi: document.getElementById('profileSchoolVi').value.trim(),
+    school_zh: document.getElementById('profileSchoolZh').value.trim(),
+    education: edu,
+    tags,
+    scholarships
+  };
+}
+
+function fillTeacherProfileForm(profile) {
+  const p = profile || {};
+  document.getElementById('profileIntroVi').value = p.intro_vi || '';
+  document.getElementById('profileIntroZh').value = p.intro_zh || '';
+  document.getElementById('profileFullNameVi').value = p.full_name_vi || '';
+  document.getElementById('profileFullNameZh').value = p.full_name_zh || '';
+  document.getElementById('profileHeadlineVi').value = p.headline_vi || '';
+  document.getElementById('profileHeadlineZh').value = p.headline_zh || '';
+  document.getElementById('profileSchoolVi').value = p.school_vi || '';
+  document.getElementById('profileSchoolZh').value = p.school_zh || '';
+  const tagBox = document.getElementById('profileTagRows');
+  if (tagBox) tagBox.innerHTML = '';
+  (Array.isArray(p.tags) ? p.tags : []).forEach(t => addProfileTagRow(t));
+  const eduBox = document.getElementById('profileEduRows');
+  if (eduBox) eduBox.innerHTML = '';
+  (Array.isArray(p.education) ? p.education : []).forEach(e => addProfileEduRow(e));
+  const schBox = document.getElementById('profileScholarshipRows');
+  if (schBox) schBox.innerHTML = '';
+  (Array.isArray(p.scholarships) ? p.scholarships : []).forEach(s => addProfileScholarshipRow(s));
+}
+
+async function loadTeacherProfileCard() {
+  if (!sb || !isTeacher) return;
+  const status = document.getElementById('teacherProfileStatus');
+  if (status) status.textContent = 'Đang tải...';
+  if (!myTeacherSlug) {
+    // 兜底：品牌卡没跑过时直接读自己的 teachers 行拿 slug。
+    const { data: t } = await sb.from('teachers').select('slug').eq('auth_user_id', currentUser.authId).maybeSingle();
+    myTeacherSlug = (t && t.slug) || '';
+  }
+  if (!myTeacherSlug) {
+    if (status) status.textContent = 'Không tìm thấy hồ sơ giáo viên.';
+    return;
+  }
+  const { data, error } = await sb.rpc('ntc_get_teacher_branding', { p_slug: myTeacherSlug });
+  if (error) {
+    if (status) status.textContent = 'Không tải được thông tin cá nhân: ' + error.message;
+    return;
+  }
+  fillTeacherProfileForm((data && data[0] && data[0].profile) || {});
+  if (status) status.textContent = 'Đã tải. Sửa rồi nhấn “Lưu thông tin cá nhân”.';
+}
+
+async function saveTeacherProfile() {
+  if (!sb || !isTeacher) return;
+  const status = document.getElementById('teacherProfileStatus');
+  if (status) status.textContent = 'Đang lưu...';
+  try {
+    const { data, error } = await sb.rpc('ntc_update_my_profile', { p_profile: collectTeacherProfile() });
+    if (error) throw error;
+    if (!data) throw new Error('Không lưu được. Tài khoản chưa được duyệt hoặc đã bị khóa.');
+    if (status) status.textContent = '✅ Đã lưu thông tin cá nhân.';
+  } catch (e) {
+    console.error(e);
+    if (status) status.textContent = 'Không lưu được: ' + (e?.message || 'Vui lòng thử lại.');
+  }
+}
+
+function addTeacherClassListingRow(c) {
+  const box = document.getElementById('teacherClassListingRows');
+  if (!box) return;
+  const row = document.createElement('div');
+  row.className = 'teacher-class-row';
+  row.dataset.classId = c.id;
+  row.style.cssText = 'border:1px solid var(--border);border-radius:11px;padding:12px;background:#fff';
+  row.innerHTML = `
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+      <div style="font-weight:800;color:var(--text)">${escapeHtml(c.code || '')} <span style="font-size:11px;color:var(--text-muted);font-weight:700">${escapeHtml(c.name || '')}</span></div>
+      <label style="font-size:12px;color:var(--text-muted)"><input type="checkbox" class="cls-listed"> Hiển thị trên trang riêng</label>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+      <label style="font-size:12px;color:var(--text-muted)">Tên lớp<input class="cls-display-name" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted)">Cấp độ<input class="cls-level" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Giới thiệu<input class="cls-description" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+      <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Lịch học<input class="cls-schedule" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)"></label>
+    </div>
+    <div style="margin-top:10px;text-align:right"><button class="btn-sm" type="button" onclick="saveTeacherClassListing(this)">💾 Lưu</button></div>`;
+  row.querySelector('.cls-listed').checked = c.is_listed !== false;
+  row.querySelector('.cls-display-name').value = c.display_name || '';
+  row.querySelector('.cls-level').value = c.level || '';
+  row.querySelector('.cls-description').value = c.description || '';
+  row.querySelector('.cls-schedule').value = c.schedule || '';
+  box.appendChild(row);
+}
+
+async function loadTeacherClassListings() {
+  if (!sb || !isTeacher) return;
+  const status = document.getElementById('teacherClassListingStatus');
+  const box = document.getElementById('teacherClassListingRows');
+  if (status) status.textContent = 'Đang tải...';
+  if (!myTeacherSlug) {
+    const { data: t } = await sb.from('teachers').select('slug').eq('auth_user_id', currentUser.authId).maybeSingle();
+    myTeacherSlug = (t && t.slug) || '';
+  }
+  if (!myTeacherSlug) {
+    if (status) status.textContent = 'Không tìm thấy hồ sơ giáo viên.';
+    return;
+  }
+  const { data, error } = await sb.rpc('ntc_get_teacher_classes', { p_slug: myTeacherSlug });
+  if (error) {
+    if (status) status.textContent = 'Không tải được lớp học: ' + error.message;
+    return;
+  }
+  const rows = data || [];
+  if (box) box.innerHTML = '';
+  if (!rows.length) {
+    if (status) status.textContent = 'Chưa có lớp nào.';
+    return;
+  }
+  rows.forEach(c => addTeacherClassListingRow(c));
+  if (status) status.textContent = 'Đã tải. Sửa từng lớp rồi nhấn “Lưu”.';
+}
+
+async function saveTeacherClassListing(btn) {
+  if (!sb || !isTeacher) return;
+  const row = btn.closest('.teacher-class-row');
+  if (!row) return;
+  const status = document.getElementById('teacherClassListingStatus');
+  if (status) status.textContent = 'Đang lưu...';
+  try {
+    const { data, error } = await sb.rpc('ntc_update_my_class_listing', {
+      p_class_id: row.dataset.classId,
+      p_display_name: row.querySelector('.cls-display-name').value.trim(),
+      p_level: row.querySelector('.cls-level').value.trim(),
+      p_description: row.querySelector('.cls-description').value.trim(),
+      p_schedule: row.querySelector('.cls-schedule').value.trim(),
+      p_is_listed: row.querySelector('.cls-listed').checked
+    });
+    if (error) throw error;
+    if (!data) throw new Error('Không lưu được. Lớp không thuộc về bạn hoặc tài khoản chưa được duyệt.');
+    if (status) status.textContent = '✅ Đã lưu lớp học.';
   } catch (e) {
     console.error(e);
     if (status) status.textContent = 'Không lưu được: ' + (e?.message || 'Vui lòng thử lại.');
@@ -6247,6 +6539,8 @@ async function goTeacherBranding() {
   document.getElementById('contentFrame').src = 'about:blank';
   setActiveSidebar('teacher-branding');
   await loadTeacherBrandingCard().catch(err => console.warn('Teacher branding:', err));
+  await loadTeacherProfileCard().catch(err => console.warn('Teacher profile:', err));
+  await loadTeacherClassListings().catch(err => console.warn('Teacher class listings:', err));
 }
 
 async function loadTeacherDashboard(showLoading = false) {
