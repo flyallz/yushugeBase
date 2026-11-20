@@ -148,6 +148,7 @@
   'Đang kiểm tra trạng thái...':'正在检查状态…',
   'Đang tải lịch sử học tập...':'正在加载学习记录…',
   'Quản lý lớp':'班级管理',
+  'Tạo lớp, xóa lớp trống, chuyển học sinh giữa các lớp.':'新建班级、删除空班、在班级之间转班。',
   'Tài khoản học sinh':'学生账号',
   'Trạng thái':'状态',
   'Bài tập':'作业',
@@ -575,7 +576,7 @@
   if(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|📝|✕|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/.test(value)){const prefix=value.match(/^(?:←|⬅|↩|🏆|📥|📤|📢|🔒|🎙️|📦|🗑|🎓|👥|🏫|🎨|💾|📊|🛠️|✍️|📝|✕|⏳|⏰|⚙️|📚|⏱|🟡|🟢|＋|↻|📕|🔓|✅|✓|❌|⚠|⏹|🔄|👀|🎮|🏎️|🙆|🧩|👑|🔎|📈|👆)\s+/)[0];return prefix+chinese(value.slice(prefix.length));}
   return value;
  }
- const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#teacherBrandingView,#homeworkView,#homeView,#lessonHomeworkPanel';
+ const scopes='#sidebar .sidebar-item,#sidebar .sidebar-group-toggle,#sidebar .sidebar-section-title,#homePicker .home-choice h4,#homePicker .home-choice p,#homePickerPath,#homePickerBack,#contentBack,#lessonHomeworkToggle,#topbar .btn-logout,#loginOverlay .login-card,#noticesView,#learningRecordsView,#teacherDashboardView,#teacherClassesView,#teacherBrandingView,#homeworkView,#homeView,#lessonHomeworkPanel';
  function apply(){
   queued=false;
   for(const el of document.querySelectorAll(scopes)){
