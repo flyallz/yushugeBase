@@ -378,6 +378,7 @@ tr:hover { background: #fffdf5; }
 /* ===== 超管视图：超管与老师界面分开 ===== */
 /* 超管（body.ntc-admin-ui）只看管理：隐藏通向学生视图的侧栏菜单与老师工作台整块。 */
 body.ntc-admin-ui [data-page="home"],
+body.ntc-admin-ui [data-page="teacher-branding"],
 body.ntc-admin-ui #roleNoticeNav,
 body.ntc-admin-ui [data-page="learning-records"],
 body.ntc-admin-ui #homeworkNav,
@@ -703,6 +704,9 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
     <button class="sidebar-item hidden" id="teacherDashboardNav" data-page="teacher-dashboard" onclick="goTeacherDashboard()">
       <div class="icon">📊</div> Giám sát học sinh
     </button>
+    <button class="sidebar-item hidden" id="teacherBrandingNav" data-page="teacher-branding" onclick="goTeacherBranding()">
+      <div class="icon">🎨</div> Trang cá nhân
+    </button>
     <button class="sidebar-item" id="roleNoticeNav" data-page="notices" onclick="goRoleNoticePage()">
       <div class="icon" id="roleNoticeIcon">📢</div> <span id="roleNoticeLabel">Thông báo</span>
       <span id="sidebarPendingBadge" class="student-account-badge" style="margin-left:auto" aria-label="Tài khoản mới chờ duyệt"></span>
@@ -824,31 +828,6 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
         <div class="teacher-stat-card"><div class="num" id="statOffline">0</div><div class="label">⚪ Offline</div></div>
       </div>
 
-      <div id="teacherBrandingCard" style="margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
-        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:800;color:var(--text)">🎨 Thương hiệu của tôi</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Tên, ảnh, Zalo/Facebook hiển thị trên trang riêng của bạn. <span id="teacherBrandLink"></span></div>
-          </div>
-          <button class="btn-sm" onclick="saveTeacherBranding()">💾 Lưu thương hiệu</button>
-        </div>
-        <div id="teacherBrandStatus" style="font-size:12px;color:var(--text-muted);margin-top:8px">Đang tải...</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
-          <label style="font-size:12px;color:var(--text-muted)">Tên hiển thị (tiếng Việt)<input id="brandDisplayName" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Cô Ngọc"></label>
-          <label style="font-size:12px;color:var(--text-muted)">Tên tiếng Trung<input id="brandDisplayNameZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 明玉老师"></label>
-          <label style="font-size:12px;color:var(--text-muted)">Tên trang (thương hiệu)<input id="brandName" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Ngọc Thư Các"></label>
-          <label style="font-size:12px;color:var(--text-muted)">Zalo<input id="brandZalo" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="https://zalo.me/0932856677"></label>
-          <label style="font-size:12px;color:var(--text-muted)">Facebook<input id="brandFacebook" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="https://www.facebook.com/..."></label>
-          <label style="font-size:12px;color:var(--text-muted)">Ảnh giáo viên<input id="brandPhotoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text);background:#fff"></label>
-          <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Câu giới thiệu (tiếng Việt)<input id="brandTaglineVi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Cùng cô Ngọc học tiếng Trung"></label>
-          <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Câu giới thiệu (tiếng Trung)<input id="brandTaglineZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 和明玉老师一起学中文"></label>
-        </div>
-        <div style="display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap">
-          <img id="brandPhotoPreview" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:12px;border:1px solid var(--border);display:none">
-          <span id="brandPhotoUrl" style="font-size:11.5px;color:var(--text-muted);word-break:break-all"></span>
-        </div>
-      </div>
-
       <div id="teacherApprovalsCard" style="display:none;margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
           <div>
@@ -939,6 +918,36 @@ body.ntc-admin-ui .teacher-dashboard-wrap { display: none !important; }
 
       <div class="teacher-student-list" id="teacherStudentList">
         <div class="empty-state"><div class="icon">⏳</div>Đang tải dữ liệu...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trang cá nhân giáo viên -->
+  <div class="lms-view" id="teacherBrandingView">
+    <div style="max-width:1050px">
+      <div id="teacherBrandingCard" style="margin:0 0 16px;max-width:900px;padding:16px;border:1px solid #ead0d7;border-radius:14px;background:#fffaf8">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:800;color:var(--text)">🎨 Thương hiệu của tôi</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Tên, ảnh, Zalo/Facebook hiển thị trên trang riêng của bạn. <span id="teacherBrandLink"></span></div>
+          </div>
+          <button class="btn-sm" onclick="saveTeacherBranding()">💾 Lưu thương hiệu</button>
+        </div>
+        <div id="teacherBrandStatus" style="font-size:12px;color:var(--text-muted);margin-top:8px">Đang tải...</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+          <label style="font-size:12px;color:var(--text-muted)">Tên hiển thị (tiếng Việt)<input id="brandDisplayName" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Cô Ngọc"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Tên tiếng Trung<input id="brandDisplayNameZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 明玉老师"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Tên trang (thương hiệu)<input id="brandName" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Ngọc Thư Các"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Zalo<input id="brandZalo" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="https://zalo.me/0932856677"></label>
+          <label style="font-size:12px;color:var(--text-muted)">Facebook<input id="brandFacebook" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="https://www.facebook.com/..."></label>
+          <label style="font-size:12px;color:var(--text-muted)">Ảnh giáo viên<input id="brandPhotoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text);background:#fff"></label>
+          <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Câu giới thiệu (tiếng Việt)<input id="brandTaglineVi" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: Cùng cô Ngọc học tiếng Trung"></label>
+          <label style="font-size:12px;color:var(--text-muted);grid-column:1/-1">Câu giới thiệu (tiếng Trung)<input id="brandTaglineZh" type="text" style="width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--border);border-radius:9px;font:inherit;color:var(--text)" placeholder="Ví dụ: 和明玉老师一起学中文"></label>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap">
+          <img id="brandPhotoPreview" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:12px;border:1px solid var(--border);display:none">
+          <span id="brandPhotoUrl" style="font-size:11.5px;color:var(--text-muted);word-break:break-all"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -4379,6 +4388,8 @@ function enterApp() {
 
   const teacherNav = document.getElementById('teacherDashboardNav');
   teacherNav?.classList.toggle('hidden', !isTeacher);
+  const brandingNav = document.getElementById('teacherBrandingNav');
+  brandingNav?.classList.toggle('hidden', !isTeacher);
   if (!isTeacher) { isAdmin = false; document.body.classList.remove('ntc-admin-ui'); }
   configureRoleNoticeNav();
   configureHomeworkNav();
@@ -5383,7 +5394,7 @@ function setActiveSidebar(page) {
   });
 }
 
-const ALL_VIEW_IDS = ['homeView', 'noticesView', 'learningRecordsView', 'teacherDashboardView', 'homeworkView', 'iframeView'];
+const ALL_VIEW_IDS = ['homeView', 'noticesView', 'learningRecordsView', 'teacherDashboardView', 'teacherBrandingView', 'homeworkView', 'iframeView'];
 function hideAllViews() {
   document.getElementById('contentBack').textContent = '⬅ Trang chủ';
   setGameFocusMode(false);
@@ -6221,11 +6232,21 @@ async function goTeacherDashboard() {
   await applyAdminView().catch(err => console.warn('Admin view:', err));
   await loadTeacherDashboard(false);
   await loadStudentAccountApprovals();
-  await loadTeacherBrandingCard().catch(err => console.warn('Teacher branding:', err));
   await loadTeacherApprovals().catch(err => console.warn('Teacher approvals:', err));
   await loadTeacherAdminConsole().catch(err => console.warn('Teacher admin console:', err));
   await loadDailyWritingSubmissions();
   startTeacherDashboardRefresh();
+}
+
+async function goTeacherBranding() {
+  if (!isTeacher || isAdmin) return;
+  setLessonFocusMode(false);
+  closeSidebar();
+  hideAllViews();
+  document.getElementById('teacherBrandingView').style.display = 'block';
+  document.getElementById('contentFrame').src = 'about:blank';
+  setActiveSidebar('teacher-branding');
+  await loadTeacherBrandingCard().catch(err => console.warn('Teacher branding:', err));
 }
 
 async function loadTeacherDashboard(showLoading = false) {
